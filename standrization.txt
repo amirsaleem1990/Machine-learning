@@ -1,0 +1,2 @@
+https://stats.stackexchange.com/questions/174823/how-to-apply-standardization-normalization-to-train-and-testset-if-prediction-i
+https://sebastianraschka.com/faq/docs/scale-training-test.html
