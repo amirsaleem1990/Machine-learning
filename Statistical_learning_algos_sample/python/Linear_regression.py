@@ -18,3 +18,4 @@ print(r2_score(y_test,y_pred))
 # print('R sq: ',clf.score(x_train,y_train))
 
 print('Correlation: ', math.sqrt(clf.score(x_train,y_train)))
+print('Coefficients: \n', clf.coef_)
