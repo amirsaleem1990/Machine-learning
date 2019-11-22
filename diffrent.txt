@@ -1,0 +1,65 @@
+as.ordered(df$var_in_order)
+
+
+
+ggplotRegression <- function (fit) {
+  
+  require(ggplot2)
+  
+  ggplot(fit$model, aes_string(x = names(fit$model)[2], y = names(fit$model)[1])) + 
+    geom_point() +
+    stat_smooth(method = "lm", col = "red") +
+    labs(title = paste("Adj R2 = ",signif(summary(fit)$adj.r.squared, 5),
+                       "Intercept =",signif(fit$coef[[1]],5 ),
+                       " Slope =",signif(fit$coef[[2]], 5),
+                       " P =",signif(summary(fit)$coef[2,4], 5)))
+}
+ggplotRegression(linearModel)
+ggplotRegression(linearMod2)
+ggplotRegression(linearMod3)
+
+
+#-----------------------------------------------
+seaborn x with y with least square line
+import seaborn as sns
+sns.lmplot(x="Sal", y="Temp", data=bottle,
+           order=2, ci=None);
+#-----------------------------------------------
+# Picturing a residual plot to check for heteroscedasticity 
+sns.residplot(df['x'], df['y'], order=2, lowess=True)
+#-----------------------------------------------
+accuracy = model.score(X_test, y_test)
+print("Basic Linear Regression Model accuracy: " +"{:.1%}".format(accuracy));
+#-----------------------------------------------
+from sklearn.linear_model import LogisticRegression
+from sklearn.discriminant_analysis import LinearDiscriminantAnalysis
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.naive_bayes import GaussianNB
+
+models = []
+models.append(('LR', LogisticRegression(solver='liblinear', multi_class='ovr')))
+models.append(('LDA', LinearDiscriminantAnalysis()))
+models.append(('KNN', KNeighborsClassifier()))
+models.append(('CART', DecisionTreeClassifier()))
+models.append(('NB', GaussianNB()))
+
+scoring = 'accuracy'    #10 fold cross validation
+
+results = []
+names = []
+for name, model in models:
+	kfold = model_selection.KFold(n_splits=10, random_state=seed2)
+	cv_results = model_selection.cross_val_score(model, X_train2, 
+                                                 Y_train2_int_type, 
+                                                 cv=kfold, scoring=scoring)
+	results.append(cv_results)
+	names.append(name)
+	msg = "%s: %f (%f)" % (name, cv_results.mean(), cv_results.std())
+	print(msg)
+
+#-----------------------------------------------
+# Statistical Summary - CATEGORICAL DATA
+# Summarize the count, uniqueness and frequency of categorical features, excluding numerical values.
+df.describe(include=['O'])   #  CATEGORICAL DATA
+#-----------------------------------------------
