@@ -12622,7 +12622,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[1]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># import libraries</span>
@@ -12661,11 +12661,24 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[2]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../input/train.csv&#39;</span><span class="p">)</span>
-<span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="s1">&#39;../input/test.csv&#39;</span><span class="p">)</span>
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">path</span> <span class="o">=</span> <span class="s2">&quot;/home/amir/github/Kaggle-compitations/House-Prices-Advanced-Regression-Techniques-kaggle-compitation/&quot;</span>
+</pre></div>
+
+</div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In&nbsp;[3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="n">train</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span>  <span class="s2">&quot;train.csv&quot;</span><span class="p">)</span>
+<span class="n">test</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span> <span class="o">+</span> <span class="s1">&#39;test.csv&#39;</span><span class="p">)</span>
 <span class="n">testID</span> <span class="o">=</span> <span class="n">test</span><span class="p">[</span><span class="s1">&#39;Id&#39;</span><span class="p">]</span>
 
 <span class="n">data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">train</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="s1">&#39;SalePrice&#39;</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">),</span> <span class="n">test</span><span class="p">],</span> <span class="n">keys</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;test&#39;</span><span class="p">])</span>
@@ -12679,13 +12692,127 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[4]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">head</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[4]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>MSSubClass</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>Alley</th>
+      <th>LotShape</th>
+      <th>LandContour</th>
+      <th>Utilities</th>
+      <th>LotConfig</th>
+      <th>...</th>
+      <th>ScreenPorch</th>
+      <th>PoolArea</th>
+      <th>PoolQC</th>
+      <th>Fence</th>
+      <th>MiscFeature</th>
+      <th>MiscVal</th>
+      <th>MoSold</th>
+      <th>YrSold</th>
+      <th>SaleType</th>
+      <th>SaleCondition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th rowspan="2" valign="top">train</th>
+      <th>0</th>
+      <td>60</td>
+      <td>RL</td>
+      <td>65.0</td>
+      <td>8450</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>Reg</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>Inside</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>2</td>
+      <td>2008</td>
+      <td>WD</td>
+      <td>Normal</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>20</td>
+      <td>RL</td>
+      <td>80.0</td>
+      <td>9600</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>Reg</td>
+      <td>Lvl</td>
+      <td>AllPub</td>
+      <td>FR2</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>5</td>
+      <td>2007</td>
+      <td>WD</td>
+      <td>Normal</td>
+    </tr>
+  </tbody>
+</table>
+<p>2 rows × 79 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -12706,7 +12833,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[5]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">years</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;YearBuilt&#39;</span><span class="p">,</span> <span class="s1">&#39;YearRemodAdd&#39;</span><span class="p">,</span> <span class="s1">&#39;GarageYrBlt&#39;</span><span class="p">,</span> <span class="s1">&#39;YrSold&#39;</span><span class="p">]</span>
@@ -12722,7 +12849,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[6]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="n">years</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
@@ -12732,10 +12859,34 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[6]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>YearBuilt       2010.0
+YearRemodAdd    2010.0
+GarageYrBlt     2207.0
+YrSold          2010.0
+dtype: float64</pre>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[7]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">years</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">2018</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span> <span class="c1"># take any index with a twisted year value</span>
@@ -12746,10 +12897,100 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[7]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>MSSubClass</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>Alley</th>
+      <th>LotShape</th>
+      <th>LandContour</th>
+      <th>Utilities</th>
+      <th>LotConfig</th>
+      <th>...</th>
+      <th>ScreenPorch</th>
+      <th>PoolArea</th>
+      <th>PoolQC</th>
+      <th>Fence</th>
+      <th>MiscFeature</th>
+      <th>MiscVal</th>
+      <th>MoSold</th>
+      <th>YrSold</th>
+      <th>SaleType</th>
+      <th>SaleCondition</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>test</th>
+      <th>1132</th>
+      <td>20</td>
+      <td>RL</td>
+      <td>68.0</td>
+      <td>8298</td>
+      <td>Pave</td>
+      <td>NaN</td>
+      <td>IR1</td>
+      <td>HLS</td>
+      <td>AllPub</td>
+      <td>Inside</td>
+      <td>...</td>
+      <td>0</td>
+      <td>0</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>NaN</td>
+      <td>0</td>
+      <td>9</td>
+      <td>2007</td>
+      <td>New</td>
+      <td>Partial</td>
+    </tr>
+  </tbody>
+</table>
+<p>1 rows × 79 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[8]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">mask</span><span class="p">,</span> <span class="s1">&#39;GarageYrBlt&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">mask</span><span class="p">][</span><span class="s1">&#39;YearBuilt&#39;</span><span class="p">]</span>
@@ -12762,7 +13003,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[9]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="n">metrics</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -12773,10 +13014,75 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[9]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>MSSubClass</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>Alley</th>
+      <th>LotShape</th>
+      <th>LandContour</th>
+      <th>Utilities</th>
+      <th>LotConfig</th>
+      <th>...</th>
+      <th>ScreenPorch</th>
+      <th>PoolArea</th>
+      <th>PoolQC</th>
+      <th>Fence</th>
+      <th>MiscFeature</th>
+      <th>MiscVal</th>
+      <th>MoSold</th>
+      <th>YrSold</th>
+      <th>SaleType</th>
+      <th>SaleCondition</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<p>0 rows × 79 columns</p>
+</div>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[10]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">mask</span> <span class="o">=</span> <span class="p">((</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;MoSold&#39;</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">12</span><span class="p">)</span> <span class="o">|</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;MoSold&#39;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">1</span><span class="p">))</span>
@@ -12784,6 +13090,71 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[10]:</div>
+
+
+
+<div class="output_html rendered_html output_subarea output_execute_result">
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th></th>
+      <th>MSSubClass</th>
+      <th>MSZoning</th>
+      <th>LotFrontage</th>
+      <th>LotArea</th>
+      <th>Street</th>
+      <th>Alley</th>
+      <th>LotShape</th>
+      <th>LandContour</th>
+      <th>Utilities</th>
+      <th>LotConfig</th>
+      <th>...</th>
+      <th>ScreenPorch</th>
+      <th>PoolArea</th>
+      <th>PoolQC</th>
+      <th>Fence</th>
+      <th>MiscFeature</th>
+      <th>MiscVal</th>
+      <th>MoSold</th>
+      <th>YrSold</th>
+      <th>SaleType</th>
+      <th>SaleCondition</th>
+    </tr>
+  </thead>
+  <tbody>
+  </tbody>
+</table>
+<p>0 rows × 79 columns</p>
+</div>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -12815,7 +13186,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[11]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Numerical features</span>
@@ -12851,13 +13222,40 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[12]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">cat_feats</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[12]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Index([&#39;MSSubClass&#39;, &#39;MSZoning&#39;, &#39;Street&#39;, &#39;Alley&#39;, &#39;LotShape&#39;, &#39;LandContour&#39;,
+       &#39;Utilities&#39;, &#39;LotConfig&#39;, &#39;LandSlope&#39;, &#39;Neighborhood&#39;, &#39;Condition1&#39;,
+       &#39;Condition2&#39;, &#39;BldgType&#39;, &#39;HouseStyle&#39;, &#39;RoofStyle&#39;, &#39;RoofMatl&#39;,
+       &#39;Exterior1st&#39;, &#39;Exterior2nd&#39;, &#39;MasVnrType&#39;, &#39;Foundation&#39;,
+       &#39;BsmtExposure&#39;, &#39;BsmtFinType1&#39;, &#39;BsmtFinType2&#39;, &#39;Heating&#39;, &#39;CentralAir&#39;,
+       &#39;Electrical&#39;, &#39;Functional&#39;, &#39;GarageType&#39;, &#39;GarageFinish&#39;, &#39;PavedDrive&#39;,
+       &#39;Fence&#39;, &#39;MiscFeature&#39;, &#39;MoSold&#39;, &#39;SaleType&#39;, &#39;SaleCondition&#39;],
+      dtype=&#39;object&#39;)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -12878,7 +13276,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[13]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#log transform the target:</span>
@@ -12912,13 +13310,67 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[14]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()[</span><span class="n">data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[14]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>MSZoning           4
+LotFrontage      486
+Alley           2721
+Utilities          2
+Exterior1st        1
+Exterior2nd        1
+MasVnrType        24
+MasVnrArea        23
+BsmtQual          81
+BsmtCond          82
+BsmtExposure      82
+BsmtFinType1      79
+BsmtFinSF1         1
+BsmtFinType2      80
+BsmtFinSF2         1
+BsmtUnfSF          1
+TotalBsmtSF        1
+Electrical         1
+BsmtFullBath       2
+BsmtHalfBath       2
+KitchenQual        1
+Functional         2
+FireplaceQu     1420
+GarageType       157
+GarageYrBlt      159
+GarageFinish     159
+GarageCars         1
+GarageArea         1
+GarageQual       159
+GarageCond       159
+PoolQC          2909
+Fence           2348
+MiscFeature     2814
+SaleType           1
+dtype: int64</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -12934,7 +13386,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[15]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">feats</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;MSZoning&#39;</span><span class="p">,</span> <span class="s1">&#39;Utilities&#39;</span><span class="p">,</span> <span class="s1">&#39;Exterior1st&#39;</span><span class="p">,</span> <span class="s1">&#39;Exterior2nd&#39;</span><span class="p">,</span> <span class="s1">&#39;Electrical&#39;</span><span class="p">,</span> <span class="s1">&#39;Functional&#39;</span><span class="p">,</span>
@@ -12961,7 +13413,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[16]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span><span class="mi">5</span><span class="p">))</span>
@@ -12974,10 +13426,45 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[16]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.axes._subplots.AxesSubplot at 0x7fa5541e2a58&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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
+"
+>
+</div>
+
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[17]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;LotFrontage&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;LotFrontage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">,</span> <span class="s1">&#39;LotFrontage&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">median</span><span class="p">())</span>
@@ -12999,7 +13486,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[18]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;KitchenQual&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">fillna</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;OverallQual&#39;</span><span class="p">],</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
@@ -13021,7 +13508,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[19]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">bsmt</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;BsmtQual&#39;</span><span class="p">,</span> <span class="s1">&#39;BsmtCond&#39;</span><span class="p">,</span> <span class="s1">&#39;BsmtExposure&#39;</span><span class="p">,</span> <span class="s1">&#39;BsmtFinType1&#39;</span><span class="p">,</span> 
@@ -13051,13 +13538,33 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[20]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">isnull</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[20]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>0</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13080,7 +13587,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[21]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="p">[</span><span class="s1">&#39;MSSubClass&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="s1">&#39;MSSubClass&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;object&#39;</span><span class="p">,</span> <span class="n">copy</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
@@ -13107,7 +13614,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[22]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">categorical_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">((</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">][</span><span class="n">cat_feats</span><span class="p">],</span> <span class="n">price</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -13120,7 +13627,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[23]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">low</span> <span class="o">=</span> <span class="mf">0.05</span> <span class="o">*</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="s1">&#39;train&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># at least 5% of the dataset should have this value</span>
@@ -13170,13 +13677,49 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[24]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">data</span><span class="o">.</span><span class="n">columns</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[24]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>Index([&#39;MSSubClass&#39;, &#39;MSZoning&#39;, &#39;LotFrontage&#39;, &#39;LotArea&#39;, &#39;Street&#39;, &#39;Alley&#39;,
+       &#39;LotShape&#39;, &#39;LandContour&#39;, &#39;Utilities&#39;, &#39;LotConfig&#39;, &#39;LandSlope&#39;,
+       &#39;Neighborhood&#39;, &#39;Condition1&#39;, &#39;Condition2&#39;, &#39;BldgType&#39;, &#39;HouseStyle&#39;,
+       &#39;OverallQual&#39;, &#39;OverallCond&#39;, &#39;YearBuilt&#39;, &#39;YearRemodAdd&#39;, &#39;RoofStyle&#39;,
+       &#39;RoofMatl&#39;, &#39;Exterior1st&#39;, &#39;Exterior2nd&#39;, &#39;MasVnrType&#39;, &#39;MasVnrArea&#39;,
+       &#39;ExterQual&#39;, &#39;ExterCond&#39;, &#39;Foundation&#39;, &#39;BsmtQual&#39;, &#39;BsmtCond&#39;,
+       &#39;BsmtExposure&#39;, &#39;BsmtFinType1&#39;, &#39;BsmtFinSF1&#39;, &#39;BsmtFinType2&#39;,
+       &#39;BsmtFinSF2&#39;, &#39;BsmtUnfSF&#39;, &#39;TotalBsmtSF&#39;, &#39;Heating&#39;, &#39;HeatingQC&#39;,
+       &#39;CentralAir&#39;, &#39;Electrical&#39;, &#39;1stFlrSF&#39;, &#39;2ndFlrSF&#39;, &#39;LowQualFinSF&#39;,
+       &#39;GrLivArea&#39;, &#39;BsmtFullBath&#39;, &#39;BsmtHalfBath&#39;, &#39;FullBath&#39;, &#39;HalfBath&#39;,
+       &#39;BedroomAbvGr&#39;, &#39;KitchenAbvGr&#39;, &#39;KitchenQual&#39;, &#39;TotRmsAbvGrd&#39;,
+       &#39;Functional&#39;, &#39;Fireplaces&#39;, &#39;FireplaceQu&#39;, &#39;GarageType&#39;, &#39;GarageYrBlt&#39;,
+       &#39;GarageFinish&#39;, &#39;GarageCars&#39;, &#39;GarageArea&#39;, &#39;GarageQual&#39;, &#39;GarageCond&#39;,
+       &#39;PavedDrive&#39;, &#39;WoodDeckSF&#39;, &#39;OpenPorchSF&#39;, &#39;EnclosedPorch&#39;, &#39;3SsnPorch&#39;,
+       &#39;ScreenPorch&#39;, &#39;PoolArea&#39;, &#39;PoolQC&#39;, &#39;Fence&#39;, &#39;MiscFeature&#39;, &#39;MiscVal&#39;,
+       &#39;MoSold&#39;, &#39;YrSold&#39;, &#39;SaleType&#39;, &#39;SaleCondition&#39;],
+      dtype=&#39;object&#39;)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13192,7 +13735,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[25]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Remove columns with just one category</span>
@@ -13213,10 +13756,41 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>MSZoning: Index([&#39;RM&#39;, &#39;RL&#39;], dtype=&#39;object&#39;, name=&#39;MSZoning&#39;)
+Alley: Index([&#39;Grvl&#39;, &#39;0&#39;], dtype=&#39;object&#39;, name=&#39;Alley&#39;)
+LotShape: Index([&#39;Reg&#39;, &#39;IR1&#39;], dtype=&#39;object&#39;, name=&#39;LotShape&#39;)
+LandContour: Index([&#39;Lvl&#39;, &#39;Low&#39;], dtype=&#39;object&#39;, name=&#39;LandContour&#39;)
+LandSlope: Index([&#39;Gtl&#39;, &#39;Mod&#39;], dtype=&#39;object&#39;, name=&#39;LandSlope&#39;)
+Condition1: Index([&#39;Feedr&#39;, &#39;Norm&#39;], dtype=&#39;object&#39;, name=&#39;Condition1&#39;)
+RoofStyle: Index([&#39;Gable&#39;, &#39;Hip&#39;], dtype=&#39;object&#39;, name=&#39;RoofStyle&#39;)
+BsmtFinType2: Index([&#39;Rec&#39;, &#39;Unf&#39;], dtype=&#39;object&#39;, name=&#39;BsmtFinType2&#39;)
+CentralAir: Index([&#39;N&#39;, &#39;Y&#39;], dtype=&#39;object&#39;, name=&#39;CentralAir&#39;)
+Electrical: Index([&#39;FuseA&#39;, &#39;SBrkr&#39;], dtype=&#39;object&#39;, name=&#39;Electrical&#39;)
+Functional: Index([&#39;Min2&#39;, &#39;Typ&#39;], dtype=&#39;object&#39;, name=&#39;Functional&#39;)
+PavedDrive: Index([&#39;N&#39;, &#39;Y&#39;], dtype=&#39;object&#39;, name=&#39;PavedDrive&#39;)
+Fence: Index([&#39;MnPrv&#39;, &#39;0&#39;], dtype=&#39;object&#39;, name=&#39;Fence&#39;)
+SaleType: Index([&#39;WD&#39;, &#39;New&#39;], dtype=&#39;object&#39;, name=&#39;SaleType&#39;)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[26]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">finaldata</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">get_dummies</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
@@ -13238,7 +13812,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[27]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">black_list</span> <span class="o">=</span> <span class="n">bsmt</span> <span class="o">+</span> <span class="n">fire</span> <span class="o">+</span> <span class="n">garage</span> <span class="o">+</span> <span class="n">masn</span> <span class="o">+</span> <span class="n">others</span>
@@ -13254,13 +13828,33 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[28]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">finaldata</span><span class="o">.</span><span class="n">shape</span>
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[28]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>(2919, 131)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13277,7 +13871,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[29]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Training/testing sets</span>
@@ -13294,7 +13888,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[30]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">m</span> <span class="o">=</span> <span class="n">X_train</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
@@ -13327,7 +13921,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[31]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create linear regression object</span>
@@ -13338,6 +13932,26 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[31]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LinearRegression(copy_X=True, fit_intercept=True, n_jobs=None, normalize=False)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13352,7 +13966,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[32]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">maxcoef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">LR</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
@@ -13362,6 +13976,28 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Foundation_PConc......... -1.0420e+10
+Foundation_CBlock........ -1.0413e+10
+BsmtFinType1_Unf......... -9.2633e+09
+BsmtFinType1_GLQ......... -9.1862e+09
+BldgType_1Fam............ -8.6549e+09
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13389,7 +14025,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[33]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create linear regression object</span>
@@ -13400,6 +14036,41 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[33]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>LassoCV(alphas=None, copy_X=True, cv=&#39;warn&#39;, eps=0.001, fit_intercept=True,
+        max_iter=1000, n_alphas=100, n_jobs=None, normalize=False,
+        positive=False, precompute=&#39;auto&#39;, random_state=None,
+        selection=&#39;cyclic&#39;, tol=0.0001, verbose=False)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13414,7 +14085,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[34]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">maxcoef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Ls</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
@@ -13424,6 +14095,28 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>GrLivArea................  1.1757e-01
+OverallQual..............  8.1300e-02
+OverallCond..............  4.0020e-02
+GarageCars...............  3.7800e-02
+YearBuilt................  3.4879e-02
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13447,7 +14140,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[35]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create linear regression object</span>
@@ -13458,6 +14151,27 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt output_prompt">Out[35]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>RidgeCV(alphas=array([ 0.1,  1. , 10. ]), cv=None, fit_intercept=True,
+        gcv_mode=None, normalize=False, scoring=None, store_cv_values=False)</pre>
+</div>
+
+</div>
+
 </div>
 </div>
 
@@ -13472,7 +14186,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[36]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">maxcoef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">Rr</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
@@ -13482,6 +14196,28 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>GrLivArea................  1.2397e-01
+OverallQual..............  7.1496e-02
+OverallCond..............  4.4677e-02
+GarageCars...............  4.0283e-02
+GarageYrBlt.............. -3.4590e-02
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13506,7 +14242,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[37]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># Create linear regression object</span>
@@ -13517,6 +14253,25 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13531,7 +14286,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[38]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">maxcoef</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">EN</span><span class="o">.</span><span class="n">coef_</span><span class="p">))</span>
@@ -13541,6 +14296,28 @@ div#notebook {
 </pre></div>
 
 </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>GrLivArea................  1.1757e-01
+OverallQual..............  8.1300e-02
+OverallCond..............  4.0020e-02
+GarageCars...............  3.7800e-02
+YearBuilt................  3.4879e-02
+</pre>
+</div>
+</div>
+
 </div>
 </div>
 
@@ -13555,7 +14332,7 @@ div#notebook {
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[39]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">model</span> <span class="o">=</span> <span class="p">[</span><span class="n">Ls</span><span class="p">,</span> <span class="n">Rr</span><span class="p">,</span> <span class="n">EN</span><span class="p">]</span>
@@ -13570,10 +14347,47 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stderr output_text">
+<pre>/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+/usr/local/lib/python3.6/dist-packages/sklearn/model_selection/_split.py:1978: FutureWarning: The default value of cv will change from 3 to 5 in version 0.22. Specify it explicitly to silence this warning.
+  warnings.warn(CV_WARNING, FutureWarning)
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[40]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="n">score</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
@@ -13583,10 +14397,28 @@ div#notebook {
 </div>
 </div>
 
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+<div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>[0.90032598 0.89351064 0.90008311]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
 </div>
 <div class="cell border-box-sizing code_cell rendered">
 <div class="input">
-<div class="prompt input_prompt">In&nbsp;[&nbsp;]:</div>
+<div class="prompt input_prompt">In&nbsp;[41]:</div>
 <div class="inner_cell">
     <div class="input_area">
 <div class=" highlight hl-ipython3"><pre><span></span><span class="n">submit</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;Id&#39;</span><span class="p">:</span> <span class="n">testID</span><span class="p">,</span> <span class="s1">&#39;SalePrice&#39;</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">EN</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">X_test</span><span class="p">))})</span>
