@@ -5,3 +5,11 @@ pred_forst <- predict(model_forest, nwedata=test)
 
 # confusion matrix
 table(test$target_var, pred_forst)
+
+# 
+library(caret)
+library(e1071)
+# we need 10 folds
+numFolds <- trainControl(method="cv", number=10)
+# we need to pick the plausible value for <cp> parameter
+cpGrid <- expand.grid(.cp=seq(0.01, 0.5, 0.01))
