@@ -19,3 +19,5 @@ cpGrid <- expand.grid(.cp=seq(0.01, 0.5, 0.01))
 
 # So now lets build a new model with this value <0.18> of cp instead of <minbucket> parameter.
 final_rpart_model <- rpart(target_var ~ ., data = train, method="class", cp=0.18) 
+predictCv <- predict(final_rpart_model, nwedata=test, type="class")
+
