@@ -4,3 +4,6 @@ library(rpart.plot)
 model_rpat <- rpart(target_var ~ ., data = Train, method = "class", minbucket=25)
 # method = "class" # for classification. since we can use <rpart> for regression 
 # minbucket = 25 # minimum observartions in each leaf.
+
+# plot the Tree
+rpart.plot::prp(model_rpat)
