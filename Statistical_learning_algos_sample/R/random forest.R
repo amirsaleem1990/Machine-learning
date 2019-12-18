@@ -13,3 +13,6 @@ library(e1071)
 numFolds <- trainControl(method="cv", number=10)
 # we need to pick the plausible value for <cp> parameter
 cpGrid <- expand.grid(.cp=seq(0.01, 0.5, 0.01))
+# Now we are ready for cross validation
+train(target_var ~ ., data = train, method="rpart", trControl=numFolds, tuneGrid=cpGrid)
+
