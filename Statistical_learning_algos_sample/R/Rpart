@@ -7,6 +7,9 @@ model_rpat <- rpart(target_var ~ ., data = Train, method = "class", minbucket=25
 
 # plot the Tree
 rpart.plot::prp(model_rpat)
+# onther way to plot the tree
+plot(model_rpat)
+text(model_rpat)
 
 # predictions
 predictions = predict(model_rpat, newdata = Test, type="class")
