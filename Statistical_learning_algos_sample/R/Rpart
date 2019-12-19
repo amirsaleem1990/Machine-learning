@@ -10,7 +10,7 @@ rpart.plot::prp(model_rpat)
 # onther way to plot the tree
 plot(model_rpat)
 text(model_rpat)
-
+	
 # predictions
 predictions = predict(model_rpat, newdata = Test, type="class")
 

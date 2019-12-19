@@ -21,3 +21,5 @@ cpGrid <- expand.grid(.cp=seq(0.01, 0.5, 0.01))
 final_rpart_model <- rpart(target_var ~ ., data = train, method="class", cp=0.18) 
 predictCv <- predict(final_rpart_model, nwedata=test, type="class")
 
+# plot 
+rpart.plot::prp(final_rpart_model$finalModel)
