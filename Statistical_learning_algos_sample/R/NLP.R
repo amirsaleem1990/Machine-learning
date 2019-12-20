@@ -21,3 +21,4 @@ labeledTerms = as.data.frame(as.matrix(dtm))
 
 # Add in the outcome variable
 labeledTerms$responsive = emails$responsive
+
