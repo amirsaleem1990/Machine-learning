@@ -22,3 +22,9 @@ labeledTerms = as.data.frame(as.matrix(dtm))
 # Add in the outcome variable
 labeledTerms$responsive = emails$responsive
 
+
+library(rpart)
+library(rpart.plot)
+modelCart <- rpat(responsive ~ ., data = labeledTerms, method = class)
+prp(modelCart)
+
