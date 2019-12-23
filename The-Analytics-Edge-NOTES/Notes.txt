@@ -1,0 +1,139 @@
+outlier (in boxplot):
+	any point > (IQR + 3rd QR) or point < (1rst QR - IQR) 
+# SSE can be hear to interpret, it is Depends on N(if we double our N we get doble SSE, but its actualy not a vorse than when N is single), and its units are hard to undarstand(all errors squared and then summed up). for these resonds we use RMSE (root mean square error): sqrt(SSE/N), it is normaliezed by N, and it is in units of depended variables
+
+# Rsquared : 1-(SST - SSE). 
+	SST: errors of base line model.
+		base line model(when we predict mean(y) for each value of <x>)
+	SSE: errors after fit a line.
+
+# Rsquared = 0 means no improvement over baseline.
+# Rsquared can not be nagative, becase SSE and SST can not be nagative since both are sqared. so 1- (positive / positive) can not be nagative.
+# Linear regression model can not be vorse then baseline model. Since always SSE <= SST,  at vorse case the SSE = SST so Rsquared = 0 means no improvement over the baseline, but SSE can not be larger then SST.
+
+
+# Not All variables should be used:
+	Each new variable requires more data.
+	Causes OVERFITTING.
+
+# in summay(lm(targer ~ ., data = data))$Coefficients:
+	the <Estimate> columns tell us intercept and coefficints of dependend variables. and all other columns (Str.Error, t value, pr(>|t|)) to check wether this estimated coefficient is significantly diffrent from zero (if it is not singnificatly difrrent from zero we should remove it from our model).    a coefficient of <0> means that value of independent variable does not change our prediction for dependent variable. 
+
+	The <Std. error> column gives a mejor of how much the coefficient is likely to vary from the estimated value.
+
+	The <t value> column: <Estimate> / <Std. error> . it is nagative is <Estimate> is nagative, and posetive if <Estimate> is posetive. The larger the absulate value of this column the more likely the coefficient is to be significat.
+	
+	The <Pr(>|t|)> gives a magor of how plausible is it tha the coefficent is actualy zero given the data we used to model.
+
+Correlation:
+linear relationship between two variables. from -1 to 1. 0 means no linear relationship at all
+
+
+Tipically; correlation > |0.7| is cause for concert
+
+The accuracy of the model on the test data is often referred to OUT OF SAMPLE ACCURACY
+
+--
+NOT COMFIRM
+##when we compute Rsquared for test data, we use mean(train$target_var) instead of mean(test$target_var), so SST_TEST = sum((test$target - mean(train$target)))
+--
+
+Model Rsquared are NEVER nagative since our model can't do vorse on training data than the baseline model. However our model can do vorse on the test data compared to the baseline model. leading to a nagative Test Rsquared value.
+
+
+Logistice regression predicts the probability of the outcome variable being true.
+
+
+in Logistic Regression :
+	the ODDS > 1 if 1 is more likely
+	and ODDS < 1 if 0 is more likely
+	and ODDS = 1 if two outcomes equally likely
+
+in Logistic Regression:
+	LOGIT : log(ODDS)
+	ODDS : P(1) / P(0)
+	a possitive beta value increases the LOGIT, which in turn increases the <odds of one>
+	a nagative  beta value decreases the LOGIT, which in turn decreases the <odds of one>
+
+sensitivity : TP/(TP + FN) ==> TP/(all predicted 1) # magors the % of actual 1 that we classified correctly . this is ofter call a TRUE POSITIVE RATE.
+specificity : TN / (TN + FP) ==> TN/(all predicted 0)# magors the % of actual 0 that we classified correctly . this is ofter call a TRUE NEGATIVE RATE.
+
+in ROC curve:
+	a model with higher Threshold wil have a lower sensitivity (TP % )
+	a model with low    Threshold wil have a heigher sensitivity (TN % )
+
+after buildin the model we have to check each coefficient:
+	1- sign
+		eg: House price problem me agar LAND_SQ_F variable ka coefficient agar - me hy (say -10) to ye unexpected h, is lye k is ka matlab hwa k <1 SQ_F increase karny sy  on average PRICE me $10 kam ho jaty hen(agar PRICE ka unit $1 h)>
+	2- megnitude
+		is tarah ye bhi k us value kitni bari h, agar yen LAND_SQ_F ka coefficient (say 10000) h to bhi unexpected h, q k 1 SQ_F k increase karny sy $10000 ka faraq (on average) nahi aa sakta. 
+	agar in dono me sy koi masla h to hame apna ye variable ka mazeed EDA karna chahye, shaid ye multicolinearity ka problem h.
+
+
+Drawbacks of Logistic Regrassion:
+	Logistic Regrassion models are generally not INTERPRETABLE
+	Logistic Regrassion models coefficients indicate importance and ralative effect of variable s, but do not give a simple explanation of how decision is made.
+
+in TREE:
+	the <yes> responce always on the left
+	the <minbucket> option is the minimum observation in each lower split.
+		the smallest the <minbucket> the larger the tree.
+		if <minbucket> is too small the OVERFITTING accur.
+		if <minbucket> is too large the model will be too simple and accuracy will be poor.
+		we choose <minbucket> value using cross validation.
+		when we use cross validation in R, we'll use a parameter <cp> (Complexity Parameter)
+			0 <= cp <= 1
+			we use cross validation to select the value of <cp>
+			it is Like Adj.R^2 and AIC.
+			it is measures trade-off between model complexity and accuracy on the training set.
+			Smaller <cp> leads to a bigger tree (might overfit)
+
+in Random Forest:
+	Each tree can split on only a random subset of the variables
+	Each tree is built from a "bagged"/"bootstrapped" sample of the data:
+		select  observations randomly with replacement
+
+Random Forest parameters:
+	Minimum numbers of observations in subset.
+		in R, this is controlled by <nodesize> parameter.
+		smaller <nodesize> may take longer in R.
+	Number of Trees:
+		in R, this is the <ntree> parameter.
+		should not be too small, because bagging produced may mis observations.
+		More trees take longer to build.
+
+
+Regrassion Trees:
+	can capture NONLINEARITIES that Linear regression can't.
+
+
+
+in NLP:
+	stemming:
+		argue, argued, argues, arguing ==> argu
+
+		1- build the database.
+			pro: handles exceptions
+			Con: won't handle new words, bad for the internet!
+		2- Rule based algorithim. # and this is widely popular.
+			eg: if word ends with "ed", "ing" or "ly", remove it
+			pro: handles new/unknown words well.
+			con: many exceptions, misses wirds like <child> and <children> (but would get other plurals: <dog> and <dogs>)
+		3- Other options include machine learning (train algorithms to recognize the root or words) and combinations of the above.
+		
+
+Hierarchical clustring:
+	Starts with each data point in its own cluster
+	then repeat:
+		combine two nearest clusters 
+	in the end all data points in one big cluster, so we have to chose cut off, how many clusters we want.
+	when picking the number of clusters <values of cut off> we should consider how many clusters make scence for the particluter application you are working with.
+
+	after clustring you have to:
+		check 	each cluster and each variables.
+		see if the clusters have a feature in comman that was not used in the clustring (like an outcome)
+	
+		
+
+SAWAL:
+	classification Trees me outcome k bajay probailies mil sakti hen? taky ham apna threshold khud set kar len.
