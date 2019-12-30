@@ -1,6 +1,6 @@
 from sklearn import tree
 # intiate classification tree object
-classifier = tree.DecisionTreeClassifier()
+classifier = tree.DecisionTreeClassifier(max_leaf_nodes=None, min_samples_leaf=1, max_depth=None)
 
 # train the model
 classifier = classifier.fit(X, y)
