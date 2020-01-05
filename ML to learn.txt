@@ -1,0 +1,60 @@
+1- language (python or R)
+
+	a- data wrangling
+	b- visualisation
+	c- web scraping
+
+2- Database
+
+3- statistics
+	a- hypothesis testing?
+	b- conference interval
+	c- p-value
+	d- CLT
+	e- distributions
+	f- F-score
+	g- data types (numeric : [continues, discrete],
+				   catagorical: [ordinal, nominal])
+	h- ANOVA
+	i- outliers
+	j- mean, median, mode, sd, variance, correlation.
+	k- distance (euclidian, manhaten, etc..)
+	l- difrence between t and z tests
+	m- probability
+	n- bootstraping
+
+
+4- statistical learning algorithms
+	a- baseline model(in regression the mean of the target variable, and in the classification the most accout value in target variable)
+	b- supervised vs unsupervised learning
+	c- regression vs classification
+	d- interpret linear regression coefficients (for both numerical and factor vairbles)
+	e- how we treat catagorical variblaes in linear regression?
+	f- after linear regression trainining say we get this equasion (20 + age*17 + height*2 + is_merriedYes*1.7), interpret this.
+	g- loss function
+	h- least squares
+	i- variable selection
+	j- multicolinearity
+	k- ensambling
+	l- Dimension Reduction Methods
+	m- variables transformation
+	n- overfitting / under fitting
+	o- bias and variance trade off
+	p- complexity and interpretablity tradeoff
+	q- ROC Curves
+	r- cross validation, OOCV, k-fold
+	s- how we tune or models?
+	t- how models works?
+		regression
+			linear (including polynomial, step functions, Regression Splines, .. etc)
+				Shrinkage Methods(Ridge Regression, The Lasso)
+			Trees
+			KNN
+		classification
+			logistic
+			Trees
+			LDA
+			KNN
+			SVM
+NOTE: is list is not comprehensive.  
+
