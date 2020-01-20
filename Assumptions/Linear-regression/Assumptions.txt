@@ -184,5 +184,18 @@ Alternatively, you may apply Partial Least Square Regression of Principal Compon
 Note: Multicollinearity makes it hard to assess the relative importance of independent variables, but it does not affect the usefulness of the regression equation for prediction. Even when multicollinearity is great, the least-squares regression equation can be highly predictive. So, if you are only interested in prediction, multicollinearity is not a problem. 
 ----------------------
 There are two popular ways to measure multicollinearity:
-	1- compute a coefficient of multiple determination for each independent variable, or 
+	1- compute a coefficient of multiple determination(adjusted R2) for each independent variable, or 
+		If we ignore the dependent variable, we can compute a coefficient of multiple determination (R2k) for each of the k independent variables. We do this by regressing the kth independent variable on all of the other independent variables. That is, we treat Xk as the dependent variable and use the other independent variables to predict Xk.
+
+		How do we interpret R2k? If R2k equals zero, variable k is not correlated with any other independent variable; and multicollinearity is not a problem for variable k. As a rule of thumb, most analysts feel that multicollinearity is a potential problem when R2k is greater than 0.75; and, a serious problem when R2k is greater than 0.9. 
+
 	2- compute a variance inflation factor for each independent variable.
+		The variance inflation factor is another way to express exactly the same information found in the coefficient of multiple correlation. A variance inflation factor is computed for each independent variable, using the following formula:
+
+		VIFk = 1 / ( 1 - R2k )
+
+		where VIFk is the variance inflation factor for variable k, and R2k is the coefficient of multiple determination for variable k. 
+
+		The interpretation of the variance inflation factor mirrors the interpretation of the coefficient of multiple determination. If VIFk = 1, variable k is not correlated with any other independent variable. As a rule of thumb, multicollinearity is a potential problem when VIFk is greater than 4; and, a serious problem when it is greater than 10. The output above shows a VIF of 2.466, which indicates some multicollinearity but not enough to worry about.
+
+Bottom line: If R2k is greater than 0.9 or VIFk is greater than 10, it is likely that regression coefficients are poorly estimated. And significance tests on those coefficients may be misleading. 
