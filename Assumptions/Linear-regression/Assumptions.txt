@@ -12,6 +12,7 @@ for Rasiduals:
 
 	1- Homoscedasticity (have a constant variance)
 		If the residuals fan out as the predicted values increase, then we have what is known as heteroscedasticity. This means that the variability in the response is changing as the predicted value increases.
+		A scatter plot of residual values vs predicted values is a goodway to check for homoscedasticity.There should be no clear pattern in the distribution and if there is a specific pattern,the data is heteroscedastic.
 
 	2- be approximately normally distributed (with a mean of zero), and
 	3- No autocorrelation (be independent of one another).
