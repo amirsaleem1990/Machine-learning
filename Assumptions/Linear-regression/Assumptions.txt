@@ -67,3 +67,5 @@ Another benefit of satisfying these assumptions is that as the sample size incre
 
 If your error term also follows the normal distribution, you can safely use hypothesis testing to determine whether the independent variables and the entire model are statistically significant. You can also produce reliable confidence intervals and prediction intervals.
 
+Regression is a parametric approach. ‘Parametric’ means it makes assumptions about data for the purpose of analysis.
+
