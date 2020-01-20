@@ -69,3 +69,5 @@ If your error term also follows the normal distribution, you can safely use hypo
 
 Regression is a parametric approach. ‘Parametric’ means it makes assumptions about data for the purpose of analysis.
 
+A linear relationship suggests that a change in response Y due to one unit change in X¹ is constant, regardless of the value of X¹. An additive relationship suggests that the effect of X¹ on Y is independent of other variables.
+
