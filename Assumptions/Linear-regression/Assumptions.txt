@@ -128,7 +128,9 @@ So in order to remove highly correlated features you can:
     3- You may manually choose features from your knowledge (if it is possible) which features are more promising to help you to classify your data, or,
     4- You can combine some features to a new feature manually such that saying one feature may eliminate the necessity to tell another set of features as those are likely can be inferred from that single feature.
 ----------------------
+PCA is used to remove multicollinearity from the data.
 ----------------------
+
 ----------------------
 ----------------------
 ----------------------
