@@ -1,5 +1,7 @@
 Perfect correlation suggests that two variables are different forms of the same variable. 
 
+multicollinearity reduces the precision of the estimates in OLS linear regression.
+
 In fact, the Gauss-Markov theorem states that OLS (ordinay least squares) produces estimates that are better than estimates from all other linear model estimation methods when the assumptions hold true.
 
 Correlated means that changes in one variable is parallel to a change in another variable. 
