@@ -212,3 +212,45 @@ How to Deal with Multicollinearity:
 Note: Multicollinearity only affects variables that are highly correlated. If the variable you are interested in has a small R2j, statistical analysis of its regression coefficient will be reliable and informative. That analysis will be valid, even when other variables exhibit high multicollinearity. 
 -----------------------------
 In general, multicollinearity can lead to wider confidence intervals and less reliable probability values for the independent variables. That is, the statistical inferences from a model with multicollinearity may not be dependable.
+-----------------------------
+we can safely say that a multicollinearity or collinearity will not affect the results of predictions from decision trees. During inference from the decision tree models though, it is important to take how each feature may be affected by another into account to help make valuable business decisions.
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
+-----------------------------
+
