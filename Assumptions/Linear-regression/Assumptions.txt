@@ -65,7 +65,31 @@ In particular, methods like random forests and KNN treat all features equally, s
 
 Methods that auto-select features like single trees, "pure" lasso, or neural networks, might be less affected. But even then, other than longer computing time, there is rarely anything to lose prediction-wise from keeping correlated features in the mix.
 ----------------------
+A key goal of regression analysis is to isolate the relationship between each independent variable and the dependent variable. The interpretation of a regression coefficient is that it represents the mean change in the dependent variable for each 1 unit change in an independent variable when you hold all of the other independent variables constant. That last portion is crucial for our further discussion about multicollinearity.
 
+The idea is that you can change the value of one independent variable and not the others. However, when independent variables are correlated, it indicates that changes in one variable are associated with shifts in another variable. The stronger the correlation, the more difficult it is to change one variable without changing another. It becomes difficult for the model to estimate the relationship between each independent variable and the dependent variable independently because the independent variables tend to change in unison.
+What Problems Do Multicollinearity Cause?
+
+Multicollinearity causes the following two basic types of problems:
+
+    The coefficient estimates can swing wildly based on which other
+    independent variables are in the model. The coefficients become very sensitive to small changes in the model.
+    Multicollinearity reduces the precision of the estimate coefficients, which weakens the statistical power of your regression model. You might not be able to trust the p-values to identify independent variables that are statistically significant.
+
+Imagine you fit a regression model and the coefficient values, and even the signs, change dramatically depending on the specific variables that you include in the model. It’s a disconcerting feeling when slightly different models lead to very different conclusions. You don’t feel like you know the actual effect of each variable!
+
+Now, throw in the fact that you can’t necessarily trust the p-values to select the independent variables to include in the model. This problem makes it difficult both to specify the correct model and to justify the model if many of your p-values are not statistically significant.
+
+As the severity of the multicollinearity increases so do these problematic effects. However, these issues affect only those independent variables that are correlated. You can have a model with severe multicollinearity and yet some variables in the model can be completely unaffected.
+Do I Have to Fix Multicollinearity?
+
+Multicollinearity makes it hard to interpret your coefficients, and it reduces the power of your model to identify independent variables that are statistically significant. These are definitely serious problems. However, the good news is that you don’t always have to find a way to fix multicollinearity!
+
+The need to reduce multicollinearity depends on its severity and your primary goal for your regression model. Keep the following three points in mind:
+
+    The severity of the problems increases with the degree of the multicollinearity. Therefore, if you have only moderate multicollinearity, you may not need to resolve it.
+    Multicollinearity affects only the specific independent variables that are correlated. Therefore, if multicollinearity is not present for the independent variables that you are particularly interested in, you may not need to resolve it. Suppose your model contains the experimental variables of interest and some control variables. If high multicollinearity exists for the control variables but not the experimental variables, then you can interpret the experimental variables without problems.
+    Multicollinearity affects the coefficients and p-values, but it does not influence the predictions, precision of the predictions, and the goodness-of-fit statistics. If your primary goal is to make predictions, and you don’t need to understand the role of each independent variable, you don’t need to reduce severe multicollinearity. (Reference: "The fact that some or all predictor variables are correlated among themselves does not, in general, inhibit our ability to obtain a good fit nor does it tend to affect inferences about mean responses or predictions of new observations." — Applied Linear Statistical Models, p289, 4th Edition.)
 ----------------------
 ----------------------
 ----------------------
