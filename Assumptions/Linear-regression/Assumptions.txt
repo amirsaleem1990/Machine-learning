@@ -172,7 +172,10 @@ K1=p*regression variance (k=0)/sum of  the regression coefficients (k=0)^2  for 
 K_(n+1)= p*regression variance (k=n)/sum of  the regression coefficients (k=n)^2  for all p predictors)
 When k_n, K_(n+1)  similar , stop.
 ----------------------
-
+When you are dealing with multicollinearity, it means that at least two predictors are highly correlated together. If VIF values are above 5, then multicollinearity may pose a problem, above 10 it is "disaster".
+To deal with this you may remove one predictor at a time, check if VIF values are acceptable (between 1 and 5, above 10 you are having serious problems) and also observe how the explanation of the variance in the DV is affected (it is good to see if r2 is reduced after any predictor is removed). 
+Alternatively, you may apply Partial Least Square Regression of Principal Components Analysis, but the first solution should do. 
 ----------------------
+
 ----------------------
 ----------------------
