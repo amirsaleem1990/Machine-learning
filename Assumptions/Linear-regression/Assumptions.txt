@@ -109,6 +109,8 @@ Second, you may have to keep both variables because users of the analysis will n
 High covariance doesn’t have to mean there is strong correlation
 ----------------------
 There are some techniques that allow you to transform your data into new features that aren’t correlated. Like Principal Component Analysis (that creates new “variables” that aren’t correlated) .
+
+You can also use Pearson correlation coefficient to remove highly correlated features from the dataset. However if you model has the capacity to model non-linear relationships between the data maybe you are better off with some non-linear correlation coefficient. There are some like: Maximal Correlation or the less known (but not worst) Distance correlation coefficient.
 ----------------------
 
 ----------------------
