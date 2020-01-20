@@ -132,6 +132,14 @@ PCA is used to remove multicollinearity from the data. If there are correlated v
 ----------------------
 But severe multicollinearity is a major problem, because it increases the variance of the regression coefficients, making them unstable. The more variance they have, the more difficult it is to interpret the coefficients.
 ----------------------
+how do you know if you need to be concerned about multicollinearity in your regression model? Here are some things to watch for:
+
+    A regression coefficient is not significant even though, theoretically, that variable should be highly correlated with Y.
+    When you add or delete an X variable, the regression coefficients change dramatically.
+    You see a negative regression coefficient when your response should increase along with X.
+    You see a positive regression coefficient when the response should decrease as X increases.
+    Your X variables have high pairwise correlations. 
+
 ----------------------
 ----------------------
 ----------------------
