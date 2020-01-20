@@ -130,7 +130,7 @@ So in order to remove highly correlated features you can:
 ----------------------
 PCA is used to remove multicollinearity from the data. If there are correlated variables, then PCA replaces them with a principle component which can explain max variance.
 ----------------------
-
+But severe multicollinearity is a major problem, because it increases the variance of the regression coefficients, making them unstable. The more variance they have, the more difficult it is to interpret the coefficients.
 ----------------------
 ----------------------
 ----------------------
