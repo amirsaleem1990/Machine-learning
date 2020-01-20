@@ -46,4 +46,6 @@ for Rasiduals:
 
 	3- No autocorrelation (be independent of one another).
 	4- The X variables and residuals are uncorrelated 
+		If an independent variable is correlated with the error term, we can use the independent variable to predict the error term, which violates the notion that the error term represents unpredictable random error. We need to find a way to incorporate that information into the regression model itself.
+		
 	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern. The residuals will look like an unstructured cloud of points, centered at zero. If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
