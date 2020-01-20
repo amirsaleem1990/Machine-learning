@@ -42,7 +42,8 @@ for Rasiduals:
 		A scatter plot of residual values vs predicted values is a goodway to check for homoscedasticity.There should be no clear pattern in the distribution and if there is a specific pattern,the data is heteroscedastic.
 
 	2- be approximately normally distributed (with a mean of zero)
-		For your model to be unbiased, the average value of the error term must equal zero.
+		For your model to be unbiased, the average value of the error term must equal zero. Suppose the average error is +7. This non-zero average error indicates that our model systematically underpredicts the observed values. Statisticians refer to systematic error like this as bias, and it signifies that our model is inadequate because it is not correct on average.
+
 	3- No autocorrelation (be independent of one another).
 	4- The X variables and residuals are uncorrelated 
 	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern. The residuals will look like an unstructured cloud of points, centered at zero. If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
