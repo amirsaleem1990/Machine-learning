@@ -71,3 +71,7 @@ Regression is a parametric approach. ‘Parametric’ means it makes assumptions
 
 A linear relationship suggests that a change in response Y due to one unit change in X¹ is constant, regardless of the value of X¹. An additive relationship suggests that the effect of X¹ on Y is independent of other variables.
 
+There should be no correlation between the residual (error) terms. Absence of this phenomenon is known as Autocorrelation.
+The independent variables should not be correlated. Absence of this phenomenon is known as multicollinearity.
+The error terms must have constant variance. This phenomenon is known as homoskedasticity. The presence of non-constant variance is referred to heteroskedasticity.
+
