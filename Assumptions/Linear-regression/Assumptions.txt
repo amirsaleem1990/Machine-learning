@@ -1,3 +1,5 @@
+ In fact, the Gauss-Markov theorem states that OLS (ordinay least squares) produces estimates that are better than estimates from all other linear model estimation methods when the assumptions hold true.
+
 Correlated means that changes in one variable is parallel to a change in another variable. 
 
 Multicollinearity happens when one predictor variable in a multiple regression model can be linearly predicted from the others with a high degree of accuracy. This can lead to skewed or misleading results. Luckily, decision trees and boosted trees algorithms are immune to multicollinearity by nature. When they decide to split, the tree will choose only one of the perfectly correlated features. However, other algorithms like Logistic Regression or Linear Regression are not immune to that problem and you should fix it before training the model.
@@ -12,6 +14,8 @@ Linear relationship
 
 	No or little multicollinearity:
 		Numerical stability aside, prediction given by OLS model should not be affected by multicolinearity, as overall effect of predictor variables is not hurt by presence of multicolinearity. It is interpretation of effect of individual predictor variables that are not reliable when multicolinearity is present.
+	
+	The true relationship is linear
 
 	linearity and additivity of the relationship between dependent and independent variables:
 		The expected value of dependent variable is a straight-line function of each independent variable, holding the others fixed.
@@ -37,7 +41,8 @@ for Rasiduals:
 		If the residuals fan out as the predicted values increase, then we have what is known as heteroscedasticity. This means that the variability in the response is changing as the predicted value increases.
 		A scatter plot of residual values vs predicted values is a goodway to check for homoscedasticity.There should be no clear pattern in the distribution and if there is a specific pattern,the data is heteroscedastic.
 
-	2- be approximately normally distributed (with a mean of zero), and
+	2- be approximately normally distributed (with a mean of zero)
+		For your model to be unbiased, the average value of the error term must equal zero.
 	3- No autocorrelation (be independent of one another).
 	4- The X variables and residuals are uncorrelated 
 	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern. The residuals will look like an unstructured cloud of points, centered at zero. If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
