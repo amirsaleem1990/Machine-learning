@@ -96,8 +96,9 @@ The need to reduce multicollinearity depends on its severity and your primary go
 ----------------------
 When variables as super highly correlated, they can introduce instability in the errors on the betas and are, in fact, measuring the same thing, roughly speaking. 
 ----------------------
-
+co-variance is not dimensionless and it depends on units. For example of you use centimetres instead of meters, your co-variance values will be higher. Correlation is normalised and dimensionless.
 ----------------------
+
 ----------------------
 ----------------------
 ----------------------
