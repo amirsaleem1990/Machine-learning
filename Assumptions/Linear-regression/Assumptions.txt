@@ -47,7 +47,7 @@ for Rasiduals:
 		3- versus any independent variable
 		
 		Heteroskedasticity: The presence of non-constant variance in the error terms results in heteroskedasticity. Generally, non-constant variance arises in presence of outliers or extreme leverage values. Look like, these values get too much weight, thereby disproportionately influences the model’s performance. When this phenomenon occurs, the confidence interval for out of sample prediction tends to be unrealistically wide or narrow.
-		
+
 		If the residuals fan out as the predicted values increase, then we have what is known as heteroscedasticity. This means that the variability in the response is changing as the predicted value increases.
 		A scatter plot of residual values vs predicted values is a goodway to check for homoscedasticity.There should be no clear pattern in the distribution and if there is a specific pattern,the data is heteroscedastic.
 
@@ -55,6 +55,10 @@ for Rasiduals:
 
 	2- be approximately normally distributed (with a mean of zero)
 		For your model to be unbiased, the average value of the error term must equal zero. Suppose the average error is +7. This non-zero average error indicates that our model systematically underpredicts the observed values. Statisticians refer to systematic error like this as bias, and it signifies that our model is inadequate because it is not correct on average. Stated another way, we want the expected value of the error to equal zero. If the expected value is +7 rather than zero, part of the error term is predictable, and we should add that information to the regression model itself. We want only random error left for the error term. You don’t need to worry about this assumption when you include the constant in your regression model because it forces the mean of the residuals to equal zero. 
+
+		If the error terms are non- normally distributed, confidence intervals may become too wide or narrow. Once confidence interval becomes unstable, it leads to difficulty in estimating coefficients based on minimization of least squares. Presence of non – normal distribution suggests that there are a few unusual data points which must be studied closely to make a better model.
+
+How to check: You can look at QQ plot (shown below). You can also perform statistical tests of normality such as Kolmogorov-Smirnov test, Shapiro-Wilk test.
 
 	3- No autocorrelation (be independent of one another).
 		If the error terms are correlated, the estimated standard errors tend to underestimate the true standard error. 
