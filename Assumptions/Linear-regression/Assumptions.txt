@@ -141,6 +141,7 @@ how do you know if you need to be concerned about multicollinearity in your regr
     Your X variables have high pairwise correlations. 
 
 ----------------------
+One way to measure multicollinearity is the variance inflation factor (VIF), which assesses how much the variance of an estimated regression coefficient increases if your predictors are correlated.  If no factors are correlated, the VIFs will all be 1.
 ----------------------
 ----------------------
 ----------------------
