@@ -153,8 +153,26 @@ If multicollinearity is a problem in your model -- if the VIF for a factor is ne
 
 
 ----------------------
-
+Multicollinearity causes problem in regression. If two or more predictor variables in a multiple regression model are highly correlated, the coefficient estimates of the multiple regression may change erratically in response to small changes in the model or the data.  With and without one of them, the coefficients for some correlated factor may change sign, may change magnitude; the standard error will increase a lot. Say x1, x2 and x3 are correlated with a linear relationship.  Without x3, the model fit well, both x1 and x2 are significant, adding x3 in the model, the model fitting will not get improve, the standard error for the regression coefficient will be much higher, the regression coefficients for x1 and x2 will change a lot.
+There are usually two aims by using linear regression: identification of the predictor effect and prediction. For prediction purpose, multicoloinerity has no “bad” effect on it. You don’t need use PCA or ridge to make corrections. But for identification, the multicollinearity must be considered, hence you can use PCA or ridge or other approach (say Lasso, as someone suggested).
+There are several ways to handle multi-collinearity in the regression.  Principal component analysis and ridge regression are popular used. Those approached are included in most popular Statistical software.
+Using PCA: if there is an eigenvalue is near 0, then the eigenvector give a function relationship among the vectors. You may do transformation according the function, or do the analysis by using eigenvectors.  When write the factor as linear combination of the eigenvectors, avoid the one,  the combination with large coefficients on the eigenvector with near zero eigenvalue. That one has larger standard error.
+Ridge regression estimates tend to be stable in the sense that they are usually little affected by small changes in the data on which the fitted regression is based. In contrast, ordinary least squares estimates may be highly unstable under these conditions when the independent variables are highly collinearity.
+A major limitation of ridge regression is that ordinary inference procedures are not applicable and exact distributional properties are not known. Another limitation is that the choice of the biasing constant k is a judgmental one. While formal methods have been developed foo making this choice, these methods have their own limitations.
+The common used method for selection of the constant of k: assume you have p independent variables (predictors)
+Select k from 0 to certain giving value, say as follows
+         Ridge (k) = (0.00 0.001 to .009 by .002 0.010 to 0.03 by 0.002 0.03 to 0.09 by 0.01 0.1 to 1.0 by 0.1 1 to 10 by 0.5)
+List all estimation of the predictors in a table
+Or draw a graph contain p curves: regression coefficients VS k,
+For those predictors with collinerity , you can see the big changes of regression coefficients  across k
+Select the k such that all of regression coefficient get stable
+Using iteration
+Initial k=0  
+K1=p*regression variance (k=0)/sum of  the regression coefficients (k=0)^2  for all p predictors)
+K_(n+1)= p*regression variance (k=n)/sum of  the regression coefficients (k=n)^2  for all p predictors)
+When k_n, K_(n+1)  similar , stop.
 ----------------------
+
 ----------------------
 ----------------------
 ----------------------
