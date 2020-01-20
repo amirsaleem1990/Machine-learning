@@ -98,8 +98,9 @@ When variables as super highly correlated, they can introduce instability in the
 ----------------------
 co-variance is not dimensionless and it depends on units. For example of you use centimetres instead of meters, your co-variance values will be higher. Correlation is normalised and dimensionless.
 ----------------------
-the answer is no, you cannot always remove correlated features. Because combinations of those features may be meaningful for your task, even if each of them are not very useful and they are correlated
+the answer is no, you cannot always remove correlated features. Because combinations of those features may be meaningful for your task, even if each of them are not very useful and they are correlated. Still, the possibility of information gain from correlated features is not ignored usually and various feature selection or dimensionality reduction techniques (such as PCA) are employed, rather than simply discarding features based on correlation.
 ----------------------
+
 ----------------------
 ----------------------
 ----------------------
