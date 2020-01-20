@@ -176,6 +176,9 @@ When you are dealing with multicollinearity, it means that at least two predicto
 To deal with this you may remove one predictor at a time, check if VIF values are acceptable (between 1 and 5, above 10 you are having serious problems) and also observe how the explanation of the variance in the DV is affected (it is good to see if r2 is reduced after any predictor is removed). 
 Alternatively, you may apply Partial Least Square Regression of Principal Components Analysis, but the first solution should do. 
 ----------------------
-
+    When one independent variable is perfectly correlated with another independent variable (or with a combination of two or more other independent variables), a unique least-squares solution for regression coefficients does not exist.
+    When one independent variable is highly correlated with another independent variable (or with a combination of two or more other independent variables), the marginal contribution of that independent variable is influenced by other independent variables. As a result:
+        Estimates for regression coefficients can be unreliable.
+        Tests of significance for regression coefficients can be misleading.
 ----------------------
 ----------------------
