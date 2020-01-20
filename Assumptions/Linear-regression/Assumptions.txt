@@ -106,7 +106,7 @@ First, if you have enough data, you could try to assess how harmful it is to kee
 
 Second, you may have to keep both variables because users of the analysis will need you to. It’s very hard to accept at first, but there are times where you have to keep a variable in a model because, else, people won’t use the model at all, even if the other well correlated variable is better. So you may try to keep both and assess as said before how harmfull it is to keep both.
 ----------------------
-
+High covariance doesn’t have to mean there is strong correlation
 ----------------------
 ----------------------
 ----------------------
