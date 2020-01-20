@@ -181,4 +181,8 @@ Alternatively, you may apply Partial Least Square Regression of Principal Compon
         Estimates for regression coefficients can be unreliable.
         Tests of significance for regression coefficients can be misleading.
 ----------------------
+Note: Multicollinearity makes it hard to assess the relative importance of independent variables, but it does not affect the usefulness of the regression equation for prediction. Even when multicollinearity is great, the least-squares regression equation can be highly predictive. So, if you are only interested in prediction, multicollinearity is not a problem. 
 ----------------------
+There are two popular ways to measure multicollinearity:
+	1- compute a coefficient of multiple determination for each independent variable, or 
+	2- compute a variance inflation factor for each independent variable.
