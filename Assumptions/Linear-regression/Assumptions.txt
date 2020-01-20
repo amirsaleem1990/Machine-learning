@@ -59,3 +59,7 @@ Note: When assumption (no autocorrelation) and (homoscedasticity) are both true,
 
 
 OLS does not require that the error term follows a normal distribution to produce unbiased estimates with the minimum variance. However, satisfying this assumption allows you to perform statistical hypothesis testing and generate reliable confidence intervals and prediction intervals. If you need to obtain p-values for the coefficient estimates and the overall test of significance, check this assumption!
+
+
+If these assumptions hold true, the OLS procedure creates the best possible estimates. In statistics, estimators that produce unbiased estimates that have the smallest variance are referred to as being “efficient.” Efficiency is a statistical concept that compares the quality of the estimates calculated by different procedures while holding the sample size constant. OLS is the most efficient linear regression estimator when the assumptions hold true.
+
