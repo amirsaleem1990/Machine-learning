@@ -2,9 +2,8 @@ Linear relationship
 	The linearity assumption can best be tested with scatter plots
 Multivariate normality
 	the linear regression analysis requires all variables to be multivariate normal.  This assumption can best be checked with a histogram or a Q-Q-Plot.  Normality can be checked with a goodness of fit test, e.g., the Kolmogorov-Smirnov test.  When the data is not normally distributed a non-linear transformation (e.g., log-transformation) might fix this issue.
-No or little multicollinearity
-No auto-correlation
-Homoscedasticity
+No or little multicollinearity:
+	Numerical stability aside, prediction given by OLS model should not be affected by multicolinearity, as overall effect of predictor variables is not hurt by presence of multicolinearity. It is interpretation of effect of individual predictor variables that are not reliable when multicolinearity is present.
 A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
 
 
