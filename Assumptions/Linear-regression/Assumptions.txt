@@ -46,3 +46,33 @@ If your model needs to be interpretable, you might be forced to make it simpler.
 ----------------------
 Correlated features mean you can reduce overfitting (through column sampling) without giving up too much predictive quality.
 ----------------------
+In the context of machine learning we usually use PCA to reduce the dimension of input patterns. This approach considers removing correlated features by someway (using SVD) and is an unsupervised approach. This is done to achieve the following purposes:
+
+    Compression
+    Speeding up learning algorithms
+    Visualizing data
+    Dealing with curse of high dimensionality
+
+Although this may not seem okay but I have seen people that use removing correlated features in order to avoid overfitting but I don't think it is a good practice. For more information I highly recommend you to see here.
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
+----------------------
