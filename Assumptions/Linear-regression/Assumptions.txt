@@ -119,8 +119,9 @@ Say, you have a multicollinearity between A, B, and C. Something like:
 A+B = C
 When you take one sample to find the parameter estimates, the estimate of C can get distributed between A and B. For some other sample it might get distributed between A and C and so on an so forth. This is one basic way to understand multi-collinearity problem in logistic regression. Given that, stable parameter estimates is one of the important ways to judge logistic regression, multi-collinearity does affect the performance.
 ----------------------
-
+you do not want to have highly correlated features because their parameter estimates will be unstable. That is, they could be far off the mark, and/or inappropriate when applied out of sample.
 ----------------------
+
 ----------------------
 ----------------------
 ----------------------
