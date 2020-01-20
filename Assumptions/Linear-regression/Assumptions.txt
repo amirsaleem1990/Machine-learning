@@ -199,3 +199,14 @@ There are two popular ways to measure multicollinearity:
 		The interpretation of the variance inflation factor mirrors the interpretation of the coefficient of multiple determination. If VIFk = 1, variable k is not correlated with any other independent variable. As a rule of thumb, multicollinearity is a potential problem when VIFk is greater than 4; and, a serious problem when it is greater than 10. The output above shows a VIF of 2.466, which indicates some multicollinearity but not enough to worry about.
 
 Bottom line: If R2k is greater than 0.9 or VIFk is greater than 10, it is likely that regression coefficients are poorly estimated. And significance tests on those coefficients may be misleading. 
+
+If you only want to predict the value of a dependent variable, you may not have to worry about multicollinearity. Multiple regression can produce a regression equation that will work for you, even when independent variables are highly correlated.
+
+How to Deal with Multicollinearity:
+	Increase sample size. Other things being equal, a bigger sample means reduced sampling error. The increased precision may overcome potential problems from multicollinearity. 
+
+	Remove one or more of the highly-correlated independent variables. Then, define a new regression equation, based on the remaining variables. Because the removed variables were redundant, the new equation should be nearly as predictive as the old equation; and coefficients should be easier to interpret because multicolinearity is reduced.
+
+	Define a new variable equal to a linear combination of the highly-correlated variables. Then, define a new regression equation, using the new variable in place of the old highly-correlated variables.
+
+Note: Multicollinearity only affects variables that are highly correlated. If the variable you are interested in has a small R2j, statistical analysis of its regression coefficient will be reliable and informative. That analysis will be valid, even when other variables exhibit high multicollinearity. 
