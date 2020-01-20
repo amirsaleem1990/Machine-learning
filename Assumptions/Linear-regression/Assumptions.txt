@@ -112,8 +112,14 @@ There are some techniques that allow you to transform your data into new feature
 
 You can also use Pearson correlation coefficient to remove highly correlated features from the dataset. However if you model has the capacity to model non-linear relationships between the data maybe you are better off with some non-linear correlation coefficient. There are some like: Maximal Correlation or the less known (but not worst) Distance correlation coefficient.
 ----------------------
+For a logistic regression, highly correlated features might will result in highly unstable parameter estimates.
 
+say you have 4 features A,B,C,and D.  Say you are trying to predict the class of X.
+Say, you have a multicollinearity between A, B, and C. Something like:
+A+B = C
+When you take one sample to find the parameter estimates, the estimate of C can get distributed between A and B. For some other sample it might get distributed between A and C and so on an so forth. This is one basic way to understand multi-collinearity problem in logistic regression. Given that, stable parameter estimates is one of the important ways to judge logistic regression, multi-collinearity does affect the performance.
 ----------------------
+
 ----------------------
 ----------------------
 ----------------------
