@@ -24,6 +24,9 @@ A note about sample size.  In Linear regression the sample size rule of thumb is
 
 If any of these assumptions is violated (i.e., if there are nonlinear relationships between dependent and independent variables or the errors exhibit correlation, heteroscedasticity, or non-normality), then the forecasts, confidence intervals, and scientific insights yielded by a regression model may be (at best) inefficient or (at worst) seriously biased or misleading. 
 
+Violations of linearity or additivity are extremely serious: if you fit a linear model to data which are nonlinearly or nonadditively related, your predictions are likely to be seriously in error, especially when you extrapolate beyond the range of the sample data. 
+
+
 for Rasiduals:
 
 	1- Homoscedasticity (have a constant variance)
