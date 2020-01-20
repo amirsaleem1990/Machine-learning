@@ -210,3 +210,5 @@ How to Deal with Multicollinearity:
 	Define a new variable equal to a linear combination of the highly-correlated variables. Then, define a new regression equation, using the new variable in place of the old highly-correlated variables.
 
 Note: Multicollinearity only affects variables that are highly correlated. If the variable you are interested in has a small R2j, statistical analysis of its regression coefficient will be reliable and informative. That analysis will be valid, even when other variables exhibit high multicollinearity. 
+-----------------------------
+In general, multicollinearity can lead to wider confidence intervals and less reliable probability values for the independent variables. That is, the statistical inferences from a model with multicollinearity may not be dependable.
