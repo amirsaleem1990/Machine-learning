@@ -1,0 +1,20 @@
+Linear relationship
+	The linearity assumption can best be tested with scatter plots
+Multivariate normality
+	the linear regression analysis requires all variables to be multivariate normal.  This assumption can best be checked with a histogram or a Q-Q-Plot.  Normality can be checked with a goodness of fit test, e.g., the Kolmogorov-Smirnov test.  When the data is not normally distributed a non-linear transformation (e.g., log-transformation) might fix this issue.
+No or little multicollinearity
+No auto-correlation
+Homoscedasticity
+A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
+
+
+for Rasiduals:
+
+	1- Homoscedasticity (have a constant variance)
+		If the residuals fan out as the predicted values increase, then we have what is known as heteroscedasticity. This means that the variability in the response is changing as the predicted value increases.
+
+	2- be approximately normally distributed (with a mean of zero), and
+	3- No autocorrelation (be independent of one another).
+	4- The X variables and residuals are uncorrelated 
+	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern. The residuals will look like an unstructured cloud of points, centered at zero. If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
+
