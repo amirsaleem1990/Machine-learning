@@ -153,6 +153,9 @@ If multicollinearity is a problem in your model -- if the VIF for a factor is ne
 
 
 ----------------------
+When the number of features is very large relative to the number of observations in your dataset, certain algorithms struggle to train effective models. This is called the “Curse of Dimensionality,” and it’s especially relevant for clustering algorithms that rely on distance calculations.
+
+
 ----------------------
 ----------------------
 ----------------------
