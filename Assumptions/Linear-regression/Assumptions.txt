@@ -42,3 +42,7 @@ A good way to deal with this is to use a wrapper method for feature selection. I
 
     3- Interpretability of your model
 If your model needs to be interpretable, you might be forced to make it simpler. Make sure to also remember Occam's razor. If your model is not "that much" worse with less features, then you should probably use less features.
+
+----------------------
+Correlated features mean you can reduce overfitting (through column sampling) without giving up too much predictive quality.
+----------------------
