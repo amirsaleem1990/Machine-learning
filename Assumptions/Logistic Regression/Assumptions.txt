@@ -2,6 +2,8 @@ Allows easy regularization of outputs to prevent overfitting, yielding probabili
 
 Logistic Regression models does not get effected to predict output probabilities on removal of variables uncorrelated to the output or multi-collinear variables.
 
+Logistic regression’s greatest disadvantage is fails to solve non-linear problems and it underperforms when there are multiple or non-linear decision boundaries. It fails to capture more complex relationships.
+
 Logistic Regression is used when that the data is linearly separable or classifiable and the outcome is Binary
 
 MLE (Maximum Likelihood Estimation) is an iterative procedure, meaning that it starts with a guess as to the best weight for each predictor variable (that is, each coefficient in the model) and then adjusts these coefficients repeatedly until there is no additional improvement in the ability to predict the value of the outcome variable (either 0 or 1) for each case.
