@@ -13,7 +13,7 @@ Decision Tree:
 	    1- Over fitting. This problem gets solved by setting constraints on model parameters and pruning.
 	    2- Not fit for continuous variables: While working with continuous numerical variables, decision tree loses information, when it categorizes variables in different categories.
 	    3- Decision trees can be unstable because small variations in the data might result in a completely different tree being generated. This is called variance, which needs to be lowered by methods like bagging and boosting.
-	    4- Greedy algorithms cannot guarantee to return the globally optimal decision tree. This can be mitigated by training multiple trees, where the features and samples are randomly sampled with replacement.
+	    4- Greedy algorithms cannot guarantee to return the globally optimal decision tree (in other words: It is locally optimized using a greedy algorithm where we cannot guarantee a return to the globally optimal decision tree. It is an incredibly biased model if a single class takes unless a dataset is balanced before putting it in a tree). This can be mitigated by training multiple trees, where the features and samples are randomly sampled with replacement.
 	    5- Decision tree learners create biased trees if some classes dominate. It is therefore recommended to balance the data set prior to fitting with the decision tree.
 	    6- Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
 	    7- Generally, it gives low prediction accuracy for a dataset as compared to other machine learning algorithms.
