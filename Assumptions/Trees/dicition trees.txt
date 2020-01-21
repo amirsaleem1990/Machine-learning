@@ -2,3 +2,6 @@ While using information Gain as a algorithm, we assume attributes to be categori
 
 There is a high probability of overfitting in Decision Tree.
 
+Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
+
+Pruning: When we remove sub-nodes of a decision node, this process is called pruning. You can say opposite process of splitting.
