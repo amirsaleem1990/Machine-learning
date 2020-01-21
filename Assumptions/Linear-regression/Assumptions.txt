@@ -25,7 +25,7 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 5- linearity and additivity of the relationship between dependent and independent variables:
 
 	A linear relationship suggests that a change in response Y due to one unit change in X¹ is constant, regardless of the value of X¹. An additive relationship suggests that the effect of X¹ on Y is independent of other variables.
-	
+
 	The expected value of dependent variable is a straight-line function of each independent variable, holding the others fixed.
 
 	The slope of that line does not depend on the values of the other variables.
@@ -36,6 +36,8 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	1- versus time (in the case of time series data)
 	2- versus the predictions
 	3- versus any independent variable
+	
+	The error terms must have constant variance. This phenomenon is known as homoskedasticity.
 	
 	Heteroskedasticity: The presence of non-constant variance in the error terms results in heteroskedasticity. Generally, non-constant variance arises in presence of outliers or extreme leverage values. Look like, these values get too much weight, thereby disproportionately influences the model’s performance. When this phenomenon occurs, the confidence interval for out of sample prediction tends to be unrealistically wide or narrow.
 
@@ -60,6 +62,9 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	OLS does not require that the error term follows a normal distribution to produce unbiased estimates with the minimum variance. However, satisfying this assumption allows you to perform statistical hypothesis testing and generate reliable confidence intervals and prediction intervals. If you need to obtain p-values for the coefficient estimates and the overall test of significance, check this assumption!
 
 9- No autocorrelation (Residuals should independent of one another).
+
+	There should be no correlation between the residual (error) terms. Absence of this phenomenon is known as Autocorrelation.
+
 	If the error terms are correlated, the estimated standard errors tend to underestimate the true standard error. 
 	
 	If this happens, it causes confidence intervals and prediction intervals to be narrower. Narrower confidence interval means that a 95% confidence interval would have lesser probability than 0.95 that it would contain the actual value of coefficients.
@@ -81,9 +86,8 @@ If these assumptions hold true, the OLS procedure creates the best possible esti
 
 Another benefit of satisfying these assumptions is that as the sample size increases to infinity, the coefficient estimates converge on the actual population parameters.
 
-There should be no correlation between the residual (error) terms. Absence of this phenomenon is known as Autocorrelation.
-The independent variables should not be correlated. Absence of this phenomenon is known as multicollinearity.
-The error terms must have constant variance. This phenomenon is known as homoskedasticity. The presence of non-constant variance is referred to heteroskedasticity.
+
+ The presence of non-constant variance is referred to heteroskedasticity.
 
 
 A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
