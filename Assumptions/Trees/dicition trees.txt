@@ -1,2 +1,4 @@
 While using information Gain as a algorithm, we assume attributes to be categorical, and for gini index, attributes are assumed to be continuous.
 
+There is a high probability of overfitting in Decision Tree.
+
