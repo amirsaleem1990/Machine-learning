@@ -23,9 +23,7 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	The expected value of dependent variable is a straight-line function of each independent variable, holding the others fixed.
 
 	The slope of that line does not depend on the values of the other variables.
-
-	The effects of different independent variables on the expected value of the dependent variable are additive.
-
+	
 A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
 
 If any of these assumptions is violated (i.e., if there are nonlinear relationships between dependent and independent variables or the errors exhibit correlation, heteroscedasticity, or non-normality), then the forecasts, confidence intervals, and scientific insights yielded by a regression model may be (at best) inefficient or (at worst) seriously biased or misleading. 
