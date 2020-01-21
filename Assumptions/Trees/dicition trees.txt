@@ -5,3 +5,6 @@ There is a high probability of overfitting in Decision Tree.
 Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
 
 Pruning: When we remove sub-nodes of a decision node, this process is called pruning. You can say opposite process of splitting.
+
+Feature values are preferred to be categorical. If the values are continuous then they are discretized prior to building the model.
+
