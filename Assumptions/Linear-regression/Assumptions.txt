@@ -18,14 +18,13 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 
 	Numerical stability aside, prediction given by OLS model should not be affected by multicolinearity, as overall effect of predictor variables is not hurt by presence of multicolinearity. It is interpretation of effect of individual predictor variables that are not reliable when multicolinearity is present.
 	
-	The true relationship is linear
+4- The true relationship is linear
+5- linearity and additivity of the relationship between dependent and independent variables:
+	The expected value of dependent variable is a straight-line function of each independent variable, holding the others fixed.
 
-	linearity and additivity of the relationship between dependent and independent variables:
-		The expected value of dependent variable is a straight-line function of each independent variable, holding the others fixed.
+	The slope of that line does not depend on the values of the other variables.
 
-    	The slope of that line does not depend on the values of the other variables.
-
-    	The effects of different independent variables on the expected value of the dependent variable are additive.
+	The effects of different independent variables on the expected value of the dependent variable are additive.
 
 A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
 
