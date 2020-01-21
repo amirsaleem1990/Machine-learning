@@ -1,9 +1,20 @@
 Decision Tree:
-	1- Easy to Understand
-    2- Useful in Data exploration: Decision tree is one of the fastest way to identify most significant variables and relation between two or more variables.
-    3- Decision trees implicitly perform variable screening or feature selection.
-    4- Decision trees require relatively little effort from users for data preparation.
-    5- Less data cleaning required: It requires less data cleaning compared to some other modeling techniques. It is not influenced by outliers and missing values to a fair degree.
-    6- Data type is not a constraint: It can handle both numerical and categorical variables. Can also handle multi-output problems.
-    7- Non-Parametric Method: Decision tree is considered to be a non-parametric method. This means that decision trees have no assumptions about the space distribution and the classifier structure.
-    8- The number of hyper-parameters to be tuned is almost null.
+	Advantages:
+		1- Easy to Understand
+	    2- Useful in Data exploration: Decision tree is one of the fastest way to identify most significant variables and relation between two or more variables.
+	    3- Decision trees implicitly perform variable screening or feature selection.
+	    4- Decision trees require relatively little effort from users for data preparation.
+	    5- Less data cleaning required: It requires less data cleaning compared to some other modeling techniques. It is not influenced by outliers and missing values to a fair degree.
+	    6- Data type is not a constraint: It can handle both numerical and categorical variables. Can also handle multi-output problems.
+	    7- Non-Parametric Method: Decision tree is considered to be a non-parametric method. This means that decision trees have no assumptions about the space distribution and the classifier structure.
+	    8- The number of hyper-parameters to be tuned is almost null.
+
+	Disadvantages:
+	    1- Over fitting. This problem gets solved by setting constraints on model parameters and pruning.
+	    2- Not fit for continuous variables: While working with continuous numerical variables, decision tree loses information, when it categorizes variables in different categories.
+	    3- Decision trees can be unstable because small variations in the data might result in a completely different tree being generated. This is called variance, which needs to be lowered by methods like bagging and boosting.
+	    4- Greedy algorithms cannot guarantee to return the globally optimal decision tree. This can be mitigated by training multiple trees, where the features and samples are randomly sampled with replacement.
+	    5- Decision tree learners create biased trees if some classes dominate. It is therefore recommended to balance the data set prior to fitting with the decision tree.
+	    6- Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
+	    7- Generally, it gives low prediction accuracy for a dataset as compared to other machine learning algorithms.
+	    8- Calculations can become complex when there are many class label.
