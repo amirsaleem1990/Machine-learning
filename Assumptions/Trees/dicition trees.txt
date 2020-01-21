@@ -2,7 +2,7 @@ The decision of making strategic splits heavily affects a tree’s accuracy. The
 
 Decision trees use multiple algorithms to decide to split a node in two or more sub-nodes. The creation of sub-nodes increases the homogeneity of resultant sub-nodes. In other words, we can say that purity of the node increases with respect to the target variable. Decision tree splits the nodes on all available variables and then selects the split which results in most homogeneous sub-nodes.
 
-It is locally optimized using a greedy algorithm where we cannot guarantee a return to the globally optimal decision tree. It is an incredibly biased model if a single class takes unless a dataset is balanced before putting it in a tree.
+While using information Gain as a criterion, we assume attributes to be categorical, and for gini index, attributes are assumed to be continuous.
 
 trees follow a top-down greedy approach known as recursive binary splitting. We call it as ‘top-down’ because it begins from the top of tree when all the observations are available in a single region and successively splits the predictor space into two new branches down the tree. It is known as ‘greedy’ because, the algorithm cares (looks for best variable available) about only the current split, and not about future splits which will lead to a better tree.
 
