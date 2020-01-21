@@ -12,3 +12,7 @@ Records are distributed recursively on the basis of attribute values.
 
 Decision trees require relatively little effort from users for data preparation.
 
+Less data cleaning required: It requires less data cleaning compared to some other modeling techniques. It is not influenced by outliers and missing values to a fair degree.
+
+Non-Parametric Method: Decision tree is considered to be a non-parametric method. This means that decision trees have no assumptions about the space distribution and the classifier structure.
+
