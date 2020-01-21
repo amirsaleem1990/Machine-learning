@@ -38,7 +38,8 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	3- versus any independent variable
 	
 	The error terms must have constant variance. This phenomenon is known as homoskedasticity.
-	
+	The presence of non-constant variance is referred to heteroskedasticity.
+
 	Heteroskedasticity: The presence of non-constant variance in the error terms results in heteroskedasticity. Generally, non-constant variance arises in presence of outliers or extreme leverage values. Look like, these values get too much weight, thereby disproportionately influences the model’s performance. When this phenomenon occurs, the confidence interval for out of sample prediction tends to be unrealistically wide or narrow.
 
 	If the residuals fan out as the predicted values increase, then we have what is known as heteroscedasticity. This means that the variability in the response is changing as the predicted value increases.
@@ -85,9 +86,5 @@ Note: When assumption (no autocorrelation) and (homoscedasticity) are both true,
 If these assumptions hold true, the OLS procedure creates the best possible estimates. In statistics, estimators that produce unbiased estimates that have the smallest variance are referred to as being “efficient.” Efficiency is a statistical concept that compares the quality of the estimates calculated by different procedures while holding the sample size constant. OLS is the most efficient linear regression estimator when the assumptions hold true.
 
 Another benefit of satisfying these assumptions is that as the sample size increases to infinity, the coefficient estimates converge on the actual population parameters.
-
-
- The presence of non-constant variance is referred to heteroskedasticity.
-
 
 A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
