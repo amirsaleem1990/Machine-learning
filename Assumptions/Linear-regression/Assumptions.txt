@@ -1,3 +1,5 @@
+Regression is a parametric approach. ‘Parametric’ means it makes assumptions about data for the purpose of analysis.
+
 Perfect correlation suggests that two variables are different forms of the same variable. 
 
 multicollinearity reduces the precision of the estimates in OLS linear regression.
@@ -21,6 +23,9 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 4- The true relationship is linear
 
 5- linearity and additivity of the relationship between dependent and independent variables:
+
+	A linear relationship suggests that a change in response Y due to one unit change in X¹ is constant, regardless of the value of X¹. An additive relationship suggests that the effect of X¹ on Y is independent of other variables.
+	
 	The expected value of dependent variable is a straight-line function of each independent variable, holding the others fixed.
 
 	The slope of that line does not depend on the values of the other variables.
@@ -46,8 +51,13 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	For your model to be unbiased, the average value of the error term must equal zero. Suppose the average error is +7. This non-zero average error indicates that our model systematically underpredicts the observed values. Statisticians refer to systematic error like this as bias, and it signifies that our model is inadequate because it is not correct on average. Stated another way, we want the expected value of the error to equal zero. If the expected value is +7 rather than zero, part of the error term is predictable, and we should add that information to the regression model itself. We want only random error left for the error term. 
 
 8- Residuals be approximately normally distributed
+	If your error term also follows the normal distribution, you can safely use hypothesis testing to determine whether the independent variables and the entire model are statistically significant. You can also produce reliable confidence intervals and prediction intervals.
 
 	If the error terms are non- normally distributed, confidence intervals may become too wide or narrow. Once confidence interval becomes unstable, it leads to difficulty in estimating coefficients based on minimization of least squares. Presence of non – normal distribution suggests that there are a few unusual data points which must be studied closely to make a better model.
+
+	How to check: You can look at QQ plot. You can also perform statistical tests of normality such as Kolmogorov-Smirnov test, Shapiro-Wilk test.
+	
+	OLS does not require that the error term follows a normal distribution to produce unbiased estimates with the minimum variance. However, satisfying this assumption allows you to perform statistical hypothesis testing and generate reliable confidence intervals and prediction intervals. If you need to obtain p-values for the coefficient estimates and the overall test of significance, check this assumption!
 
 9- No autocorrelation (Residuals should independent of one another).
 	If the error terms are correlated, the estimated standard errors tend to underestimate the true standard error. 
@@ -55,42 +65,25 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	If this happens, it causes confidence intervals and prediction intervals to be narrower. Narrower confidence interval means that a 95% confidence interval would have lesser probability than 0.95 that it would contain the actual value of coefficients.
 
 	Also, lower standard errors would cause the associated p-values to be lower than actual. This will make us incorrectly conclude a parameter to be statistically significant.
-	
-	If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
 
 	How to check: Look for Durbin – Watson (DW) statistic. It must lie between 0 and 4. If DW = 2, implies no autocorrelation, 0 < DW < 2 implies positive autocorrelation while 2 < DW < 4 indicates negative autocorrelation. Also, you can see residual vs time plot and look for the seasonal or correlated pattern in residual values.
 
 10- The X variables and residuals are uncorrelated 
 	If an independent variable is correlated with the error term, we can use the independent variable to predict the error term, which violates the notion that the error term represents unpredictable random error. We need to find a way to incorporate that information into the regression model itself. Violating this assumption biases the coefficient estimate. To understand why this bias occurs, keep in mind that the error term always explains some of the variability in the dependent variable. However, when an independent variable correlates with the error term, OLS incorrectly attributes some of the variance that the error term actually explains to the independent variable instead.
 
-A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
+If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern(look like an unstructured cloud of points). If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
 
 If any of these assumptions is violated (i.e., if there are nonlinear relationships between dependent and independent variables or the errors exhibit correlation, heteroscedasticity, or non-normality), then the forecasts, confidence intervals, and scientific insights yielded by a regression model may be (at best) inefficient or (at worst) seriously biased or misleading. 
 
-
-How to check: You can look at QQ plot (shown below). You can also perform statistical tests of normality such as Kolmogorov-Smirnov test, Shapiro-Wilk test.
-
-
-
-	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern(look like an unstructured cloud of points), 
-
 Note: When assumption (no autocorrelation) and (homoscedasticity) are both true, statisticians say that the error term is independent and identically distributed (IID) and refer to them as spherical errors.
-
-
-OLS does not require that the error term follows a normal distribution to produce unbiased estimates with the minimum variance. However, satisfying this assumption allows you to perform statistical hypothesis testing and generate reliable confidence intervals and prediction intervals. If you need to obtain p-values for the coefficient estimates and the overall test of significance, check this assumption!
-
 
 If these assumptions hold true, the OLS procedure creates the best possible estimates. In statistics, estimators that produce unbiased estimates that have the smallest variance are referred to as being “efficient.” Efficiency is a statistical concept that compares the quality of the estimates calculated by different procedures while holding the sample size constant. OLS is the most efficient linear regression estimator when the assumptions hold true.
 
 Another benefit of satisfying these assumptions is that as the sample size increases to infinity, the coefficient estimates converge on the actual population parameters.
 
-If your error term also follows the normal distribution, you can safely use hypothesis testing to determine whether the independent variables and the entire model are statistically significant. You can also produce reliable confidence intervals and prediction intervals.
-
-Regression is a parametric approach. ‘Parametric’ means it makes assumptions about data for the purpose of analysis.
-
-A linear relationship suggests that a change in response Y due to one unit change in X¹ is constant, regardless of the value of X¹. An additive relationship suggests that the effect of X¹ on Y is independent of other variables.
-
 There should be no correlation between the residual (error) terms. Absence of this phenomenon is known as Autocorrelation.
 The independent variables should not be correlated. Absence of this phenomenon is known as multicollinearity.
 The error terms must have constant variance. This phenomenon is known as homoskedasticity. The presence of non-constant variance is referred to heteroskedasticity.
 
+
+A note about sample size.  In Linear regression the sample size rule of thumb is that the regression analysis requires at least 20 cases per independent variable in the analysis.
