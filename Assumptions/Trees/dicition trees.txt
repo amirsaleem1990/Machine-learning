@@ -1,0 +1,2 @@
+While using information Gain as a algorithm, we assume attributes to be categorical, and for gini index, attributes are assumed to be continuous.
+
