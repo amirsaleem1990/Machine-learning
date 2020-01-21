@@ -1,5 +1,7 @@
 Logistic Regression is used when that the data is linearly separable or classifiable and the outcome is Binary
 
+MLE (Maximum Likelihood Estimation) is an iterative procedure, meaning that it starts with a guess as to the best weight for each predictor variable (that is, each coefficient in the model) and then adjusts these coefficients repeatedly until there is no additional improvement in the ability to predict the value of the outcome variable (either 0 or 1) for each case.
+
 The target is binary
 IID observations
 No (or little) Multicollinearity
