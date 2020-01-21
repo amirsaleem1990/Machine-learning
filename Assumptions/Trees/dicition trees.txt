@@ -8,3 +8,7 @@ Pruning: When we remove sub-nodes of a decision node, this process is called pru
 
 Feature values are preferred to be categorical. If the values are continuous then they are discretized prior to building the model.
 
+Records are distributed recursively on the basis of attribute values.
+
+Decision trees require relatively little effort from users for data preparation.
+
