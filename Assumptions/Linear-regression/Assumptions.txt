@@ -6,9 +6,6 @@ multicollinearity reduces the precision of the estimates in OLS linear regressio
 
 In fact, the Gauss-Markov theorem states that OLS (ordinay least squares) produces estimates that are better than estimates from all other linear model estimation methods when the assumptions hold true.
 
-Multicollinearity happens when one predictor variable in a multiple regression model can be linearly predicted from the others with a high degree of accuracy. This can lead to skewed or misleading results. Luckily, decision trees and boosted trees algorithms are immune to multicollinearity by nature. When they decide to split, the tree will choose only one of the perfectly correlated features. However, other algorithms like Logistic Regression or Linear Regression are not immune to that problem and you should fix it before training the model.
-
-
 1- Linear relationship
 	The linearity assumption can best be tested with scatter plots
 2- Multivariate normality
@@ -18,6 +15,8 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 
 	Also, when predictors are correlated, the estimated regression coefficient of a correlated variable depends on which other predictors are available in the model. If this happens, you’ll end up with an incorrect conclusion that a variable strongly / weakly affects target variable. Since, even if you drop one correlated variable from the model, its estimated regression coefficients would change. That’s not good!
 
+	Multicollinearity happens when one predictor variable in a multiple regression model can be linearly predicted from the others with a high degree of accuracy. This can lead to skewed or misleading results. Luckily, decision trees and boosted trees algorithms are immune to multicollinearity by nature. When they decide to split, the tree will choose only one of the perfectly correlated features. However, other algorithms like Logistic Regression or Linear Regression are not immune to that problem and you should fix it before training the model.
+	
 	Numerical stability aside, prediction given by OLS model should not be affected by multicolinearity, as overall effect of predictor variables is not hurt by presence of multicolinearity. It is interpretation of effect of individual predictor variables that are not reliable when multicolinearity is present.
 	
 4- The true relationship is linear
