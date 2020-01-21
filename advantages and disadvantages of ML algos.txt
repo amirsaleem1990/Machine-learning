@@ -9,7 +9,7 @@ Decision Tree:
 	    7- Non-Parametric Method: Decision tree is considered to be a non-parametric method. This means that decision trees have no assumptions about the space distribution and the classifier structure.
 	    8- The number of hyper-parameters to be tuned is almost null.
 	    9- require very little data
-	    
+	    quite computationally inexpensive.
 	Disadvantages:
 	    1- Over fitting. This problem gets solved by setting constraints on model parameters and pruning.
 	    2- Not fit for continuous variables: While working with continuous numerical variables, decision tree loses information, when it categorizes variables in different categories.
