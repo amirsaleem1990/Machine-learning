@@ -4,17 +4,13 @@ multicollinearity reduces the precision of the estimates in OLS linear regressio
 
 In fact, the Gauss-Markov theorem states that OLS (ordinay least squares) produces estimates that are better than estimates from all other linear model estimation methods when the assumptions hold true.
 
-Correlated means that changes in one variable is parallel to a change in another variable. 
-
 Multicollinearity happens when one predictor variable in a multiple regression model can be linearly predicted from the others with a high degree of accuracy. This can lead to skewed or misleading results. Luckily, decision trees and boosted trees algorithms are immune to multicollinearity by nature. When they decide to split, the tree will choose only one of the perfectly correlated features. However, other algorithms like Logistic Regression or Linear Regression are not immune to that problem and you should fix it before training the model.
 
 
-Linear relationship
-
+1- Linear relationship
 	The linearity assumption can best be tested with scatter plots
-
-	Multivariate normality
-		the linear regression analysis requires all variables to be multivariate normal.  This assumption can best be checked with a histogram or a Q-Q-Plot.  Normality can be checked with a goodness of fit test, e.g., the Kolmogorov-Smirnov test.  When the data is not normally distributed a non-linear transformation (e.g., log-transformation) might fix this issue.
+2- Multivariate normality
+	the linear regression analysis requires all variables to be multivariate normal. This assumption can best be checked with a histogram or a Q-Q-Plot.  Normality can be checked with a goodness of fit test, e.g., the Kolmogorov-Smirnov test.  When the data is not normally distributed a non-linear transformation (e.g., log-transformation) might fix this issue.
 
 	No or little multicollinearity:
 		with presence of correlated predictors, the standard errors tend to increase. And, with large standard errors, the confidence interval becomes wider leading to less precise estimates of slope parameters.
