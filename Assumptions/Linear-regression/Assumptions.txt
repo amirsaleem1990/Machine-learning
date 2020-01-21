@@ -55,6 +55,8 @@ Multicollinearity happens when one predictor variable in a multiple regression m
 	If this happens, it causes confidence intervals and prediction intervals to be narrower. Narrower confidence interval means that a 95% confidence interval would have lesser probability than 0.95 that it would contain the actual value of coefficients.
 
 	Also, lower standard errors would cause the associated p-values to be lower than actual. This will make us incorrectly conclude a parameter to be statistically significant.
+	
+	If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
 
 	How to check: Look for Durbin – Watson (DW) statistic. It must lie between 0 and 4. If DW = 2, implies no autocorrelation, 0 < DW < 2 implies positive autocorrelation while 2 < DW < 4 indicates negative autocorrelation. Also, you can see residual vs time plot and look for the seasonal or correlated pattern in residual values.
 
@@ -70,7 +72,7 @@ How to check: You can look at QQ plot (shown below). You can also perform statis
 
 
 
-	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern. The residuals will look like an unstructured cloud of points, centered at zero. If there is a non-random pattern, the nature of the pattern can pinpoint potential issues with the model.
+	If the assumptions are met, the residuals will be randomly scattered around the center line of zero, with no obvious pattern(look like an unstructured cloud of points), 
 
 Note: When assumption (no autocorrelation) and (homoscedasticity) are both true, statisticians say that the error term is independent and identically distributed (IID) and refer to them as spherical errors.
 
