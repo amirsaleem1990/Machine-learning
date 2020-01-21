@@ -1,3 +1,5 @@
 The target is binary
 IID observations
 No (or little) Multicollinearity
+linearity of independent variables and log odds
+typically requires a large sample size.  A general guideline is that you need at minimum of 10 cases with the least frequent outcome for each independent variable in your model.
