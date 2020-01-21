@@ -1,3 +1,7 @@
+Larry Wasserman defines a parametric model as a set of distributions "that can be parameterized by a finite number of parameters." (p.87)
+
+Thus, by that definition standard logistic regression is a parametric model. The logistic regression model is parametric because it has a finite set of parameters. Specifically, the parameters are the regression coefficients. These usually correspond to one for each predictor plus a constant. Logistic regression is a particular form of the generalised linear model. Specifically it involves using a logit link function to model binomially distributed data.
+
 Allows easy regularization of outputs to prevent overfitting, yielding probabilities as prediction results.
 
 Logistic Regression models does not get effected to predict output probabilities on removal of variables uncorrelated to the output or multi-collinear variables.
