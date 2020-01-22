@@ -40,3 +40,10 @@ ASM (Attribute Selection Measures) provides a rank to each feature(or attribute)
 assumptions:
 	Feature values are preferred to be categorical. If the values are continuous then they are discretized prior to building the model. 
 	Records are distributed recursively on the basis of attribute values. 
+We have different attributes selection measures to identify the attribute which can be considered as the root note at each level.
+	Entropy,
+	Information gain,
+	Gini index,
+	Gain Ratio,
+	Reduction in Variance
+	Chi-Square
