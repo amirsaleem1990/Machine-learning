@@ -99,4 +99,3 @@ Var1 | Class
 Let's assume a threshold of 0.99 because I want two equal-sized bins and that's the midpoint between 0.96 and 1.02. The classes on the left are [1, 0, 1, 0] (since it's half/half, entropy is 1.0), and on the right [1, 1, 1, 1] (since it's all equal, entropy is 0.0).
 
 To make a table like the one you show here, you need to define N threshold points (2.0, 3.5, ..., 7.5, in your case), which will produce N+1 bins of data, you take the class of each bin and calculate the entropy.
------------------------------
