@@ -8,8 +8,6 @@ trees follow a top-down greedy approach known as recursive binary splitting. We 
 
 the splitting process results in fully grown trees until the stopping criteria is reached. But, the fully grown tree is likely to over fit data, leading to poor accuracy on unseen data. This bring ‘pruning’. Pruning is one of the technique used tackle overfitting.
 
-While using information Gain as a algorithm, we assume attributes to be categorical, and for gini index, attributes are assumed to be continuous.
-
 There is a high probability of overfitting in Decision Tree.
 
 Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
