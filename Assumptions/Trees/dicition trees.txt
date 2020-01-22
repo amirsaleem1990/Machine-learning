@@ -26,3 +26,5 @@ Less data cleaning required: It requires less data cleaning compared to some oth
 
 Non-Parametric Method: Decision tree is considered to be a non-parametric method. This means that decision trees have no assumptions about the space distribution and the classifier structure.
 
+The decision tree is a distribution-free or non-parametric method, which does not depend upon probability distribution assumptions.
+
