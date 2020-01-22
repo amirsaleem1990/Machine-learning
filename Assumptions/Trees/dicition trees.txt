@@ -80,3 +80,11 @@ Now at a node, the algorithm will consider following possible splitting
 You can see that if there are N possible values, we would have to consider N-1 possible splits.
 And note that we do not choose the mid-point between values as the splitting threshold. (We won’t consider Age <=10.5 as 10.5 never appears in the training set)
 ------------------------------
+In case of attributes with continuous values, ID3, C4.5 are not effective. FUZZY ID3 is an effective algorithm to employ. I have used it in my project to classify and predict the operating point of IEEE 30-bus system. As we know in case of power system with attributes such as voltage, current, active power, reactive power, power angle, … we have purely continuous attributes where C4.5 would fail. btw fuzzzy ID3 was effective.
+------------------------------
+Lets say you have two continuous variables - Age and Income. Age has values from 10 - 80 and income has 20,000 to 90,000.
+
+Now the decision tree check the split for first variable Age at 20, 30, 40, 50…, 80. If 40 gives the most pure split, second best is by 50 and third best is 80 and suppose the worst was at 20. The decision tree would not go and check 21, 22, 23, 24,… etc. But it will definitely check 41, 42, 43…
+
+Effectively we are checking the split at every number but in a more smart manner. The same goes with the income variable.
+------------------------------
