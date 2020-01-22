@@ -62,3 +62,21 @@ C4.5 → (successor of ID3)
 CART → (Classification And Regression Tree)
 CHAID → (Chi-square automatic interaction detection Performs multi-level splits when computing classification trees)
 MARS → (multivariate adaptive regression splines)
+
+-------------------------------
+Q: How C4.5 split continuous attribute?
+A: For continuous attribute, the algorithm will always try to split it into 2 branches only.
+
+Suppose we have a training set with an attribute “age” which contains following values.
+    Age : 10, 11, 16, 18, 20, 35
+
+Now at a node, the algorithm will consider following possible splitting
+    Age <=10 & Age>10
+    Age <=11 & Age>11
+    Age <=16 & Age>16
+    Age <=18 & Age>18
+    Age <=20 & Age>20
+
+You can see that if there are N possible values, we would have to consider N-1 possible splits.
+And note that we do not choose the mid-point between values as the splitting threshold. (We won’t consider Age <=10.5 as 10.5 never appears in the training set)
+------------------------------
