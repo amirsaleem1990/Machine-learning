@@ -48,3 +48,9 @@ We have different attributes selection measures to identify the attribute which 
 	Gain Ratio,
 	Reduction in Variance
 	Chi-Square
+
+
+Entropy:
+	Entropy is a measure of the randomness in the information being processed. The higher the entropy, the harder it is to draw any conclusions from that information.
+
+	
