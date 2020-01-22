@@ -28,7 +28,7 @@ Non-Parametric Method: Decision tree is considered to be a non-parametric method
 
 The decision tree is a distribution-free or non-parametric method, which does not depend upon probability distribution assumptions.
 
-
+The decision tree splits the nodes on all available variables and then selects the split which results in most homogeneous sub-nodes.
 -----------------------
 Select the best attribute using Attribute Selection Measures(ASM) to split the records.
 Make that attribute a decision node and breaks the dataset into smaller subsets.
