@@ -35,5 +35,5 @@ Starts tree building by repeating this process recursively for each child until 
     All the tuples belong to the same attribute value.
     There are no more remaining attributes.
     There are no more instances.
-ASM (Attribute Selection Measures)provides a rank to each feature(or attribute) by explaining the given dataset.
+ASM (Attribute Selection Measures) provides a rank to each feature(or attribute) by explaining the given dataset. Best score attribute will be selected as a splitting attribute
 -----------------------
