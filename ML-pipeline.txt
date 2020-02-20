@@ -1,0 +1,76 @@
+feature enginearing:
+	Q: NaN
+		Q: how?
+		Q: thereshold (jis sy agar exceed kary to ham variable ko hi drop kar den)
+	Q: skew
+	Q: catagorical small fraction catagories
+	Q: outlier
+	Q: scaling
+	Q: correlation
+	Q: covariance
+	Q: distributions proparties
+	Q: anova
+	Q: chi-square
+	Q: f-text
+	Q: z-test
+	Q: t-test
+	Q: train and test must have same distrubiton in given feature
+	Q: IID check assumption
+		Q: else data is temporal
+	Q: duplicated rows nahi honi chahyen
+	Q: primary key duplicate nahi honi chahye
+	Q: variables ki statistics sensable honi chahyen (ye na ho k <age> column ka min -3 ho, ye us ka max 230 ho)
+	Q: variable selection
+		Q: best subset selection
+		Q: forward selection
+		Q: backward selection
+		Q: mix selection
+		Q: Dimantion reduction
+		Q: ragularazers
+	Q: adding new features
+		Q: sqrt
+		Q: polynomial
+		Q: log
+		Q: interection
+		Q: multiple in one (in case of multicolinearity)
+		Q: diffrence of two (column_z - column_n)
+		Q: bins
+			Q: equally
+			Q: usgin tree
+		Q: using clustring (cluster number)
+		Q: stacking (output of one model as a feature into onother model)
+	Q: check variance:
+		numeric:
+			if no variance dropt it
+			defince thresold for minimum variance
+		catagorical:
+			if one uniq value drop it
+			phir ye dekhen k variable ki distribution kesi h, baz dafa ye hota h k 95% 1 value, 4% 2nd value, and other 10 values in just 1% of data, esi situation me kya karna chahye.
+	Q: catagorical variables me typos ki wajan sy variance zyada na ho rahi ho, yani k y na ho k actual me to only 15 values unique hen, magar typo ki wajah sy wo 25 ho gai hen.
+	Q: handle if target variable is imbalance (in calssification)
+
+Models:
+	linear regression
+		Q: assumptions:
+			Q: errors have mean 0.
+			Q: errors have normal distribution.
+			Q: linear relationship
+			Q: aditive assumption
+			Q: no or small multicolinearity
+			Q: Homoscedasticity (Residuals have a constant variance)
+			Q: No autocorrelation (Residuals should independent of one another)
+			Q: The X variables and residuals are uncorrelated
+			
+			Q: what to do if one or more assumption is not met
+		Q: loss function:
+			least squares
+			weighted least squares
+
+			normal regression
+			splines
+			basis functions
+
+			RMSE or MAE (RMSE is more sensitive to outliers, and MAE not, but MAE is not convex)
+
+		Q: if you need interpretabilty remove multicolinear variables, if you need only predictions leave it
+		
