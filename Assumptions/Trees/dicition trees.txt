@@ -112,11 +112,12 @@ Drawbacks of Decision Tree.
 	2- Generally, it gives low prediction accuracy for a dataset as compared to other machine learning algorithms.
 	3- Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
 	4- Calculations can become complex when there are many class labels.
-
+	5- They can be extremely sensitive to small perturbations in the data: a slight change can result in a drastically different tree.
+	6- Not fit for continuous variables: While working with continuous numerical variables, decision tree looses information when it categorizes variables in different categories.
+	
 Advantages of Decision Tree.
     1- Decision Trees are easy to explain. It results in a set of rules.
     2- It follows the same approach as humans generally follow while making decisions.
     3- Interpretation of a complex Decision Tree model can be simplified by its visualizations. Even a naive person can understand logic.
     4- The Number of hyper-parameters to be tuned is almost null.
 
-    
