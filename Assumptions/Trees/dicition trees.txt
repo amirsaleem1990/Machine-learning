@@ -113,4 +113,10 @@ Drawbacks of Decision Tree.
 	3- Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
 	4- Calculations can become complex when there are many class labels.
 
-	
+Advantages of Decision Tree.
+    1- Decision Trees are easy to explain. It results in a set of rules.
+    2- It follows the same approach as humans generally follow while making decisions.
+    3- Interpretation of a complex Decision Tree model can be simplified by its visualizations. Even a naive person can understand logic.
+    4- The Number of hyper-parameters to be tuned is almost null.
+
+    
