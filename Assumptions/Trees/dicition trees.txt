@@ -36,7 +36,7 @@ ASM (Attribute Selection Measures) provides a rank to each feature(or attribute)
 -----------------------
 assumptions:
 	Feature values are preferred to be categorical. If the values are continuous then they are discretized prior to building the model. 
-	Records are distributed recursively on the basis of attribute values. 
+	Records are distributed recursively on the basis of attribute values.
 We have different attributes selection measures to identify the attribute which can be considered as the root note at each level.
 	Entropy,
 	Information gain,
@@ -99,3 +99,18 @@ Var1 | Class
 Let's assume a threshold of 0.99 because I want two equal-sized bins and that's the midpoint between 0.96 and 1.02. The classes on the left are [1, 0, 1, 0] (since it's half/half, entropy is 1.0), and on the right [1, 1, 1, 1] (since it's all equal, entropy is 0.0).
 
 To make a table like the one you show here, you need to define N threshold points (2.0, 3.5, ..., 7.5, in your case), which will produce N+1 bins of data, you take the class of each bin and calculate the entropy.
+
+
+For solving this attribute selection problem, researchers worked and devised some solutions. They suggested using some algorithm like information gain, gini index, etc. These algorithms will calculate values for every attribute. The values are sorted, and attributes are placed in the tree by following the order i.e, the attribute with a high value(in case of information gain) is placed at the root.
+
+While using information Gain as a algorithm, we assume attributes to be categorical, and for gini index, attributes are assumed to be continuous.
+
+
+
+Drawbacks of Decision Tree.
+	1- There is a high probability of overfitting in Decision Tree.
+	2- Generally, it gives low prediction accuracy for a dataset as compared to other machine learning algorithms.
+	3- Information gain in a decision tree with categorical variables gives a biased response for attributes with greater no. of categories.
+	4- Calculations can become complex when there are many class labels.
+
+	
