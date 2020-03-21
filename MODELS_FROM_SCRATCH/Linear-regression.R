@@ -10,8 +10,7 @@ cor <- sum(
 ) / (n - 1)
 
 b1 <- round((sd.y / sd.x) * cor, 5)
-b0 <- y.mean - b1 * x.mean
-print(b0)
+b0 <- round(y.mean - b1 * x.mean,5)
 predictions <- round(b0 + b1 * df$x, 5)
 errors <- df$x - predictions
 Rss <- sum((df$y - predictions)^2)
@@ -24,7 +23,7 @@ model <- lm(y ~ x, data = df)
 print(summary(model))
 model_predictions <- round(as.vector(predict(model, newdata = df$d)), 5)
 model_slope = round(summary(model)$coefficients[2,1],5)
-model_intercept <- summary(model)$coefficients[1,1]
+model_intercept <- round(summary(model)$coefficients[1,1],5)
 model_R.square <- round(summary(model)$r.squared,7)
 if (all(predictions == model_predictions))
   print("Model predictions equal to our manual predictions")
