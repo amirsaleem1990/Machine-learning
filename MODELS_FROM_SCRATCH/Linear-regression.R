@@ -11,7 +11,8 @@ cor <- sum(
 
 b1 <- round((sd.y / sd.x) * cor, 5)
 b0 <- y.mean - b1 * x.mean
-
+print(b1)
+print(b0)
 predictions <- round(b0 + b1 * df$x, 5)
 errors <- df$x - predictions
 Rss <- sum((df$y - predictions)^2)
