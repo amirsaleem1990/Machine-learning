@@ -21,12 +21,11 @@ R.squared <- round((Tss - Rss) / Tss,7)
 
 
 model <- lm(y ~ x, data = df)
+print(summary(model))
 model_predictions <- round(as.vector(predict(model, newdata = df$d)), 5)
 model_slope = round(summary(model)$coefficients[2,1],5)
 model_intercept <- summary(model)$coefficients[1,1]
 model_R.square <- round(summary(model)$r.squared,7)
-print(model_intercept)
-print(b1)
 if (all(predictions == model_predictions))
   print("Model predictions equal to our manual predictions")
 if (model_intercept == b0)
