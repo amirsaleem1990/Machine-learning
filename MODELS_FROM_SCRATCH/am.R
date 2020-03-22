@@ -1,4 +1,5 @@
-df <- data.frame(cbind(x=c(3,9,8,3,2),y=c(7,2,1,4,3)))
+x=c(3,9,8,3,2)
+y=c(7,2,1,4,3)
 x.mean <- mean(df$x)
 y.mean <- mean(df$y)
 n = nrow(df)
@@ -18,7 +19,7 @@ Tss <- sum((df$y - y.mean)^2)
 R.squared <- round((Tss - Rss) / Tss,7)
 
 
-
+df <- data.frame(cbind(x=x,y=y))
 model <- lm(y ~ x, data = df)
 model_predictions <- round(as.vector(predict(model, newdata = df$d)), 5)
 model_slope = round(summary(model)$coefficients[2,1],5)
