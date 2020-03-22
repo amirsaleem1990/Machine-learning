@@ -1,21 +1,21 @@
 x=c(3,9,8,3,2)
 y=c(7,2,1,4,3)
-x.mean <- mean(df$x)
-y.mean <- mean(df$y)
-n = nrow(df)
-sd.x <- sd(df$x)
-sd.y <- sd(df$y)
+x.mean <- mean(x)
+y.mean <- mean(y)
+n = NROW(x)
+sd.x <- sd(x)
+sd.y <- sd(y)
 
 cor <- sum(
-  ((df$x - x.mean) / sd.x) * ((df$y - y.mean) / sd.y)
+  ((x - x.mean) / sd.x) * ((y - y.mean) / sd.y)
 ) / (n - 1)
 
 b1 <- round((sd.y / sd.x) * cor, 5)
 b0 <- round(y.mean - b1 * x.mean,5)
-predictions <- round(b0 + b1 * df$x, 5)
-errors <- df$x - predictions
-Rss <- sum((df$y - predictions)^2)
-Tss <- sum((df$y - y.mean)^2)
+predictions <- round(b0 + b1 * x, 5)
+errors <- x - predictions
+Rss <- sum((y - predictions)^2)
+Tss <- sum((y - y.mean)^2)
 R.squared <- round((Tss - Rss) / Tss,7)
 
 
