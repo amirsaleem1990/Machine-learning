@@ -1,0 +1,43 @@
+mean, median, mode, variance, standard deviation, sqrt, exponention(square, cubic, quadratic)
+sample Vs population
+x-bar Vs mu
+Sd Vs SE
+z value
+t value
+p value
+confidence intervel
+hypothesis testing:
+	1-using p-value
+	2-using confidence intervel
+
+########## Feature Engenearning ########
+missing values
+adding new variables:
+transformations:
+	log
+	sqrt
+	polynomial(with diffrent degrees)
+	box-cox
+	Scaling:
+		min-max scaling
+		standrization ((xi - x.mean())/ x.std())
+		normalization(xi - x.mean())
+outliers treatment
+########## Linear Regression #########
+intercept
+slope
+assumptions
+hypothesis testing for each coefficient
+coefficients
+How to treat catagorical variables?
+raguralization
+R-squared
+adj.R-squared
+F-score
+MSE (mean squared error)
+MAE (mean absulate error)
+RMSE (root mean squared error)
+SSE (sum of squared errors)
+SST	(sum of squared total)
+RSS (residul sum of squared) # same as SSE
+RSE (residul strandard error)
