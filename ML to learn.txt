@@ -25,7 +25,7 @@
 
 
 4- statistical learning algorithms
-	a- baseline model(in regression the mean of the target variable, and in the classification the most accout value in target variable)
+	a- baseline model(in regression the mean of the target variable, and in the classification the most accored value in target variable)
 	b- supervised vs unsupervised learning
 	c- regression vs classification
 	d- interpret linear regression coefficients (for both numerical and factor vairbles)
