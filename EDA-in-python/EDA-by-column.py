@@ -235,9 +235,9 @@ for row in dtypes.iterrows():
         # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
 
         l = x.count(), x.nunique(), len(x), x.isna().sum(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
-        ff = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
-        ff['Ratio'] = (ff.Counts / x.count() * 100).round(4)
-        ff.loc[['Count', 'Len'], 'Ratio'] = None
+        f = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
+        f['Ratio'] = (f.Counts / x.count() * 100).round(4)
+        f.loc[['Count', 'Len'], 'Ratio'] = None
 
         new_line()
         print(f.to_string())
