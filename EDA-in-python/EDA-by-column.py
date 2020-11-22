@@ -250,6 +250,7 @@ for row in dtypes.iterrows():
             print(f"These Years (in order) are missing:\n")
             for i in f:
                 print("\t", i, end=", ")
+            print("\n\n")
 
         f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
             x.dt.month.unique())
@@ -258,6 +259,7 @@ for row in dtypes.iterrows():
             print(f"These Months (in order) are missing:\n")
             for i in f:
                 print("\t", i, end=", ")
+            print("\n\n")
 
         f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
             x.dt.day.unique())
@@ -266,7 +268,8 @@ for row in dtypes.iterrows():
             print(f"These Days (in order) are missing:\n")
             for i in f:
                 print("\t", i, end=", ")
-        
+            print("\n\n")
+
 
 
 
