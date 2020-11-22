@@ -166,11 +166,11 @@ dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).
             "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
 dtypes.dtype.unique()
 #===
-m = 0
+# m = 0
 for row in dtypes.iterrows():
-    m += 1
-    if m == 3:
-        break
+    # m += 1
+    # if m == 3:
+        # break
     column_name, type_ = row[1]
     x = df[column_name]
     print(f"\n\n\n=============================== {column_name} ===============================\n\n")
