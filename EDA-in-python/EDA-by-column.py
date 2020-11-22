@@ -270,7 +270,7 @@ for row in dtypes.iterrows():
                 print("\t", i, end=", ")
             print("\n\n")
 
-
+        plot_date_columns(column_name)
 
 
 
@@ -280,15 +280,10 @@ for row in dtypes.iterrows():
 
 #===
 
-
-
-
-
-print()
-
+#===
 
 #===
-#===
+
 #===
 
 #===
