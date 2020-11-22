@@ -173,7 +173,7 @@ for row in dtypes.iterrows():
         break
     column_name, type_ = row[1]
     x = df[column_name]
-    print(f"\n\n\n============================= {column_name} =============================\n\n")
+    print(f"\n\n\n=============================== {column_name} ===============================\n\n")
     print(f"Column Type     : {type_}")
     if x.isna().all():
         new_line()
