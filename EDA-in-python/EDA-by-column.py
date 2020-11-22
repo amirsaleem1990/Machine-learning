@@ -131,9 +131,11 @@ if all_values_are_unique.size:
         print("\t", i)
 del all_values_are_unique
 #===
-
+f = list({df[i].dtype for i in df.columns})
 #===
-
+f[0] == "O"
+f[1] == "int"
+f[2] == "float"
 #===
 
 #===
