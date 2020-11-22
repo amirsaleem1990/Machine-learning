@@ -66,8 +66,8 @@ def plot_catagorical_columns(cat_variable):
 def data_shape():
     return f"The Data have:\n\t{df.shape[0]} rows\n\t{df.shape[1]} columns\n"
 #===
-# df = pd.read_csv("data.csv", date_parser=True)
-df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+df = pd.read_csv("data.csv", date_parser=True)
+# df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
 new_line()
 print(data_shape())
 #===
@@ -113,39 +113,44 @@ if a.size:
 # IMPUTING missing values??????????????
 #===
 # --------------------------------------------------------- Unique values
-only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
-if only_one_unique_value.size:
-    new_line()
-    df.drop(columns=only_one_unique_value.index, inplace=True)
-    print(f"There are {only_one_unique_value.size} variables That have only one unique value, so we drop those.\n\nNow {data_shape()}\n\nThose columns names in order:\n")
-    for i in only_one_unique_value.index.sort_values():
-        print(i)
-del only_one_unique_value
+# only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
+# if only_one_unique_value.size:
+#     new_line()
+#     df.drop(columns=only_one_unique_value.index, inplace=True)
+#     print(f"There are {only_one_unique_value.size} variables That have only one unique value, so we drop those.\n\nNow {data_shape()}\n\nThose columns names in order:\n")
+#     for i in only_one_unique_value.index.sort_values():
+#         print(i)
+# del only_one_unique_value
+# #===
+# all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
+# if all_values_are_unique.size:
+#     new_line()
+#     df.drop(columns=all_values_are_unique.index, inplace=True)
+#     print(f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n")
+#     for i in f.index:
+#         print("\t", i)
+# del all_values_are_unique
 #===
-all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
-if all_values_are_unique.size:
-    new_line()
-    df.drop(columns=all_values_are_unique.index, inplace=True)
-    print(f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n")
-    for i in f.index:
-        print("\t", i)
-del all_values_are_unique
+catagorical_columns = df.head().select_dtypes("O").columns
+numerical_columns   = df.head().select_dtypes("number").columns
+date_columns        = []
 #===
-f = list({df[i].dtype for i in df.columns})
+for i in catagorical_columns:
+    try:
+        df[i] = pd.to_datetime(df[i])
+        date_columns.append(i)
+    except:
+        pass
+date_columns
 #===
-f[0] == "O"
-f[1] == "int"
-f[2] == "float"
 #===
 
 #===
-
-#===
-
-#===
-
-#===
-
+# "O"
+# int
+# float
+# bool
+# '<M8[ns]'
 #===
 
 #===
