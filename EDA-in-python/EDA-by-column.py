@@ -199,7 +199,7 @@ for row in dtypes.iterrows():
 
 x = df.displyname_nunique
     if type_ == "Number":
-        new_line()
+
         # f = x.describe()
         # f['Nunique'] = x.nunique()
         # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
@@ -215,29 +215,30 @@ x = df.displyname_nunique
         f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive'], columns=['Count'])
         f['Ratio'] = f.Count / x.count() * 100
         f.loc['Mean' : 'Max', 'Ratio'] = None
-        
+
+        new_line()
         print(f.round(2).to_string())
         plot_numerical_columns(column_name)
 
     elif type_ == "O":
-        f = x.describe()
+        # f = x.describe()
+        # f = x.agg(['count', pd.Series.nunique])
+        # f['len'] = len(x)
+        # f['Na count'] = x.isna().sum()
+        # f['Na ratio'] = f['Na count'] / f['count'] * 100
+        # f['Most frequent'] = x.mode().values[0]
+        # f['Most frequent count'] = (x == f['Most frequent']).sum()
+        # f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
+        # f['Least frequent'] = x.value_counts().tail(1).index[0]
+        # f['Least frequent count'] = (x == f['Least frequent']).sum()
+        # f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
+        # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+        # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
 
-        f = x.agg(['count', pd.Series.nunique])
-        f['len'] = len(x)
-
-        f['Na count'] = x.isna().sum()
-        f['Na ratio'] = f['Na count'] / f['count'] * 100
-
-        f['Most frequent'] = x.mode().values[0]
-        f['Most frequent count'] = (x == f['Most frequent']).sum()
-        f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
-
-        f['Least frequent'] = x.value_counts().tail(1).index[0]
-        f['Least frequent count'] = (x == f['Least frequent']).sum()
-        f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
-
-        f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-        f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+        l = x.count(), x.nunique(), len(x), x.isna().sum(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
+        ff = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
+        ff['Ratio'] = (ff.Counts / x.count() * 100).round(4)
+        ff.loc[['Count', 'Len'], 'Ratio'] = None
 
         new_line()
         print(f.to_string())
@@ -259,21 +260,24 @@ x = df.displyname_nunique
         from dateutil import relativedelta
         rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
         print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}\n\n")
+x = df.min_timestamp
+        # f = pd.Series({'Count' : x.count(),
+        #             'Nunique count' : x.nunique(),
+        #             'Nunique ratio' : x.nunique() / x.count() * 100,
+        #             'Most frequent value' : str(x.mode()[0]),
+        #             'Least frequent value' :  x.value_counts().tail(1).index[0]
+        #             })
+        # f['Most frequent count'] = (x == f['Most frequent value']).sum()
+        # f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
+        # f['Least frequent count'] = (x == f['Least frequent value']).sum()
+        # f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
+        # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+        # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
 
-        f = pd.Series({'Count' : x.count(),
-                    'Nunique count' : x.nunique(),
-                    'Nunique ratio' : x.nunique() / x.count() * 100,
-                    'Most frequent value' : str(x.mode()[0]),
-                    'Least frequent value' :  x.value_counts().tail(1).index[0]
-                    })
-        f['Most frequent count'] = (x == f['Most frequent value']).sum()
-        f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
+        ff = x.count(), x.nunique(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
+        f = pd.DataFrame(ff, index=["Count", 'Nunique', 'Most frequent values', 'Least frequent values', 'Values occured only once count'], columns=['Counts'])
+        f['Ratio'] = (f.Counts / x.count() * 100).round(4)
 
-        f['Least frequent count'] = (x == f['Least frequent value']).sum()
-        f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
-
-        f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-        f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
         new_line()
         print(f"\n{f.to_string()}\n\n")
 
