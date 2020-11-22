@@ -196,15 +196,26 @@ for row in dtypes.iterrows():
         print(f"We dropped This column, because There is only one unique value")
         continue
 
+
+x = df.displyname_nunique
     if type_ == "Number":
         new_line()
-        f = x.describe()
-        f['Nunique'] = x.nunique()
-        f['Nunique_ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
-        f['Outlies'] = (((x - x.mean())/x.std()).abs() > 3).sum()
-        f['Outlies_ratio'] = f.loc["Outlies"] / f.loc["count"] * 100
-        f['Nagative_values'] = (x < 0).sum()
-        f['Nagative_values_ratio'] = f['Nagative_values'] / f['count'] * 100
+        # f = x.describe()
+        # f['Nunique'] = x.nunique()
+        # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
+        # f['Outlies count'] = (((x - x.mean())/x.std()).abs() > 3).sum()
+        # f['Outlies ratio'] = f.loc["Outlies count"] / f.loc["count"] * 100
+        # f['Nagative values count'] = (x < 0).sum()
+        # f['Nagative values ratio'] = f['Nagative values count'] / f['count'] * 100
+
+        ff = [x.count(), x.isna().sum(), x.mean(), x.std(), x.min()]
+        ff += x.quantile([.25,.5,.75]).to_list()
+        ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum()]
+
+        f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive'], columns=['Count'])
+        f['Ratio'] = f.Count / x.count() * 100
+        f.loc['Mean' : 'Max', 'Ratio'] = None
+        
         print(f.round(2).to_string())
         plot_numerical_columns(column_name)
 
