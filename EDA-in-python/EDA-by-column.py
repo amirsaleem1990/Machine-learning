@@ -175,7 +175,6 @@ for row in dtypes.iterrows():
     x = df[column_name]
     print(f"\n\n\n============================= {column_name} =============================\n\n")
     print(f"Column Type     : {type_}")
-    new_line()
     if x.isna().all():
         new_line()
         df.drop(columns=column_name, inplace=True)
