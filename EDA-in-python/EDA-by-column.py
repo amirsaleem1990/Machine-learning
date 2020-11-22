@@ -163,7 +163,7 @@ if x.size:
         print(f"\t<{i}, with dtype of <{df[i].dtype}>")
 #===
 dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
-            "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+            "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
 dtypes.dtype.unique()
 #===
 m = 0
@@ -174,10 +174,7 @@ for row in dtypes.iterrows():
     column_name, type_ = row[1]
     x = df[column_name]
     print(f"\n\n\n============================= {column_name} =============================\n\n")
-    new_line()
     print(f"Column Type     : {type_}")
-    print(f"NA count        : {x.isna().sum()}")
-    print(f"NA Ratio (1-100): {x.isna().mean()*100}")
     new_line()
     if x.isna().all():
         new_line()
@@ -185,8 +182,8 @@ for row in dtypes.iterrows():
         print("We dropped This column, because it is all Empty")
         continue
     if type_ in ["O", "Date"]:
-        new_line()
         if x.is_unique:
+            new_line()
             df.drop(columns=column_name, inplace=True)
             print(f"We dropped This column, because it's a {type_} columns, and it's all values are unique")
             continue
@@ -195,7 +192,6 @@ for row in dtypes.iterrows():
         df.drop(columns=column_name, inplace=True)
         print(f"We dropped This column, because There is only one unique value")
         continue
-
 
     if type_ == "Number":
 
