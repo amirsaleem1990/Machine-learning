@@ -66,8 +66,8 @@ def plot_catagorical_columns(cat_variable):
 def data_shape():
     return f"The Data have:\n\t{df.shape[0]} rows\n\t{df.shape[1]} columns\n"
 #===
-df = pd.read_csv("data.csv", date_parser=True)
-# df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+# df = pd.read_csv("data.csv", date_parser=True)
+df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
 new_line()
 print(data_shape())
 #===
