@@ -67,6 +67,7 @@ def data_shape():
     return f"The Data have:\n\t{df.shape[0]} rows\n\t{df.shape[1]} columns\n"
 #===
 df = pd.read_csv("data.csv", date_parser=True)
+df['BOOL'] = [True]*50 + [False]*(len(df)-50)
 # df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
 new_line()
 print(data_shape())
@@ -113,54 +114,100 @@ if a.size:
 # IMPUTING missing values??????????????
 #===
 # --------------------------------------------------------- Unique values
-# only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
-# if only_one_unique_value.size:
-#     new_line()
-#     df.drop(columns=only_one_unique_value.index, inplace=True)
-#     print(f"There are {only_one_unique_value.size} variables That have only one unique value, so we drop those.\n\nNow {data_shape()}\n\nThose columns names in order:\n")
-#     for i in only_one_unique_value.index.sort_values():
-#         print(i)
-# del only_one_unique_value
+only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
+if only_one_unique_value.size:
+    new_line()
+    df.drop(columns=only_one_unique_value.index, inplace=True)
+    print(f"There are {only_one_unique_value.size} variables That have only one unique value, so we drop those.\n\nNow {data_shape()}\n\nThose columns names in order:\n")
+    for i in only_one_unique_value.index.sort_values():
+        print(i)
+del only_one_unique_value
 # #===
-# all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
-# if all_values_are_unique.size:
-#     new_line()
-#     df.drop(columns=all_values_are_unique.index, inplace=True)
-#     print(f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n")
-#     for i in f.index:
-#         print("\t", i)
-# del all_values_are_unique
+all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
+if all_values_are_unique.size:
+    new_line()
+    df.drop(columns=all_values_are_unique.index, inplace=True)
+    print(f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n")
+    for i in all_values_are_unique.index:
+        print("\t", i)
+del all_values_are_unique
 #===
 catagorical_columns = df.head().select_dtypes("O").columns
 numerical_columns   = df.head().select_dtypes("number").columns
 date_columns        = []
-#===
+
 for i in catagorical_columns:
     try:
         df[i] = pd.to_datetime(df[i])
         date_columns.append(i)
     except:
         pass
-date_columns
+
+catagorical_columns = catagorical_columns.drop(date_columns)
+if date_columns:
+    date_columns = pd.Index(date_columns)
 #===
+if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
+    print("\nSome column/s repated in > 1 dtypes\n")
+    dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
+                "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+    print(dtypes[dtypes.Column.isin(list(dtypes[dtypes.Column.duplicated()].Column.values))].to_string())
+#===
+x = df.columns.difference(
+    catagorical_columns.append(numerical_columns).append(date_columns)
+    )
+if x.size:
+    print("Some columns not included in any existing catagory, those:\n")
+    for i in x:
+        print(f"\t<{i}, with dtype of <{df[i].dtype}>")
+#===
+dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
+            "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+dtypes.dtype.unique()
+#===
+for row in dtypes.iterrows():
+    column_name, type_ = row[1]
+    x = df[column_name]
+    print(f"\n\n\n============================= {column_name} =============================\n\n")
+    print(f"Column Type     : {type_}")
+    print(f"NA count        : {x.isna().sum()}")
+    print(f"NA Ratio (1-100): {x.isna().mean()*100}")
+    if x.isna().all():
+        df.drop(columns=column_name, inplace=True)
+        print("We dropped This column, because it is all Empty")
+        continue
+    if type_ in ["O", "Date"]:
+        if x.is_unique:
+            df.drop(columns=column_name, inplace=True)
+            print(f"We dropped This column, because it's a {type_} columns, and it's all values are unique")
+            continue
+    if x.nunique() == 1:
+        df.drop(columns=column_name, inplace=True)
+        print(f"We dropped This column, because There is only one unique value")
+        continue
+    #--------------------- Number
+    if type_ == "Number":
+        f = x.describe()
+        f['Nunique'] = x.nunique()
+        f['Nunique_ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
+        f['Outlies'] = (((x - x.mean())/x.std()).abs() > 3).sum()
+        f['Outlies_ratio'] = f.loc["Outlies"] / f.loc["count"] * 100
+        f['Nagative_values'] = (x < 0).sum()
+        f['Nagative_values_ratio'] = f['Nagative_values'] / f['count'] * 100
+        print(f.round(2).to_string())
+        plot_numerical_columns(column_name)
+
+
+
+#===
+
+
+#===
+
+
 #===
 
 #===
-# "O"
-# int
-# float
-# bool
-# '<M8[ns]'
-#===
-
-#===
-
-#===
-
-#===
-
-#===
-
 #===
 
 #===
