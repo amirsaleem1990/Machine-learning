@@ -110,11 +110,26 @@ if a.size:
         df.drop(columns=to_remove, inplace=True)
         print(f"Now {data_shape()}")
 #===
-
+# IMPUTING missing values??????????????
 #===
-
+# --------------------------------------------------------- Unique values
+only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
+if only_one_unique_value.size:
+    new_line()
+    df.drop(columns=only_one_unique_value.index, inplace=True)
+    print(f"There are {only_one_unique_value.size} variables That have only one unique value, so we drop those.\n\nNow {data_shape()}\n\nThose columns names in order:\n")
+    for i in only_one_unique_value.index.sort_values():
+        print(i)
+del only_one_unique_value
 #===
-
+all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
+if all_values_are_unique.size:
+    new_line()
+    df.drop(columns=all_values_are_unique.index, inplace=True)
+    print(f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n")
+    for i in f.index:
+        print("\t", i)
+del all_values_are_unique
 #===
 
 #===
