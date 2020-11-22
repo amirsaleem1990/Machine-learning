@@ -164,7 +164,11 @@ dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).
             "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
 dtypes.dtype.unique()
 #===
+m = 0
 for row in dtypes.iterrows():
+    m += 1
+    if m == 3:
+        break
     column_name, type_ = row[1]
     x = df[column_name]
     print(f"\n\n\n============================= {column_name} =============================\n\n")
@@ -225,6 +229,11 @@ for row in dtypes.iterrows():
         plot_catagorical_columns(column_name)
 
     elif type == "Date":
+
+        from dateutil import relativedelta
+        rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
+        print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}\n\n")
+
         f = pd.Series({'Count' : x.count(),
                     'Nunique count' : x.nunique(),
                     'Nunique ratio' : x.nunique() / x.count() * 100,
@@ -271,9 +280,6 @@ for row in dtypes.iterrows():
             print("\n\n")
 
         plot_date_columns(column_name)
-
-
-
 #===
 
 #===
