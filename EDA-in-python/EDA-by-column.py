@@ -67,7 +67,6 @@ def data_shape():
     return f"The Data have:\n\t{df.shape[0]} rows\n\t{df.shape[1]} columns\n"
 #===
 df = pd.read_csv("data.csv", date_parser=True)
-df['BOOL'] = [True]*50 + [False]*(len(df)-50)
 # df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
 new_line()
 print(data_shape())
@@ -225,12 +224,65 @@ for row in dtypes.iterrows():
 
         plot_catagorical_columns(column_name)
 
+    elif type == "Date":
+        f = pd.Series({'Count' : x.count(),
+                    'Nunique count' : x.nunique(),
+                    'Nunique ratio' : x.nunique() / x.count() * 100,
+                    'Most frequent value' : str(x.mode()[0]),
+                    'Least frequent value' :  x.value_counts().tail(1).index[0]
+                    })
+        f['Most frequent count'] = (x == f['Most frequent value']).sum()
+        f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
+
+        f['Least frequent count'] = (x == f['Least frequent value']).sum()
+        f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
+
+        f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+        f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+
+        print(f"\n\n{f.to_string()}\n\n")
+
+
+        f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
+            x.dt.year.unique())
+        if f:
+            new_line()
+            print(f"These Years (in order) are missing:\n")
+            for i in f:
+                print("\t", i, end=", ")
+
+        f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
+            x.dt.month.unique())
+        if f:
+            new_line()
+            print(f"These Months (in order) are missing:\n")
+            for i in f:
+                print("\t", i, end=", ")
+
+        f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
+            x.dt.day.unique())
+        if f:
+            new_line()
+            print(f"These Days (in order) are missing:\n")
+            for i in f:
+                print("\t", i, end=", ")
         
-#===
+
+
+
 
 #===
 
 #===
+
+#===
+
+
+
+
+
+print()
+
 
 #===
 #===
