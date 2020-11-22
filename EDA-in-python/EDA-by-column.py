@@ -103,8 +103,8 @@ else:
 if a.size:
     new_line()
 #     is ko uncomment karna h
-    ans = input("Are you need to remove some columns?[y|n]")
-#     ans = "n"
+    # ans = input("Are you need to remove some columns?[y|n]")
+    ans = "n"
     if ans == "y":
         to_remove = input("Please Enter columns names delimated by $\neg:Columns_1$Columns_2").split("$")
         df.drop(columns=to_remove, inplace=True)
