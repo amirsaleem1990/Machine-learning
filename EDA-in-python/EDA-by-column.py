@@ -147,6 +147,7 @@ if date_columns:
     date_columns = pd.Index(date_columns)
 #===
 if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
+    new_line()
     print("\nSome column/s repated in > 1 dtypes\n")
     dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
                 "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
@@ -156,6 +157,7 @@ x = df.columns.difference(
     catagorical_columns.append(numerical_columns).append(date_columns)
     )
 if x.size:
+    new_line()
     print("Some columns not included in any existing catagory, those:\n")
     for i in x:
         print(f"\t<{i}, with dtype of <{df[i].dtype}>")
@@ -172,24 +174,30 @@ for row in dtypes.iterrows():
     column_name, type_ = row[1]
     x = df[column_name]
     print(f"\n\n\n============================= {column_name} =============================\n\n")
+    new_line()
     print(f"Column Type     : {type_}")
     print(f"NA count        : {x.isna().sum()}")
     print(f"NA Ratio (1-100): {x.isna().mean()*100}")
+    new_line()
     if x.isna().all():
+        new_line()
         df.drop(columns=column_name, inplace=True)
         print("We dropped This column, because it is all Empty")
         continue
     if type_ in ["O", "Date"]:
+        new_line()
         if x.is_unique:
             df.drop(columns=column_name, inplace=True)
             print(f"We dropped This column, because it's a {type_} columns, and it's all values are unique")
             continue
     if x.nunique() == 1:
+        new_line()
         df.drop(columns=column_name, inplace=True)
         print(f"We dropped This column, because There is only one unique value")
         continue
-    #--------------------- Number
+
     if type_ == "Number":
+        new_line()
         f = x.describe()
         f['Nunique'] = x.nunique()
         f['Nunique_ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
@@ -220,16 +228,23 @@ for row in dtypes.iterrows():
         f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
         f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
 
+        new_line()
+        print(f.to_string())
+
+        new_line()
         if x.str.lower().nunique() != x.nunique():
             print(f"\n\nCase issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.")
 
+        new_line()
         if x.str.strip().nunique() != x.nunique():
             print(f"\n\nSpace issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values.")
 
+        new_line()
         plot_catagorical_columns(column_name)
 
     elif type == "Date":
 
+        new_line()
         from dateutil import relativedelta
         rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
         print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}\n\n")
@@ -248,8 +263,8 @@ for row in dtypes.iterrows():
 
         f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
         f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
-
-        print(f"\n\n{f.to_string()}\n\n")
+        new_line()
+        print(f"\n{f.to_string()}\n\n")
 
 
         f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
@@ -279,6 +294,7 @@ for row in dtypes.iterrows():
                 print("\t", i, end=", ")
             print("\n\n")
 
+        new_line()
         plot_date_columns(column_name)
 #===
 
