@@ -221,10 +221,10 @@ for row in dtypes.iterrows():
         f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
 
         if x.str.lower().nunique() != x.nunique():
-            print(f"Case issue\nin orignal variable There are {x.nunique()} unique values\nin lower verstion there are   {x.str.lower().nunique()} unique values.")
+            print(f"\n\nCase issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.")
 
         if x.str.strip().nunique() != x.nunique():
-            print(f"Space issue\nin orignal variable There are {x.nunique()} unique values\nin striped verstion there are {x.str.strip().nunique()} unique values.")
+            print(f"\n\nSpace issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values.")
 
         plot_catagorical_columns(column_name)
 
