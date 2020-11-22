@@ -214,7 +214,7 @@ for row in dtypes.iterrows():
         print(f.round(2).to_string())
         plot_numerical_columns(column_name)
 
-    elif type_ == "O":
+    elif type_ == "Object":
         # f = x.describe()
         # f = x.agg(['count', pd.Series.nunique])
         # f['len'] = len(x)
