@@ -237,15 +237,15 @@ for row in dtypes.iterrows():
         new_line()
         print(f.to_string())
 
-        new_line()
+
         if x.str.lower().nunique() != x.nunique():
+            new_line()
             print(f"\n\nCase issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.")
 
-        new_line()
         if x.str.strip().nunique() != x.nunique():
+            new_line()
             print(f"\n\nSpace issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values.")
 
-        new_line()
         plot_catagorical_columns(column_name)
 
     elif type == "Date":
