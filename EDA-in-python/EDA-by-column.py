@@ -200,31 +200,35 @@ for row in dtypes.iterrows():
     elif type_ == "O":
         f = x.describe()
 
+        f = x.agg(['count', pd.Series.nunique])
+        f['len'] = len(x)
 
+        f['Na count'] = x.isna().sum()
+        f['Na ratio'] = f['Na count'] / f['count'] * 100
 
+        f['Most frequent'] = x.mode().values[0]
+        f['Most frequent count'] = (x == f['Most frequent']).sum()
+        f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
 
+        f['Least frequent'] = x.value_counts().tail(1).index[0]
+        f['Least frequent count'] = (x == f['Least frequent']).sum()
+        f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
+
+        f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+        f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+
+        if x.str.lower().nunique() != x.nunique():
+            print(f"Case issue\nin orignal variable There are {x.nunique()} unique values\nin lower verstion there are   {x.str.lower().nunique()} unique values.")
+
+        if x.str.strip().nunique() != x.nunique():
+            print(f"Space issue\nin orignal variable There are {x.nunique()} unique values\nin striped verstion there are {x.str.strip().nunique()} unique values.")
+
+        plot_catagorical_columns(column_name)
+
+        
+#===
 
 #===
-x = df.brand
-
-#===
-f = x.agg(['count', pd.Series.nunique])
-f['len'] = len(x)
-
-f['Na count'] = x.isna().sum()
-f['Na ratio'] = f['Na count'] / f['count'] * 100
-
-f['Most frequent'] = x.mode().values[0]
-f['Most frequent count'] = (x == f['Most frequent']).sum()
-f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
-
-f['Least frequent'] = x.value_counts().tail(1).index[0]
-f['Least frequent count'] = (x == f['Least frequent']).sum()
-f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
-
-f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
-f
 
 #===
 
