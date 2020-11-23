@@ -5,6 +5,7 @@ def new_line():
     print("-------------------------")
 
 def plot_numerical_columns(col_name):
+    return None
     df[col_name].plot(figsize=(13,8));
     plt.title(col_name, size=18);
     plt.axhline(y=df[col_name].mean(), color='red');
@@ -25,7 +26,7 @@ def plot_numerical_columns(col_name):
     plt.show()
 
 def plot_date_columns(col_name):
-
+    return None
     df[col_name].plot(figsize=(15,7), grid=True);
     plt.xlabel("Index", size=14);
     plt.ylabel("Date", size=14);
@@ -57,6 +58,7 @@ def plot_date_columns(col_name):
     plt.show();
 
 def plot_catagorical_columns(cat_variable):
+    return None
     (df[cat_variable].value_counts() / len(df) * 100).plot.bar(figsize=(15,6), grid=True);
     plt.title(cat_variable, size=18, color='r');
     plt.xlabel("Catagory", size=14, color='r');
