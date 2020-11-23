@@ -219,7 +219,7 @@ print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} d
 f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
 if f.size:
     len_df_before_adding_date_vars = df.shape[1]
-    for col_num_to_str in :
+    for col_num_to_str in f:
         df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
     len_df_after_adding_date_vars  = df.shape[1]
     new_line()
