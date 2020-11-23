@@ -198,11 +198,24 @@ x = df.SEPARATED_REFERENCE
 column_name = "SEPARATED_REFERENCE"
 
     if type_ == "Number":
-        
+
         local_cor = cor_df[column_name].drop(column_name).reset_index()
         local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
         new_line()
-        print(f"Most 3 correlated features with this columns:\n{df.select_dtypes('number').corr()[column_name].abs().sort_values(ascending=False)[2:5]}\n")
+        print(f"Most 3 correlated features with this columns:\n{local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)}\n")
+
+
+        new_line()
+        skewness = x.skew(skipna = True)
+        if abs(skewness) < 0.5:
+            print(f"The data is fairly symmetrical {skewness}")
+        elif abs(skewness) < 1:
+            print(f"The data are moderately skewed {skewness}")
+        else:
+            print(f"The data are highly skewed {skewness}\nNote: When skewness exceed |1| we called it highly skewed")
+
+
+
         # f = x.describe()
         # f['Nunique'] = x.nunique()
         # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
