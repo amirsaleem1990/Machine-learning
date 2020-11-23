@@ -77,16 +77,15 @@ if f:
     print(f"There are {f} NAs in target values, we droped those rows")
     df = df[df[target_variable].notna()]
 del f
-
 #---------------------------------------------------
-df.select_dtypes("O").columns[:5]
-D = df.select_dtypes(exclude="O")
-D2 = df.select_dtypes("O").iloc[:,:5]
-df = pd.concat([D, D2], 1)
+# df.select_dtypes("O").columns[:5]
+# D = df.select_dtypes(exclude="O")
+# D2 = df.select_dtypes("O").iloc[:,:5]
+# df = pd.concat([D, D2], 1)
 
-from pandas_profiling import ProfileReport
-profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
-profile.to_file("your_report.html")
+# from pandas_profiling import ProfileReport
+# profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
+# profile.to_file("your_report.html")
 #---------------------------------------------------
 new_line()
 print(data_shape())
