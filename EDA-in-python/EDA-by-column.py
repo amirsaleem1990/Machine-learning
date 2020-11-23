@@ -471,6 +471,10 @@ del f
 
 # from scipy import stats
 # slope, intercept, r_value, p_value, std_err = stats.linregress(train_X.iloc[:,],train_y)
-slope, intercept, r_value, p_value, std_err
+# slope, intercept, r_value, p_value, std_err
 
-import statsmodels.api as sm
+# import statsmodels.api as sm
+from statsmodels.regression.linear_model import OLS
+model_reg = OLS(train_y, train_X).fit()
+model_reg.summary()
+>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
