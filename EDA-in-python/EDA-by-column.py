@@ -234,7 +234,6 @@ def cluping_rare_cases_in_one_catagory(x):
     orignal  = x.copy("deep")
     xx = x.value_counts()
     xx = xx[xx< 10].index.to_list()
-    print(len(xx))
     x =  x.replace(xx , "Rare cases")
     if x.value_counts()[-1] < 8:
         x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
