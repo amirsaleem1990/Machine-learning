@@ -236,6 +236,8 @@ for row in dtypes.iterrows():
         print(f"Most 3 correlated features with this columns:\n{local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)}\n")
         if column_name == "A":
             break
+            import sys
+            sys.exit()
 
         new_line()
         skewness = x.skew(skipna = True)
