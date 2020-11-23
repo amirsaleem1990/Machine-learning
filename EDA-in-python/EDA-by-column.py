@@ -234,7 +234,8 @@ for row in dtypes.iterrows():
             print(f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == m]['index'].values[0]}, so remove one of them")
         new_line()
         print(f"Most 3 correlated features with this columns:\n{local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)}\n")
-
+        if column_name == "A":
+            break
 
         new_line()
         skewness = x.skew(skipna = True)
