@@ -443,22 +443,21 @@ df_T[cat_cols.columns.to_list()] = cat_cols
 df = df_T.copy("deep")
 del df_T
 del cat_cols
-
+# ====
 train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 model_reg = LinearRegression().fit(train_X, train_y)
+new_line()
 print(f"The Training R^2 is: {model_reg.score(train_X, train_y)}")
 print(f"The Testing  R^2 is: {model_reg.score(test_X , test_y)}")
-
+# ====
 predictions_regression = model_reg.predict(test_X)
+new_line()
 print(f"RMSE (on Test):   {round(np.sqrt(((predictions_regression - test_y)**2).mean()))}\n\ntest_y statistics:\nMean:             {int(test_y.mean())}\nMedian:           {int(test_y.median())}")
-
+# ====
 f = test_X.copy("deep")
 f['Errors__'] = (test_y - predictions_regression)
 f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+new_line()
 print(f"Maximum correlation between Reseduals and any data columns is {round(f.values[0],5)}, with columns <{f.index[0]}>")
 del f
-
-
-
-plt.scatter(test_y, predictions_regression,  color='black')
-plt.plot   (test_y, predictions_regression, color='blue', linewidth=3)
+# ====
