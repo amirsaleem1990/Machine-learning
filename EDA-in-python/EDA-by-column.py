@@ -68,6 +68,18 @@ def data_shape():
 #===
 # df = pd.read_csv("data.csv", date_parser=True)
 df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+
+
+#---------------------------------------------------
+df.select_dtypes("O").columns[:5]
+D = df.select_dtypes(exclude="O")
+D2 = df.select_dtypes("O").iloc[:,:5]
+df = pd.concat([D, D2], 1)
+
+from pandas_profiling import ProfileReport
+profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
+profile.to_file("your_report.html")
+#---------------------------------------------------
 new_line()
 print(data_shape())
 #===
@@ -194,9 +206,9 @@ for row in dtypes.iterrows():
 
         ff = [x.count(), x.isna().sum(), x.mean(), x.std(), x.min()]
         ff += x.quantile([.25,.5,.75]).to_list()
-        ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum()]
+        ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum(), (x == 0).sum()]
 
-        f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive'], columns=['Count'])
+        f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive', 'Zeros'], columns=['Count'])
         f['Ratio'] = f.Count / x.count() * 100
         f.loc['Mean' : 'Max', 'Ratio'] = None
 
