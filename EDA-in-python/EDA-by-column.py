@@ -350,7 +350,6 @@ for row in dtypes.iterrows():
 
 # ----------------------------------------------------------------------- Feature enginearing
 def add_new_date_cols(x, suffix):
-    # print(df.shape, "   df shape before adding new columns")
     d = {}
     d[suffix + '_week_normalized'] = x.dt.week / 52
     d[suffix + '_week_str'] = x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
@@ -370,9 +369,8 @@ def add_new_date_cols(x, suffix):
     for k,v in d.items():
         if v.nunique() > 1:
             df[k] = v
-    # print(df.shape, "  df shape after adding new columns\n")
-    # return df.drop(columns=x.name)
-    return df
+    return df.drop(columns=x.name)
+    # return df
 
 len_df_before_adding_date_vars = df.shape[1]
 for date_col in date_columns:
