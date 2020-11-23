@@ -364,17 +364,19 @@ for row in dtypes.iterrows():
 def add_new_date_cols(x, suffix):
     d = {}
     d[suffix + '_week_normalized'] = x.dt.week / 52
-    d[suffix + '_week_str'] = x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
+    d[suffix + '_week_str'] = '"' + x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
 
     d[suffix + '_year_after_min_year'] = x.dt.year - x.dt.year.min()
-    d[suffix + '_year_str'] = x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
+    d[suffix + '_year_str'] = '"' + x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
 
     d[suffix + '_day_name']  = x.dt.day_name()
-    d[suffix + '_day_after_min_date_str']  = (x - x.min()).apply(lambda x: str(x).split()[0])
+
+    d[suffix + '_day_after_min_date_str']  = '"' + (x - x.min()).apply(lambda x: str(x).split()[0]) + '"'
+
     d[suffix + '_day_normalized'] = x.dt.day / 31
 
     d[suffix + '_hour_normalized'] = x.dt.hour / 24
-    d[suffix + '_hour_str'] = x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
+    d[suffix + '_hour_str'] = '"' + x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
 
     d[suffix + '_month_name'] = x.dt.month_name()
     d[suffix + '_month_normalized'] = x.dt.month/12
@@ -395,7 +397,7 @@ f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).d
 if f.size:
     len_df_before_adding_date_vars = df.shape[1]
     for col_num_to_str in :
-        df[col_num_to_str+"_str"] = df[col_num_to_str].astype(str)
+        df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
     len_df_after_adding_date_vars  = df.shape[1]
     new_line()
     print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)\n")
@@ -418,7 +420,7 @@ def cluping_rare_cases_in_one_catagory(x):
         return None
     return x
 
-for var in df.select_dtypes(exclude="number").columns:
+for var in df.select_dtypes("O").columns:
     m = cluping_rare_cases_in_one_catagory(var)
     if isinstance(m, pd.core.series.Series):
         df[var] = m
