@@ -168,8 +168,16 @@ dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).
             "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
 dtypes.dtype.unique()
 #===
+# ---------------------------------------------------- Correlation plot
+cor_df = df.select_dtypes('number').corr().abs()
+mask = np.triu(np.ones_like(cor_df, dtype=bool));
+f, ax = plt.subplots(figsize=(17, 10));
+cmap = sns.color_palette("viridis", as_cmap=True);
+plot_ = sns.heatmap(cor_df, mask=mask, cmap=cmap, vmax=.3, square=True, linewidths=.5, cbar_kws={"shrink": .5});
+plot_.axes.set_title("abs (Correlation) plot",fontsize=25)
+# ---------------------------------------------------------------------
+#===
 # m = 0
-cor_df = df.select_dtypes('number').corr()
 for row in dtypes.iterrows():
     # m += 1
     # if m == 3:
