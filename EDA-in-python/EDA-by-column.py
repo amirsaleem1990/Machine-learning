@@ -461,3 +461,16 @@ new_line()
 print(f"Maximum correlation between Reseduals and any data columns is {round(f.values[0],5)}, with columns <{f.index[0]}>")
 del f
 # ====
+# dir(model_reg)
+# m = model_reg
+# df_coef = pd.DataFrame({"column" : train_X.columns, "Coef" : m.coef_})
+# df_coef = df_coef.reindex(df_coef['Coef'].abs().sort_values().index)
+# df_coef.head()
+# df_coef['Indicator'] = df_coef.Coef.apply(lambda x:"***" if x < 0.001 else ("**" if x < 0.01 else ("*" if x < 0.05 else "")))
+# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+
+# from scipy import stats
+# slope, intercept, r_value, p_value, std_err = stats.linregress(train_X.iloc[:,],train_y)
+slope, intercept, r_value, p_value, std_err
+
+import statsmodels.api as sm
