@@ -428,3 +428,23 @@ for row in dtypes.iterrows():
 
         new_line()
         plot_date_columns(column_name)
+
+
+df['BldgType'].value_counts()
+# =================================================================================== Modeling
+# Linear regression
+from sklearn.linear_model import LinearRegression
+from sklearn.model_selection import train_test_split
+
+df_T = df.select_dtypes("number")
+cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
+df_T[cat_cols.columns.to_list()] = cat_cols
+
+df = df_T.copy("deep")
+del df_T
+del cat_cols
+
+train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+model_reg = LinearRegression().fit(train_X, train_y)
+print(f"The Training R^2 is: {model_reg.score(train_X, train_y)}")
+print(f"The Testing  R^2 is: {model_reg.score(test_X , test_y)}")
