@@ -343,3 +343,40 @@ for row in dtypes.iterrows():
 
         new_line()
         plot_date_columns(column_name)
+
+
+
+
+
+# ----------------------------------------------------------------------- Feature enginearing
+def add_new_date_cols(x, suffix):
+    # print(df.shape, "   df shape before adding new columns")
+    d = {}
+    d[suffix + '_week_normalized'] = x.dt.week / 52
+    d[suffix + '_week_str'] = x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
+
+    d[suffix + '_year_after_min_year'] = x.dt.year - x.dt.year.min()
+    d[suffix + '_year_str'] = x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
+
+    d[suffix + '_day_name']  = x.dt.day_name()
+    d[suffix + '_day_after_min_date_str']  = (x - x.min()).apply(lambda x: str(x).split()[0])
+    d[suffix + '_day_normalized'] = x.dt.day / 31
+
+    d[suffix + '_hour_normalized'] = x.dt.hour / 24
+    d[suffix + '_hour_str'] = x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", ""))
+
+    d[suffix + '_month_name'] = x.dt.month_name()
+    d[suffix + '_month_normalized'] = x.dt.month/12
+    for k,v in d.items():
+        if v.nunique() > 1:
+            df[k] = v
+    # print(df.shape, "  df shape after adding new columns\n")
+    # return df.drop(columns=x.name)
+    return df
+
+len_df_before_adding_date_vars = df.shape[1]
+for date_col in date_columns:
+    df = add_new_date_cols(df[date_col], date_col)
+len_df_after_adding_date_vars  = df.shape[1]
+new_line()
+print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
