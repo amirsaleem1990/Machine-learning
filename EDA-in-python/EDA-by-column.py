@@ -448,3 +448,6 @@ train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_varia
 model_reg = LinearRegression().fit(train_X, train_y)
 print(f"The Training R^2 is: {model_reg.score(train_X, train_y)}")
 print(f"The Testing  R^2 is: {model_reg.score(test_X , test_y)}")
+
+predictions_regression = model_reg.predict(test_X)
+print(f"RMSE (on Test):   {round(np.sqrt(((predictions_regression - test_y)**2).mean()))}\n\ntest_y statistics:\nMean:             {int(test_y.mean())}\nMedian:           {int(test_y.median())}")
