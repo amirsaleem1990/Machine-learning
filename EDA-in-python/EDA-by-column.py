@@ -193,9 +193,13 @@ for row in dtypes.iterrows():
         df.drop(columns=column_name, inplace=True)
         print(f"We dropped This column, because There is only one unique value")
         continue
+x = df.SEPARATED_REFERENCE
+column_name = "SEPARATED_REFERENCE"
 
     if type_ == "Number":
 
+        new_line()
+        print(f"Most 3 correlated features with this columns:\n{df.select_dtypes('number').corr()[column_name].abs().sort_values(ascending=False)[2:5]}\n")
         # f = x.describe()
         # f['Nunique'] = x.nunique()
         # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
