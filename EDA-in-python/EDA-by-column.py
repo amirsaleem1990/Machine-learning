@@ -75,7 +75,6 @@ def data_shape():
 
 df = pd.read_csv("cleaned_data.csv", date_parser=True)
 target_variable = "SalePrice"
-df['A'] = df['2ndFlrSF']**2
 #===
 f = df[target_variable].isna().sum()
 if f:
@@ -234,10 +233,6 @@ for row in dtypes.iterrows():
             print(f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == m]['index'].values[0]}, so remove one of them")
         new_line()
         print(f"Most 3 correlated features with this columns:\n{local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)}\n")
-        if column_name == "A":
-            break
-            import sys
-            sys.exit()
 
         new_line()
         skewness = x.skew(skipna = True)
@@ -388,24 +383,24 @@ def add_new_date_cols(x, suffix):
     return df.drop(columns=x.name)
     # return df
 
-# len_df_before_adding_date_vars = df.shape[1]
-# for date_col in date_columns:
-#     df = add_new_date_cols(df[date_col], date_col)
-# len_df_after_adding_date_vars  = df.shape[1]
-# new_line()
-# print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
-#
-#
-#
-# processed = []
-# for col in df.columns:
-#     for second_col in df.columns:
-#         if col == second_col:
-#             continue
-#         if ([col,second_col] in processed) or ([second_col, col] in processed):
-#             continue
-#         processed.append([col, second_col])
-#         if df[col].nunique() == df[second_col].nunique():
-#             unique_combination = df[[col, second_col]].drop_duplicates()
-#             if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
-#                 print(f"<{col}> and <{second_col}> are same")
+len_df_before_adding_date_vars = df.shape[1]
+for date_col in date_columns:
+    df = add_new_date_cols(df[date_col], date_col)
+len_df_after_adding_date_vars  = df.shape[1]
+new_line()
+print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
+
+
+
+processed = []
+for col in df.columns:
+    for second_col in df.columns:
+        if col == second_col:
+            continue
+        if ([col,second_col] in processed) or ([second_col, col] in processed):
+            continue
+        processed.append([col, second_col])
+        if df[col].nunique() == df[second_col].nunique():
+            unique_combination = df[[col, second_col]].drop_duplicates()
+            if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
+                print(f"<{col}> and <{second_col}> are same")
