@@ -145,40 +145,112 @@ if all_values_are_unique.size:
         print("\t", i)
 del all_values_are_unique
 #===
-catagorical_columns = df.head().select_dtypes("O").columns
-numerical_columns   = df.head().select_dtypes("number").columns
-date_columns        = []
+def DTYPES():
+    catagorical_columns = df.head().select_dtypes("O").columns
+    numerical_columns   = df.head().select_dtypes("number").columns
+    date_columns        = []
 
-for i in catagorical_columns:
-    try:
-        df[i] = pd.to_datetime(df[i])
-        date_columns.append(i)
-    except:
-        pass
+    for i in catagorical_columns:
+        try:
+            df[i] = pd.to_datetime(df[i])
+            date_columns.append(i)
+        except:
+            pass
 
-catagorical_columns = catagorical_columns.drop(date_columns)
-if date_columns:
-    date_columns = pd.Index(date_columns)
-#===
-if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
-    new_line()
-    print("\nSome column/s repated in > 1 dtypes\n")
+    catagorical_columns = catagorical_columns.drop(date_columns)
+    if date_columns:
+        date_columns = pd.Index(date_columns)
+    #===
+    if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
+        new_line()
+        print("\nSome column/s repated in > 1 dtypes\n")
+        dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
+                    "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+        print(dtypes[dtypes.Column.isin(list(dtypes[dtypes.Column.duplicated()].Column.values))].to_string())
+    #===
+    x = df.columns.difference(
+        catagorical_columns.append(numerical_columns).append(date_columns)
+        )
+    if x.size:
+        new_line()
+        print("Some columns not included in any existing catagory, those:\n")
+        for i in x:
+            print(f"\t<{i}, with dtype of <{df[i].dtype}>")
+    #===
     dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
-                "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
-    print(dtypes[dtypes.Column.isin(list(dtypes[dtypes.Column.duplicated()].Column.values))].to_string())
+                "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+    return dtypes
 #===
-x = df.columns.difference(
-    catagorical_columns.append(numerical_columns).append(date_columns)
-    )
-if x.size:
+dtypes = DTYPES()
+# ----------------------------------------------------------------------- Feature enginearing
+# ======= Adding date columns
+def add_new_date_cols(x, suffix):
+    d = {}
+    d[suffix + '_week_normalized'] = x.dt.week / 52
+    d[suffix + '_week_str'] = '"' + x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
+
+    d[suffix + '_year_after_min_year'] = x.dt.year - x.dt.year.min()
+    d[suffix + '_year_str'] = '"' + x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
+
+    d[suffix + '_day_name']  = x.dt.day_name()
+
+    d[suffix + '_day_after_min_date_str']  = '"' + (x - x.min()).apply(lambda x: str(x).split()[0]) + '"'
+
+    d[suffix + '_day_normalized'] = x.dt.day / 31
+
+    d[suffix + '_hour_normalized'] = x.dt.hour / 24
+    d[suffix + '_hour_str'] = '"' + x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
+
+    d[suffix + '_month_name'] = x.dt.month_name()
+    d[suffix + '_month_normalized'] = x.dt.month/12
+    for k,v in d.items():
+        if v.nunique() > 1:
+            df[k] = v
+    return df.drop(columns=x.name)
+    # return df
+
+len_df_before_adding_date_vars = df.shape[1]
+for date_col in date_columns:
+    df = add_new_date_cols(df[date_col], date_col)
+len_df_after_adding_date_vars  = df.shape[1]
+new_line()
+print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
+# ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
+f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
+if f.size:
+    len_df_before_adding_date_vars = df.shape[1]
+    for col_num_to_str in :
+        df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
+    len_df_after_adding_date_vars  = df.shape[1]
     new_line()
-    print("Some columns not included in any existing catagory, those:\n")
-    for i in x:
-        print(f"\t<{i}, with dtype of <{df[i].dtype}>")
-#===
-dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
-            "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
-#===
+    print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)\n")
+# =======
+def cluping_rare_cases_in_one_catagory(x):
+    global df
+    x = df[x]
+    orignal  = x.copy("deep")
+    xx = x.value_counts()
+    xx = xx[xx< 10].index.to_list()
+    print(len(xx))
+    x =  x.replace(xx , "Rare cases")
+    if x.value_counts()[-1] < 8:
+        x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
+    if x.nunique() == 1:
+        new_line()
+        print(f"The column <{x.name}> have only one unique value, We droped it from the data.")
+        # return orignal
+        df.drop(columns=x.name, inplace=True)
+        return None
+    return x
+
+for var in df.select_dtypes("O").columns:
+    m = cluping_rare_cases_in_one_catagory(var)
+    if isinstance(m, pd.core.series.Series):
+        df[var] = m
+new_line()
+print(f"<Rare case> catagory count:\n{(df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna().to_string()}")
+# ----------------------------------------------------------------------- END (Feature enginearing)
+dtypes = DTYPES()
 # ---------------------------------------------------- Correlation plot
 cor_df = df.select_dtypes('number').corr().abs()
 mask = np.triu(np.ones_like(cor_df, dtype=bool));
@@ -353,76 +425,3 @@ for row in dtypes.iterrows():
 
         new_line()
         plot_date_columns(column_name)
-
-
-
-
-
-# ----------------------------------------------------------------------- Feature enginearing
-# ======= Adding date columns
-def add_new_date_cols(x, suffix):
-    d = {}
-    d[suffix + '_week_normalized'] = x.dt.week / 52
-    d[suffix + '_week_str'] = '"' + x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
-
-    d[suffix + '_year_after_min_year'] = x.dt.year - x.dt.year.min()
-    d[suffix + '_year_str'] = '"' + x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
-
-    d[suffix + '_day_name']  = x.dt.day_name()
-
-    d[suffix + '_day_after_min_date_str']  = '"' + (x - x.min()).apply(lambda x: str(x).split()[0]) + '"'
-
-    d[suffix + '_day_normalized'] = x.dt.day / 31
-
-    d[suffix + '_hour_normalized'] = x.dt.hour / 24
-    d[suffix + '_hour_str'] = '"' + x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
-
-    d[suffix + '_month_name'] = x.dt.month_name()
-    d[suffix + '_month_normalized'] = x.dt.month/12
-    for k,v in d.items():
-        if v.nunique() > 1:
-            df[k] = v
-    return df.drop(columns=x.name)
-    # return df
-
-len_df_before_adding_date_vars = df.shape[1]
-for date_col in date_columns:
-    df = add_new_date_cols(df[date_col], date_col)
-len_df_after_adding_date_vars  = df.shape[1]
-new_line()
-print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
-# ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
-f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
-if f.size:
-    len_df_before_adding_date_vars = df.shape[1]
-    for col_num_to_str in :
-        df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
-    len_df_after_adding_date_vars  = df.shape[1]
-    new_line()
-    print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)\n")
-# =======
-def cluping_rare_cases_in_one_catagory(x):
-    global df
-    x = df[x]
-    orignal  = x.copy("deep")
-    xx = x.value_counts()
-    xx = xx[xx< 10].index.to_list()
-    print(len(xx))
-    x =  x.replace(xx , "Rare cases")
-    if x.value_counts()[-1] < 8:
-        x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
-    if x.nunique() == 1:
-        new_line()
-        print(f"The column <{x.name}> have only one unique value, We droped it from the data.")
-        # return orignal
-        df.drop(columns=x.name, inplace=True)
-        return None
-    return x
-
-for var in df.select_dtypes("O").columns:
-    m = cluping_rare_cases_in_one_catagory(var)
-    if isinstance(m, pd.core.series.Series):
-        df[var] = m
-new_line()
-print(f"<Rare case> catagory count:\n{(df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna().to_string()}")
-# =======
