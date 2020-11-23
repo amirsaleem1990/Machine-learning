@@ -226,9 +226,11 @@ for row in dtypes.iterrows():
         continue
 
     if type_ == "Number":
-
         local_cor = cor_df[column_name].drop(column_name).reset_index()
         local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
+        if local_cor[column_name].max() == 1:
+            new_line()
+            f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == m]['index'].values[0]}, so remove one of them")
         new_line()
         print(f"Most 3 correlated features with this columns:\n{local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)}\n")
 
