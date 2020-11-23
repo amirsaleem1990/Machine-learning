@@ -216,8 +216,9 @@ len_df_before_adding_date_vars = df.shape[1]
 for date_col in date_columns:
     df = add_new_date_cols(df[date_col], date_col)
 len_df_after_adding_date_vars  = df.shape[1]
-new_line()
-print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
+if len_df_after_adding_date_vars > len_df_before_adding_date_vars:
+    new_line()
+    print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
 # ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
 f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
 if f.size:
