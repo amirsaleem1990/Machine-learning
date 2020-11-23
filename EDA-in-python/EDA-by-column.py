@@ -169,6 +169,7 @@ dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).
 dtypes.dtype.unique()
 #===
 # m = 0
+cor_df = df.select_dtypes('number').corr()
 for row in dtypes.iterrows():
     # m += 1
     # if m == 3:
@@ -197,7 +198,9 @@ x = df.SEPARATED_REFERENCE
 column_name = "SEPARATED_REFERENCE"
 
     if type_ == "Number":
-
+        
+        local_cor = cor_df[column_name].drop(column_name).reset_index()
+        local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
         new_line()
         print(f"Most 3 correlated features with this columns:\n{df.select_dtypes('number').corr()[column_name].abs().sort_values(ascending=False)[2:5]}\n")
         # f = x.describe()
