@@ -194,8 +194,6 @@ for row in dtypes.iterrows():
         df.drop(columns=column_name, inplace=True)
         print(f"We dropped This column, because There is only one unique value")
         continue
-x = df.SEPARATED_REFERENCE
-column_name = "SEPARATED_REFERENCE"
 
     if type_ == "Number":
 
