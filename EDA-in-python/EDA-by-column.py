@@ -145,7 +145,9 @@ if all_values_are_unique.size:
         print("\t", i)
 del all_values_are_unique
 #===
+date_columns = []
 def DTYPES():
+    global date_columns
     catagorical_columns = df.head().select_dtypes("O").columns
     numerical_columns   = df.head().select_dtypes("number").columns
     date_columns        = []
