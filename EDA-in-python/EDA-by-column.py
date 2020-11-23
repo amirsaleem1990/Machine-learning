@@ -67,8 +67,16 @@ def data_shape():
     return f"The Data have:\n\t{df.shape[0]} rows\n\t{df.shape[1]} columns\n"
 #===
 # df = pd.read_csv("data.csv", date_parser=True)
-df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
 
+df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+target_variable = "ACTUAL_WORTH"
+#===
+f = df[target_variable].isna().sum()
+if f:
+    new_line()
+    print(f"There are {f} NAs in target values, we droped those rows")
+    df = df[df[target_variable].notna()]
+del f
 
 #---------------------------------------------------
 df.select_dtypes("O").columns[:5]
