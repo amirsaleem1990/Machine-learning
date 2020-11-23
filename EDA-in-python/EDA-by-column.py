@@ -220,8 +220,6 @@ for row in dtypes.iterrows():
         else:
             print(f"The data are highly skewed {skewness}\nNote: When skewness exceed |1| we called it highly skewed")
 
-
-
         # f = x.describe()
         # f['Nunique'] = x.nunique()
         # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
