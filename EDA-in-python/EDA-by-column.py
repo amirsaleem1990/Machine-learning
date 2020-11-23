@@ -360,6 +360,7 @@ for row in dtypes.iterrows():
 
 
 # ----------------------------------------------------------------------- Feature enginearing
+# ======= Adding date columns
 def add_new_date_cols(x, suffix):
     d = {}
     d[suffix + '_week_normalized'] = x.dt.week / 52
@@ -389,23 +390,7 @@ for date_col in date_columns:
 len_df_after_adding_date_vars  = df.shape[1]
 new_line()
 print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features\n")
-
-
-
-processed = []
-for col in df.columns:
-    for second_col in df.columns:
-        if col == second_col:
-            continue
-        if ([col,second_col] in processed) or ([second_col, col] in processed):
-            continue
-        processed.append([col, second_col])
-        if df[col].nunique() == df[second_col].nunique():
-            unique_combination = df[[col, second_col]].drop_duplicates()
-            if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
-                print(f"<{col}> and <{second_col}> are same")
-
-
+# ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
 f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
 if f.size:
     len_df_before_adding_date_vars = df.shape[1]
@@ -414,8 +399,7 @@ if f.size:
     len_df_after_adding_date_vars  = df.shape[1]
     new_line()
     print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)\n")
-
-
+# =======
 def cluping_rare_cases_in_one_catagory(x):
     global df
     x = df[x]
@@ -440,3 +424,4 @@ for var in df.select_dtypes(exclude="number").columns:
         df[var] = m
 new_line()
 print(f"<Rare case> catagory count:\n{(df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna().to_string()}")
+# =======
