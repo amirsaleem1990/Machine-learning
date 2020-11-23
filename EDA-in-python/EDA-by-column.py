@@ -178,7 +178,6 @@ if x.size:
 #===
 dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
             "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
-dtypes.dtype.unique()
 #===
 # ---------------------------------------------------- Correlation plot
 cor_df = df.select_dtypes('number').corr().abs()
