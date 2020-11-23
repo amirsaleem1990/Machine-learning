@@ -197,6 +197,16 @@ for row in dtypes.iterrows():
     column_name, type_ = row[1]
     x = df[column_name]
     print(f"\n\n\n=============================== {column_name} ===============================\n\n")
+
+    for col_ in df.columns:
+        if col_ == column_name:
+            continue
+        if df[col_].nunique() == df[column_name].nunique():
+            unique_combination = df[[col_, column_name]].drop_duplicates()
+            if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
+                new_line()
+                print(f"This Columns is duplicate of <{col_}> column")
+
     print(f"Column Type     : {type_}")
     if x.isna().all():
         new_line()
