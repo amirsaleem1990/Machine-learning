@@ -264,6 +264,8 @@ print(f"<Rare case> catagory:\n{xx.to_string()}")
 # ----------------------------------------------------------------------- END (Feature enginearing)
 dtypes = DTYPES()
 # ---------------------------------------------------- Correlation plot
+print("\n")
+new_line()
 cor_df = df.select_dtypes('number').corr().abs()
 mask = np.triu(np.ones_like(cor_df, dtype=bool));
 f, ax = plt.subplots(figsize=(17, 10));
