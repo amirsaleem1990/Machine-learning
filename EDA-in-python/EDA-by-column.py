@@ -434,7 +434,6 @@ for row in dtypes.iterrows():
         plot_date_columns(column_name)
 
 
-df['BldgType'].value_counts()
 # ================================================================================================================ Modeling
 # --------------------------------------------------------- Linear regression
 from sklearn.model_selection import train_test_split
