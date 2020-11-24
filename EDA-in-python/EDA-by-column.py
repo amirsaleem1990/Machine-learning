@@ -269,7 +269,8 @@ mask = np.triu(np.ones_like(cor_df, dtype=bool));
 f, ax = plt.subplots(figsize=(17, 10));
 cmap = sns.color_palette("viridis", as_cmap=True);
 plot_ = sns.heatmap(cor_df, mask=mask, cmap=cmap, vmax=.3, square=True, linewidths=.5, cbar_kws={"shrink": .5});
-plot_.axes.set_title("abs (Correlation) plot",fontsize=25)
+plot_.axes.set_title("abs (Correlation) plot",fontsize=25);
+plt.show()
 # ---------------------------------------------------------------------
 #===
 # m = 0
