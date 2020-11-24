@@ -501,7 +501,6 @@ print(f"AIC               : {round(model_reg.aic)}")
 print(f"Df Residuals      : {round(model_reg.df_resid)}")
 print(f"BIC               : {round(model_reg.bic)}")
 print(f"RMSE (test)       : {RMSE(predictions)}")
-print("\n")
 # ======
 f = train_X.copy("deep")
 f['Errors__'] = model_reg.resid
