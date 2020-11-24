@@ -538,6 +538,7 @@ plt.show();
 del featuresImportance
 
 new_line()
+print("--- Model statistic ---")
 # The coefficient of determination R^2 of the prediction.
 # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
 print(f"R^2 (test) : {rf.score(test_X, test_y)}")
