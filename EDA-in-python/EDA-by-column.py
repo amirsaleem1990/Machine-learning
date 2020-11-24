@@ -321,6 +321,7 @@ for row in dtypes.iterrows():
         xm.plot(kind='barh', grid=True, figsize=(10,1.5));
         plt.title("Most 3 correlated features with this columns (sorted)", size=14);
         plt.xlabel("Correlation", size=12);
+        plt.show();
 
         new_line()
         skewness = x.skew(skipna = True)
