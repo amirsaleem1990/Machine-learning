@@ -479,10 +479,7 @@ print(f"Df Residuals      : {round(model_reg.df_resid)}")
 print(f"BIC               : {round(model_reg.bic)}")
 print(f"RMSE (test)       : {RMSE(predictions)}")
 print("\n")
-
-
-
-
+# ======
 f = train_X.copy("deep")
 f['Errors__'] = model_reg.resid
 f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
@@ -490,6 +487,4 @@ new_line()
 print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
 print(f"Mean of train reseduals: {model_reg.resid.mean()}")
 del f
-
-
 # ============================= END (Models statistic)
