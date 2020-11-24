@@ -465,6 +465,8 @@ new_line()
 print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n\n")
 # print(summary_df.to_string())
 # ============================= Models statistic
+predictions = model_reg.predict(test_X)
+
 new_line()
 print(" --- Model statistic --- \n")
 print(f"R-squared         : {round(model_reg.rsquared, 3)}")
@@ -475,12 +477,8 @@ print(f"No. Observations  : {round(model_reg.nobs)}")
 print(f"AIC               : {round(model_reg.aic)}")
 print(f"Df Residuals      : {round(model_reg.df_resid)}")
 print(f"BIC               : {round(model_reg.bic)}")
+print(f"RMSE (test)       : {RMSE(predictions)}")
 print("\n")
-
-
-predictions = model_reg.predict(test_X)
-print(f"RMSE (test): {RMSE(predictions)}")
-
 
 
 
