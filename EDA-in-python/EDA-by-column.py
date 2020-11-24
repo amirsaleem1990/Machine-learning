@@ -307,9 +307,7 @@ for row in dtypes.iterrows():
         df.drop(columns=column_name, inplace=True)
         print(f"We dropped This column, because There is only one unique value")
         continue
-column_name = "SEPARATED_REFERENCE"
-cor_df = df.select_dtypes("number").corr()
-x = df[column_name]
+
     if type_ == "Number":
         local_cor = cor_df[column_name].drop(column_name).reset_index()
         local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
