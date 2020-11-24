@@ -470,7 +470,6 @@ train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_varia
 # ====
 # --------------------------------------------------------- Linear regression
 print("\n")
-new_line()
 print(" ------------------------------------- Linear Regression -------------------------------------\n")
 from statsmodels.regression.linear_model import OLS
 model_reg = OLS(train_y, train_X).fit()
@@ -486,8 +485,7 @@ summary_df.Variable = summary_df.Variable.astype(str)
 summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
 summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
 # summary_df.to_csv()
-new_line()
-print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n\n")
+print("\nNOTE: This summary saved as <summary_OLS_1.csv>")
 # print(summary_df.to_string())
 # ============================= Model statistic
 predictions = model_reg.predict(test_X)
