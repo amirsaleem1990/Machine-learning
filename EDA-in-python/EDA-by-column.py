@@ -318,6 +318,7 @@ for row in dtypes.iterrows():
             new_line()
             print(f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them")
 
+        new_line()
         xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
         xm.index = xm['Column name']
         xm.drop(columns="Column name", inplace=True);
