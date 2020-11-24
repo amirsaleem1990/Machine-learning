@@ -74,11 +74,11 @@ def data_shape():
 #===
 # df = pd.read_csv("data.csv", date_parser=True)
 
-# df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
-# target_variable = "ACTUAL_WORTH"
+df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+target_variable = "ACTUAL_WORTH"
 
-df = pd.read_csv("cleaned_data.csv", date_parser=True)
-target_variable = "SalePrice"
+# df = pd.read_csv("cleaned_data.csv", date_parser=True)
+# target_variable = "SalePrice"
 #===
 f = df[target_variable].isna().sum()
 if f:
