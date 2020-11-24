@@ -491,3 +491,20 @@ del f
 # ============================= END (Model statistic)
 # --------------------------------------------------------- END Linear regression
 # --------------------------------------------------------- Random Forest
+from sklearn.ensemble import RandomForestRegressor
+rf = RandomForestRegressor(n_estimators = 200)
+model_rf = rf.fit(train_X, train_y);
+predictions = rf.predict(test_X)
+errors = abs(predictions - test_y)
+print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
+
+importances = list(rf.feature_importances_)
+feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
+featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
+if len(featuresImportance) > 30:
+    featuresImportance = featuresImportance.head(30)
+featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
+plt.title("RandomForest Feature importances Graph", size=18,color='red');
+plt.xlabel("Features", size=14, color='red');
+plt.ylabel("Importance", size=14, color='red');
+plt.show();
