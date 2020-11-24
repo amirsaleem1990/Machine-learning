@@ -517,7 +517,7 @@ if df[target_variable].dtype in [float, int]:
 
 
 
-    
+
     # --------------------------------------------------------- Random Forest
     print("\n")
     print(" ------------------------------------- Linear Regression -------------------------------------\n")
