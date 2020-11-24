@@ -512,6 +512,8 @@ del f
 # ============================= END (Model statistic)
 # --------------------------------------------------------- END Linear regression
 # --------------------------------------------------------- Random Forest
+print("\n")
+print(" ------------------------------------- Linear Regression -------------------------------------\n")
 from sklearn.ensemble import RandomForestRegressor
 rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
 model_rf = rf.fit(train_X, train_y);
