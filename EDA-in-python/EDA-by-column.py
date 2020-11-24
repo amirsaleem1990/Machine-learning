@@ -453,8 +453,9 @@ for row in dtypes.iterrows():
 
 
 # ================================================================================================================ Modeling
-# --------------------------------------------------------- Linear regression
-from sklearn.model_selection import train_test_split
+print("\n\n")
+print("----------------------------------------------------------------------------------------------")
+print("****************************************** Modeling ******************************************")
 
 df_T = df.select_dtypes("number")
 cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
@@ -463,8 +464,14 @@ df_T[cat_cols.columns.to_list()] = cat_cols
 df = df_T.copy("deep")
 del df_T
 del cat_cols
-# # ====
+# ====
+from sklearn.model_selection import train_test_split
 train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+# ====
+# --------------------------------------------------------- Linear regression
+print("\n")
+new_line()
+print(" ------------------------------------- Linear Regression -------------------------------------\n")
 from statsmodels.regression.linear_model import OLS
 model_reg = OLS(train_y, train_X).fit()
 summary = model_reg.summary()
