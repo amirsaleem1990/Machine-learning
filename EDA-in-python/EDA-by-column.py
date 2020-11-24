@@ -307,15 +307,22 @@ for row in dtypes.iterrows():
         df.drop(columns=column_name, inplace=True)
         print(f"We dropped This column, because There is only one unique value")
         continue
-
+column_name = "SEPARATED_REFERENCE"
+cor_df = df.select_dtypes("number").corr()
+x = df[column_name]
     if type_ == "Number":
         local_cor = cor_df[column_name].drop(column_name).reset_index()
         local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
         if local_cor[column_name].max() == 1:
             new_line()
-            print(f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == m]['index'].values[0]}, so remove one of them")
-        new_line()
-        print(f"Most 3 correlated features with this columns:\n{local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)}\n")
+            print(f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them")
+
+        xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
+        xm.index = xm['Column name']
+        xm.drop(columns="Column name", inplace=True);
+        xm.plot(kind='barh', grid=True, figsize=(10,1.5));
+        plt.title("Most 3 correlated features with this columns (sorted)", size=14);
+        plt.xlabel("Correlation", size=12);
 
         new_line()
         skewness = x.skew(skipna = True)
