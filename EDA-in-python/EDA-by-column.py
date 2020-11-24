@@ -255,7 +255,12 @@ for var in df.select_dtypes("O").columns:
     if isinstance(m, pd.core.series.Series):
         df[var] = m
 new_line()
-print(f"<Rare case> catagory count:\n{(df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna().to_string()}")
+
+
+xx = (df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna()
+xx = pd.DataFrame({"Count" : xx,
+                "Ratio" : round(xx/len(df)*100, 4)})
+print(f"<Rare case> catagory:\n{xx.to_string()}")
 # ----------------------------------------------------------------------- END (Feature enginearing)
 dtypes = DTYPES()
 # ---------------------------------------------------- Correlation plot
