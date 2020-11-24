@@ -432,50 +432,69 @@ for row in dtypes.iterrows():
 
 df['BldgType'].value_counts()
 # =================================================================================== Modeling
-# Linear regression
-from sklearn.linear_model import LinearRegression
+# --------------------------------------------------------- Linear regression
+# from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import train_test_split
-
+#
 df_T = df.select_dtypes("number")
 cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
 df_T[cat_cols.columns.to_list()] = cat_cols
-
+#
 df = df_T.copy("deep")
 del df_T
 del cat_cols
-# ====
+# # ====
 train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-model_reg = LinearRegression().fit(train_X, train_y)
-new_line()
-print(f"The Training R^2 is: {model_reg.score(train_X, train_y)}")
-print(f"The Testing  R^2 is: {model_reg.score(test_X , test_y)}")
-# ====
-predictions_regression = model_reg.predict(test_X)
-new_line()
-print(f"RMSE (on Test):   {round(np.sqrt(((predictions_regression - test_y)**2).mean()))}\n\ntest_y statistics:\nMean:             {int(test_y.mean())}\nMedian:           {int(test_y.median())}")
-# ====
-f = test_X.copy("deep")
-f['Errors__'] = (test_y - predictions_regression)
-f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
-new_line()
-print(f"Maximum correlation between Reseduals and any data columns is {round(f.values[0],5)}, with columns <{f.index[0]}>")
-del f
+# model_reg = LinearRegression().fit(train_X, train_y)
+# new_line()
+# print(f"The Training R^2 is: {model_reg.score(train_X, train_y)}")
+# print(f"The Testing  R^2 is: {model_reg.score(test_X , test_y)}")
+# # ====
+# predictions_regression = model_reg.predict(test_X)
+# new_line()
+# print(f"RMSE (on Test):   {round(np.sqrt(((predictions_regression - test_y)**2).mean()))}\n\ntest_y statistics:\nMean:             {int(test_y.mean())}\nMedian:           {int(test_y.median())}")
+# # ====
+# f = test_X.copy("deep")
+# f['Errors__'] = (test_y - predictions_regression)
+# f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+# new_line()
+# print(f"Maximum correlation between Reseduals and any data columns is {round(f.values[0],5)}, with columns <{f.index[0]}>")
+# del f
 # ====
 from statsmodels.regression.linear_model import OLS
 model_reg = OLS(train_y, train_X).fit()
 summary = model_reg.summary()
-f = pd.DataFrame(summary.tables[1])
-f.columns = f.iloc[0]
-f.drop(0, inplace=True)
-f.columns = f.columns.astype(str)
-f.columns = ["Variable"] + f.columns[1:].to_list()
-for i in f.columns[1:]:
-    f[i] = f[i].astype(str).astype(float)
-f.Variable = f.Variable.astype(str)
-f['Indicator'] = f['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
-f = f.sort_values("Variable").reset_index(drop=True)
+summary_df = pd.DataFrame(summary.tables[1])
+summary_df.columns = summary_df.iloc[0]
+summary_df.drop(0, inplace=True)
+summary_df.columns = summary_df.columns.astype(str)
+summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
+for i in summary_df.columns[1:]:
+    summary_df[i] = summary_df[i].astype(str).astype(float)
+summary_df.Variable = summary_df.Variable.astype(str)
+summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
+summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
 
-f.to_csv()
+# summary_df.to_csv()
 new_line()
 print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n\n")
-print(f.to_string())
+print(summary_df.to_string())
+
+# ============================= Models statistic
+s = [i.strip() for i in sum(summary.tables[0].data, [])]
+s = {s[i]:  s[i+1] for i in range(0, len(s), 2)}
+print(f"R-squared         : {s['R-squared:']}")
+print(f"Adj. R-squared    : {s['Adj. R-squared:']}")
+print(f"F-statistic       : {s['F-statistic:']}")
+print(f"Prob (F-statistic): {s['Prob (F-statistic):']}")
+print(f"No. Observations  : {s['No. Observations:']}")
+print(f"AIC               : {s['AIC:']}")
+print(f"Df Residuals      : {s['Df Residuals:']}")
+print(f"BIC               : {s['BIC:']}")
+# ============================= END (Models statistic)
+
+def RMSE(predictions):
+    return round(np.sqrt(((test_y - predictions)**2).mean()))
+
+predictions = model_reg.predict(test_X)
+print(f"RMSE (on test): {RMSE(predictions)}")
