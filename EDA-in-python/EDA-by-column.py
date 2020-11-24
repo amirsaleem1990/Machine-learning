@@ -285,7 +285,7 @@ for row in dtypes.iterrows():
         # break
     column_name, type_ = row[1]
     x = df[column_name]
-    print(f"\n\n\n=============================== {column_name} ===============================\n\n")
+    print(f"\n\n\n========================================= {column_name} =========================================\n\n")
 
     for col_ in df.columns:
         if col_ == column_name:
