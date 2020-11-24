@@ -435,7 +435,7 @@ for row in dtypes.iterrows():
 
 
 df['BldgType'].value_counts()
-# =================================================================================== Modeling
+# ================================================================================================================ Modeling
 # --------------------------------------------------------- Linear regression
 from sklearn.model_selection import train_test_split
 
@@ -491,34 +491,43 @@ del f
 # ============================= END (Model statistic)
 # --------------------------------------------------------- END Linear regression
 # --------------------------------------------------------- Random Forest
-from sklearn.ensemble import RandomForestRegressor
-rf = RandomForestRegressor(n_estimators = 200)
-model_rf = rf.fit(train_X, train_y);
-predictions = rf.predict(test_X)
-errors = abs(predictions - test_y)
+# from sklearn.ensemble import RandomForestRegressor
+# rf = RandomForestRegressor(n_estimators = 200)
+# model_rf = rf.fit(train_X, train_y);
+# predictions_rf = rf.predict(test_X)
+#
+# new_line()
+# print(f"RF model peramters:\n\n")
+# import pprint
+# pprint.pprint(m.get_params())
+#
+# new_line()
+# importances = list(rf.feature_importances_)
+# feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
+# featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
+# if len(featuresImportance) > 30:
+#     featuresImportance = featuresImportance.head(30)
+# featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
+# plt.title("RandomForest Feature importances Graph", size=18,color='red');
+# plt.xlabel("Features", size=14, color='red');
+# plt.ylabel("Importance", size=14, color='red');
+# plt.show();
+# del featuresImportance
+#
+# new_line()
+# # The coefficient of determination R^2 of the prediction.
+# # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+# print(f"R^2 (test) : {rf.score(test_X, test_y)}")
+# print(f"R^2 (train): {rf.score(train_X, train_y)}")
+# print(f"RMSE (test): {RMSE(predictions_rf)}")
+#
+# f = test_X.copy("deep")
+# errors_rf = predictions_rf - test_y
+# f['Errors__'] = errors_rf
+# f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+# new_line()
+# print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
+# print(f"Mean of test reseduals: {errors_rf.mean()}")
+# --------------------------------------------------------- END Random Forest
 
-new_line()
-print(f"RF model peramters:\n\n")
-import pprint
-pprint.pprint(m.get_params())
-
-new_line()
-print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
-
-importances = list(rf.feature_importances_)
-feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
-featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
-if len(featuresImportance) > 30:
-    featuresImportance = featuresImportance.head(30)
-featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
-plt.title("RandomForest Feature importances Graph", size=18,color='red');
-plt.xlabel("Features", size=14, color='red');
-plt.ylabel("Importance", size=14, color='red');
-plt.show();
-del featuresImportance
-
-new_line()
-# The coefficient of determination R^2 of the prediction.
-# https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
-print(f"R^2 (test) : {rf.score(test_X, test_y)}")
-print(f"R^2 (train): {rf.score(train_X, train_y)}")
+# ================================================================================================================ END Modeling
