@@ -461,20 +461,21 @@ new_line()
 print(f"Maximum correlation between Reseduals and any data columns is {round(f.values[0],5)}, with columns <{f.index[0]}>")
 del f
 # ====
-# dir(model_reg)
-# m = model_reg
-# df_coef = pd.DataFrame({"column" : train_X.columns, "Coef" : m.coef_})
-# df_coef = df_coef.reindex(df_coef['Coef'].abs().sort_values().index)
-# df_coef.head()
-# df_coef['Indicator'] = df_coef.Coef.apply(lambda x:"***" if x < 0.001 else ("**" if x < 0.01 else ("*" if x < 0.05 else "")))
-# Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
-
-# from scipy import stats
-# slope, intercept, r_value, p_value, std_err = stats.linregress(train_X.iloc[:,],train_y)
-# slope, intercept, r_value, p_value, std_err
-
-# import statsmodels.api as sm
 from statsmodels.regression.linear_model import OLS
 model_reg = OLS(train_y, train_X).fit()
-model_reg.summary()
->>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> 
+summary = model_reg.summary()
+f = pd.DataFrame(summary.tables[1])
+f.columns = f.iloc[0]
+f.drop(0, inplace=True)
+f.columns = f.columns.astype(str)
+f.columns = ["Variable"] + f.columns[1:].to_list()
+for i in f.columns[1:]:
+    f[i] = f[i].astype(str).astype(float)
+f.Variable = f.Variable.astype(str)
+f['Indicator'] = f['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
+f = f.sort_values("Variable").reset_index(drop=True)
+
+f.to_csv()
+new_line()
+print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n\n")
+print(f.to_string())
