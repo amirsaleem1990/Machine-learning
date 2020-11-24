@@ -496,6 +496,13 @@ rf = RandomForestRegressor(n_estimators = 200)
 model_rf = rf.fit(train_X, train_y);
 predictions = rf.predict(test_X)
 errors = abs(predictions - test_y)
+
+new_line()
+print(f"RF model peramters:\n\n")
+import pprint
+pprint.pprint(m.get_params())
+
+new_line()
 print('Mean Absolute Error:', round(np.mean(errors), 2), 'degrees.')
 
 importances = list(rf.feature_importances_)
@@ -508,3 +515,11 @@ plt.title("RandomForest Feature importances Graph", size=18,color='red');
 plt.xlabel("Features", size=14, color='red');
 plt.ylabel("Importance", size=14, color='red');
 plt.show();
+del featuresImportance
+
+new_line()
+Return the coefficient of determination R^2 of the prediction.
+https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+
+
+model_rf.score(test_X, test_y)
