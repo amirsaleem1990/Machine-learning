@@ -320,11 +320,11 @@ for row in dtypes.iterrows():
         new_line()
         skewness = x.skew(skipna = True)
         if abs(skewness) < 0.5:
-            print(f"The data is fairly symmetrical {skewness}")
+            print(f"The data is fairly symmetrical (skewness is: {skewness})")
         elif abs(skewness) < 1:
-            print(f"The data are moderately skewed {skewness}")
+            print(f"The data are moderately skewed (skewness is: {skewness})")
         else:
-            print(f"The data are highly skewed {skewness}\nNote: When skewness exceed |1| we called it highly skewed")
+            print(f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed")
 
         # f = x.describe()
         # f['Nunique'] = x.nunique()
