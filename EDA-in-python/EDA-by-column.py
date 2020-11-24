@@ -190,6 +190,7 @@ def DTYPES():
 dtypes = DTYPES()
 # ----------------------------------------------------------------------- Feature enginearing
 # ======= Adding date columns
+# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> add polynomial, sqrt, tree, log features
 def add_new_date_cols(x, suffix):
     d = {}
     d[suffix + '_week_normalized'] = x.dt.week / 52
