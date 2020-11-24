@@ -527,8 +527,6 @@ errors_rf = predictions_rf - test_y
 f['Errors__'] = errors_rf
 f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
 print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
-print(f"Mean of test reseduals: {errors_rf.mean()}")
-
 # --------------------------------------------------------- END Random Forest
 
 # ================================================================================================================ END Modeling
