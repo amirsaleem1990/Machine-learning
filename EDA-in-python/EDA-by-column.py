@@ -498,7 +498,7 @@ predictions_rf = rf.predict(test_X)
 new_line()
 print(f"RF model peramters:\n\n")
 import pprint
-pprint.pprint(m.get_params())
+pprint.pprint(model_rf.get_params())
 
 new_line()
 importances = list(rf.feature_importances_)
