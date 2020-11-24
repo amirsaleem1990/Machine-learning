@@ -484,9 +484,9 @@ for i in summary_df.columns[1:]:
 summary_df.Variable = summary_df.Variable.astype(str)
 summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
 summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
-# summary_df.to_csv()
-print("\nNOTE: This summary saved as <summary_OLS_1.csv>")
-# print(summary_df.to_string())
+summary_df.to_csv()
+print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n")
+print(summary_df.to_string())
 # ============================= Model statistic
 predictions = model_reg.predict(test_X)
 
