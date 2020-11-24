@@ -526,6 +526,7 @@ f = test_X.copy("deep")
 errors_rf = predictions_rf - test_y
 f['Errors__'] = errors_rf
 f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+new_line()
 print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
 # --------------------------------------------------------- END Random Forest
 
