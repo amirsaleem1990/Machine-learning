@@ -523,3 +523,4 @@ https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestR
 
 
 model_rf.score(test_X, test_y)
+model_rf.score(train_X, train_y)
