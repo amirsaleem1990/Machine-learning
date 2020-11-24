@@ -457,101 +457,111 @@ print("\n\n")
 print("----------------------------------------------------------------------------------------------")
 print("****************************************** Modeling ******************************************")
 
-df_T = df.select_dtypes("number")
-cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
-df_T[cat_cols.columns.to_list()] = cat_cols
+# Regression problem
+if df[target_variable].dtype in [float, int]:
 
-df = df_T.copy("deep")
-del df_T
-del cat_cols
-# ====
-from sklearn.model_selection import train_test_split
-train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-# ====
-# --------------------------------------------------------- Linear regression
-print("\n")
-print(" ------------------------------------- Linear Regression -------------------------------------\n")
-from statsmodels.regression.linear_model import OLS
-model_reg = OLS(train_y, train_X).fit()
-summary = model_reg.summary()
-summary_df = pd.DataFrame(summary.tables[1])
-summary_df.columns = summary_df.iloc[0]
-summary_df.drop(0, inplace=True)
-summary_df.columns = summary_df.columns.astype(str)
-summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
-for i in summary_df.columns[1:]:
-    summary_df[i] = summary_df[i].astype(str).astype(float)
-summary_df.Variable = summary_df.Variable.astype(str)
-summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
-summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
-summary_df.to_csv()
-print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n")
-print(summary_df.to_string())
-# ============================= Model statistic
-predictions = model_reg.predict(test_X)
+    df_T = df.select_dtypes("number")
+    cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
+    df_T[cat_cols.columns.to_list()] = cat_cols
 
-new_line()
-print(" --- Model statistic --- \n")
-print(f"R-squared         : {round(model_reg.rsquared, 3)}")
-print(f"Adj. R-squared    : {round(model_reg.rsquared_adj, 3)}")
-print(f"F-statistic       : {round(model_reg.fvalue)}")
-print(f"Prob (F-statistic): {model_reg.f_pvalue}")
-print(f"No. Observations  : {round(model_reg.nobs)}")
-print(f"AIC               : {round(model_reg.aic)}")
-print(f"Df Residuals      : {round(model_reg.df_resid)}")
-print(f"BIC               : {round(model_reg.bic)}")
-print(f"RMSE (test)       : {RMSE(predictions)}")
-# ======
-f = train_X.copy("deep")
-f['Errors__'] = model_reg.resid
-f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
-new_line()
-print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
-print(f"Mean of train reseduals: {model_reg.resid.mean()}")
-del f
-# ============================= END (Model statistic)
-# --------------------------------------------------------- END Linear regression
-# --------------------------------------------------------- Random Forest
-print("\n")
-print(" ------------------------------------- Linear Regression -------------------------------------\n")
-from sklearn.ensemble import RandomForestRegressor
-rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
-model_rf = rf.fit(train_X, train_y);
-predictions_rf = rf.predict(test_X)
+    df = df_T.copy("deep")
+    del df_T
+    del cat_cols
+    # ====
+    from sklearn.model_selection import train_test_split
+    train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+    # ====
+    # --------------------------------------------------------- Linear regression
+    print("\n")
+    print(" ------------------------------------- Linear Regression -------------------------------------\n")
+    from statsmodels.regression.linear_model import OLS
+    model_reg = OLS(train_y, train_X).fit()
+    summary = model_reg.summary()
+    summary_df = pd.DataFrame(summary.tables[1])
+    summary_df.columns = summary_df.iloc[0]
+    summary_df.drop(0, inplace=True)
+    summary_df.columns = summary_df.columns.astype(str)
+    summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
+    for i in summary_df.columns[1:]:
+        summary_df[i] = summary_df[i].astype(str).astype(float)
+    summary_df.Variable = summary_df.Variable.astype(str)
+    summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
+    summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
+    summary_df.to_csv()
+    print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n")
+    print(summary_df.to_string())
+    # ============================= Model statistic
+    predictions = model_reg.predict(test_X)
 
-new_line()
-print(f"RF model peramters:\n\n")
-import pprint
-pprint.pprint(model_rf.get_params())
+    new_line()
+    print(" --- Model statistic --- \n")
+    print(f"R-squared         : {round(model_reg.rsquared, 3)}")
+    print(f"Adj. R-squared    : {round(model_reg.rsquared_adj, 3)}")
+    print(f"F-statistic       : {round(model_reg.fvalue)}")
+    print(f"Prob (F-statistic): {model_reg.f_pvalue}")
+    print(f"No. Observations  : {round(model_reg.nobs)}")
+    print(f"AIC               : {round(model_reg.aic)}")
+    print(f"Df Residuals      : {round(model_reg.df_resid)}")
+    print(f"BIC               : {round(model_reg.bic)}")
+    print(f"RMSE (test)       : {RMSE(predictions)}")
+    # ======
+    f = train_X.copy("deep")
+    f['Errors__'] = model_reg.resid
+    f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+    new_line()
+    print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
+    print(f"Mean of train reseduals: {model_reg.resid.mean()}")
+    del f
+    # ============================= END (Model statistic)
+    # --------------------------------------------------------- END Linear regression
 
-new_line()
-importances = list(rf.feature_importances_)
-feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
-featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
-if len(featuresImportance) > 30:
-    featuresImportance = featuresImportance.head(30)
-featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
-plt.title("RandomForest Feature importances Graph", size=18,color='red');
-plt.xlabel("Features", size=14, color='red');
-plt.ylabel("Importance", size=14, color='red');
-plt.show();
-del featuresImportance
 
-new_line()
-print("--- Model statistic ---")
-# The coefficient of determination R^2 of the prediction.
-# https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
-print(f"R^2 (test) : {rf.score(test_X, test_y)}")
-print(f"R^2 (train): {rf.score(train_X, train_y)}")
-print(f"RMSE (test): {RMSE(predictions_rf)}")
-print(f"oob score  : {model_rf.oob_score_}")
 
-f = test_X.copy("deep")
-errors_rf = predictions_rf - test_y
-f['Errors__'] = errors_rf
-f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
-new_line()
-print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
-# --------------------------------------------------------- END Random Forest
+    
+    # --------------------------------------------------------- Random Forest
+    print("\n")
+    print(" ------------------------------------- Linear Regression -------------------------------------\n")
+    from sklearn.ensemble import RandomForestRegressor
+    rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
+    model_rf = rf.fit(train_X, train_y);
+    predictions_rf = rf.predict(test_X)
+
+    new_line()
+    print(f"RF model peramters:\n\n")
+    import pprint
+    pprint.pprint(model_rf.get_params())
+
+    new_line()
+    importances = list(rf.feature_importances_)
+    feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
+    featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
+    if len(featuresImportance) > 30:
+        featuresImportance = featuresImportance.head(30)
+    featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
+    plt.title("RandomForest Feature importances Graph", size=18,color='red');
+    plt.xlabel("Features", size=14, color='red');
+    plt.ylabel("Importance", size=14, color='red');
+    plt.show();
+    del featuresImportance
+
+    new_line()
+    print("--- Model statistic ---")
+    # The coefficient of determination R^2 of the prediction.
+    # https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+    print(f"R^2 (test) : {rf.score(test_X, test_y)}")
+    print(f"R^2 (train): {rf.score(train_X, train_y)}")
+    print(f"RMSE (test): {RMSE(predictions_rf)}")
+    print(f"oob score  : {model_rf.oob_score_}")
+
+    f = test_X.copy("deep")
+    errors_rf = predictions_rf - test_y
+    f['Errors__'] = errors_rf
+    f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+    new_line()
+    print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
+    # --------------------------------------------------------- END Random Forest
+
+# Classififcation problem
+
 
 # ================================================================================================================ END Modeling
