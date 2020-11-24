@@ -464,7 +464,7 @@ summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
 new_line()
 print("\nNOTE: This summary saved as <summary_OLS_1.csv>\n\n")
 # print(summary_df.to_string())
-# ============================= Models statistic
+# ============================= Model statistic
 predictions = model_reg.predict(test_X)
 
 new_line()
@@ -487,4 +487,6 @@ new_line()
 print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
 print(f"Mean of train reseduals: {model_reg.resid.mean()}")
 del f
-# ============================= END (Models statistic)
+# ============================= END (Model statistic)
+# --------------------------------------------------------- END Linear regression
+# --------------------------------------------------------- Random Forest
