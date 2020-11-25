@@ -50,19 +50,18 @@ def new_line():
         FN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[1])).sum()
         FP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[0])).sum()
 
-        lst.append((thresh, (pred == test_y).mean()*100, TN, TP, FN, FP))
+        p = TP / (TP + FP)
+        r = TP / (TP + FN)
+        f = 2 * ((p * r) / (p+r))
 
+        lst.append((thresh, (pred == test_y).mean(), p, r , f))
 
-
-
-    d = pd.DataFrame(lst, columns=["Thresold", "Accurecy(1-100)", "TN", "TP", "FN", "FP"])
-
-
-    
-    d.plot(x="Thresold", y="Accurecy(1-100)", grid=True, figsize=(18,7));
-    plt.title("Accurecy at diffrent Thresolds", size=18, color='red');
+    d = pd.DataFrame(lst, columns=["Thresold", "Accurecy(0-1)", "Precision", "Recall", "F1"])
+    d = d.set_index("Thresold")
+    d.plot(grid=True, figsize=(18,7));
+    plt.title("Model performance at diffrent Thresolds", size=18, color='red');
     plt.xlabel("Thresold", size=14, color='red');
-    plt.ylabel("Accuracy (1-100)", size=14, color='red');
+    plt.ylabel("");
     plt.show()
 
 
