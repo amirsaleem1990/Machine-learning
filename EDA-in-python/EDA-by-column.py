@@ -16,7 +16,6 @@ def new_line():
     print("-------------------------")
 
 
-df = pickle.load(open("df.pkl", "rb"))
 
 # if df[target_variable].nunique() == 2:
 #     print("\n-------------------- This is Binary Classification problem --------------------\n")
@@ -28,13 +27,20 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
 target_variable = "STATUS_CODE"
 
-for col in df.columns:
-    df[col] = LabelEncoder().fit_transform(df[col].astype(str))
 
-train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 
-clf=RandomForestClassifier(n_estimators=200).fit(train_X, train_y)
-(clf.predict(test_X) == test_y).mean()
+cat_cols = df.select_dtypes("O").columns
+for target_variable in cat_cols:
+
+    df = pickle.load(open("df.pkl", "rb"))
+
+    for col in df.columns:
+        df[col] = LabelEncoder().fit_transform(df[col].astype(str))
+
+    train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+
+    clf=RandomForestClassifier(n_estimators=20).fit(train_X, train_y)
+    print(target_variable, (clf.predict(test_X) == test_y).mean())
 
 
 
