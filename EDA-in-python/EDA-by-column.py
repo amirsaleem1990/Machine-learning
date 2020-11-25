@@ -460,6 +460,9 @@ print("****************************************** Modeling *********************
 # Regression problem
 if df[target_variable].dtype in [float, int]:
 
+    print("\n-------------------- This is Regression problem --------------------\n")
+    print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+
     df_T = df.select_dtypes("number")
     cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
     df_T[cat_cols.columns.to_list()] = cat_cols
@@ -562,6 +565,9 @@ if df[target_variable].dtype in [float, int]:
     # --------------------------------------------------------- END Random Forest
 
 # Classififcation problem
+elif df[target_variable].dtype == "O":
+    if df[target_variable].nunique() == 2:
+
 
 
 # ================================================================================================================ END Modeling
