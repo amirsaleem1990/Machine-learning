@@ -567,7 +567,11 @@ if df[target_variable].dtype in [float, int]:
 # Classififcation problem
 elif df[target_variable].dtype == "O":
     if df[target_variable].nunique() == 2:
+        print("\n-------------------- This is Binary Classification problem --------------------\n")
+        print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
 
-
+    else:
+        print("\n-------------------- This is Multiclass Classification problem --------------------\n")
+        print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
 
 # ================================================================================================================ END Modeling
