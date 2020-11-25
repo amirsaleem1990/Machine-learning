@@ -1,3 +1,7 @@
+import pprint
+from sklearn.ensemble import RandomForestRegressor
+from pandas_profiling import ProfileReport
+from dateutil import relativedelta
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -5,6 +9,7 @@ import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
 from sklearn.model_selection import train_test_split
+from statsmodels.regression.linear_model import OLS
 
 def new_line():
     print("-------------------------")
@@ -96,7 +101,6 @@ del f
 # D2 = df.select_dtypes("O").iloc[:,:5]
 # df = pd.concat([D, D2], 1)
 
-# from pandas_profiling import ProfileReport
 # profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
 # profile.to_file("your_report.html")
 #---------------------------------------------------
@@ -397,7 +401,6 @@ for row in dtypes.iterrows():
     elif type == "Date":
 
         new_line()
-        from dateutil import relativedelta
         rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
         print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}\n\n")
 
@@ -477,7 +480,6 @@ if df[target_variable].dtype in [float, int]:
     # --------------------------------------------------------- Linear regression
     print("\n")
     print(" ------------------------------------- Linear Regression -------------------------------------\n")
-    from statsmodels.regression.linear_model import OLS
     model_reg = OLS(train_y, train_X).fit()
     summary = model_reg.summary()
     summary_df = pd.DataFrame(summary.tables[1])
@@ -524,14 +526,13 @@ if df[target_variable].dtype in [float, int]:
     # --------------------------------------------------------- Random Forest
     print("\n")
     print(" ------------------------------------- Linear Regression -------------------------------------\n")
-    from sklearn.ensemble import RandomForestRegressor
+
     rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
     model_rf = rf.fit(train_X, train_y);
     predictions_rf = rf.predict(test_X)
 
     new_line()
     print(f"RF model peramters:\n\n")
-    import pprint
     pprint.pprint(model_rf.get_params())
 
     new_line()
