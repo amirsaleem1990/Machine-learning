@@ -44,13 +44,26 @@ def new_line():
         pred.loc[pred == False] = clf.classes_[1]
 
         test_y = test_y.reset_index(drop=True)
-        lst.append((thresh, (pred == test_y).mean()*100))
-    pd.DataFrame(lst, columns=["Thresold", "Accurecy(1-100)"]).plot(x="Thresold", y="Accurecy(1-100)", grid=True, figsize=(18,7));
+
+        TN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[0])).sum()
+        TP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[1])).sum()
+        FN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[1])).sum()
+        FP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[0])).sum()
+
+        lst.append((thresh, (pred == test_y).mean()*100, TN, TP, FN, FP))
+
+
+
+
+    d = pd.DataFrame(lst, columns=["Thresold", "Accurecy(1-100)", "TN", "TP", "FN", "FP"])
+
+
+    
+    d.plot(x="Thresold", y="Accurecy(1-100)", grid=True, figsize=(18,7));
     plt.title("Accurecy at diffrent Thresolds", size=18, color='red');
     plt.xlabel("Thresold", size=14, color='red');
     plt.ylabel("Accuracy (1-100)", size=14, color='red');
     plt.show()
-
 
 
 # else:
