@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import warnings
 warnings.filterwarnings("ignore")
+from sklearn.model_selection import train_test_split
 
 def new_line():
     print("-------------------------")
@@ -471,7 +472,6 @@ if df[target_variable].dtype in [float, int]:
     del df_T
     del cat_cols
     # ====
-    from sklearn.model_selection import train_test_split
     train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
     # ====
     # --------------------------------------------------------- Linear regression
@@ -563,15 +563,16 @@ if df[target_variable].dtype in [float, int]:
     new_line()
     print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
     # --------------------------------------------------------- END Random Forest
-
+target_variable = 'AREA_NAME_EN'
 # Classififcation problem
 elif df[target_variable].dtype == "O":
+    train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
     if df[target_variable].nunique() == 2:
         print("\n-------------------- This is Binary Classification problem --------------------\n")
         print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
-
     else:
         print("\n-------------------- This is Multiclass Classification problem --------------------\n")
         print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+
 
 # ================================================================================================================ END Modeling
