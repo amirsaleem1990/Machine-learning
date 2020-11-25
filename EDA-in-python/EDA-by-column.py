@@ -23,23 +23,53 @@ def new_line():
 # else:
 #     print("\n-------------------- This is Multiclass Classification problem --------------------\n")
 #     print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
+from sklearn import metrics
+df = pickle.load(open("df.pkl", "rb"))
 target_variable = "STATUS_CODE"
 
+df.loc[:, df.select_dtypes("O").columns] = df.select_dtypes("O").apply(lambda x: pd.Series(LabelEncoder().fit_transform(x.astype(str))).astype(str))
+train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 
-# cat_cols = df.select_dtypes("O").columns
-for target_variable in cat_cols:
+clf=RandomForestClassifier(n_estimators=1000).fit(train_X, train_y)
+predictions = clf.predict(test_X)
+feature_imp = pd.Series(clf.feature_importances_,index=train_X.columns).sort_values(ascending=False)
+if feature_imp.size > 30:
+    feature_imp = feature_imp.head(30)
+feature_imp.plot(kind='barh', figsize=(17,10), grid=True);
+plt.title("Feature importances Graph", size=18, color='red');
+plt.xlabel("Importance", size=14, color='red');
+plt.ylabel("Feature", size=14, color='red');
+plt.show()
+# ====
+f = (test_y, predictions)
+f_int = (test_y.astype(int), predictions.astype(int))
 
-    df = pickle.load(open("df.pkl", "rb"))
+print(f"accuracy_score: {metrics.accuracy_score(*f)}")
+print(f"f1_score: {metrics.f1_score(*f_int)}")
+print(f"mean_absolute_error: {metrics.mean_absolute_error(*f)}")
+print(f"mean_squared_error: {metrics.mean_squared_error(*f)}")
+print(f"median_absolute_error: {metrics.median_absolute_error(*f)}")
 
-    for col in df.columns:
-        df[col] = pd.Series(LabelEncoder().fit_transform(df[col].astype(str))).astype(str)
+metrics.plot_roc_curve(clf, test_X, test_y);
+plt.title("ROC curve plot");
+plt.show();
 
-    train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+metrics.ConfusionMatrixDisplay(metrics.confusion_matrix(*f)); plt.show()
 
-    clf=RandomForestClassifier(n_estimators=1).fit(train_X, train_y)
-    print(target_variable, (clf.predict(test_X) == test_y).mean())
+metrics.plot_confusion_matrix(clf, test_X, test_y);
+plt.title("Confusion matrix");
+plt.show()
+
+metrics.plot_precision_recall_curve(clf, test_X, test_y);
+plt.title("Precision recall curve");
+plt.show()
+
+
+
 
 
 
