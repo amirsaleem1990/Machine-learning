@@ -1,3 +1,4 @@
+import pickle
 import pprint
 from sklearn.ensemble import RandomForestRegressor
 from pandas_profiling import ProfileReport
@@ -578,3 +579,5 @@ elif df[target_variable].dtype == "O":
 
 
 # ================================================================================================================ END Modeling
+
+pickle.dump(df, open("df.pkl", "wb"))
