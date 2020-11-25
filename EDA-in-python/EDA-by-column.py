@@ -84,7 +84,8 @@ def data_shape():
 # df = pd.read_csv("data.csv", date_parser=True)
 
 df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
-target_variable = "ACTUAL_WORTH"
+# target_variable = "ACTUAL_WORTH"
+target_variable = "AREA_NAME_EN"
 
 # df = pd.read_csv("cleaned_data.csv", date_parser=True)
 # target_variable = "SalePrice"
@@ -564,7 +565,7 @@ if df[target_variable].dtype in [float, int]:
     new_line()
     print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
     # --------------------------------------------------------- END Random Forest
-target_variable = 'AREA_NAME_EN'
+# target_variable = 'AREA_NAME_EN'
 # Classififcation problem
 elif df[target_variable].dtype == "O":
     train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
