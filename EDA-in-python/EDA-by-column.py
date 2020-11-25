@@ -1,3 +1,6 @@
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.preprocessing import LabelEncoder
+from sklearn import metrics
 import pickle
 import pprint
 from sklearn.ensemble import RandomForestRegressor
@@ -24,53 +27,37 @@ def new_line():
 #     print("\n-------------------- This is Multiclass Classification problem --------------------\n")
 #     print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
 
+    df.loc[:, df.select_dtypes("O").columns] = df.select_dtypes("O").apply(lambda x: pd.Series(LabelEncoder().fit_transform(x.astype(str))).astype(str))
+    train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
-from sklearn import metrics
-df = pickle.load(open("df.pkl", "rb"))
-target_variable = "STATUS_CODE"
+    clf=RandomForestClassifier(n_estimators=1000).fit(train_X, train_y)
+    predictions = clf.predict(test_X)
+    feature_imp = pd.Series(clf.feature_importances_,index=train_X.columns).sort_values(ascending=False)
+    if feature_imp.size > 30:
+        feature_imp = feature_imp.head(30)
+    feature_imp.plot(kind='barh', figsize=(17,10), grid=True);
+    plt.title("Feature importances Graph", size=18, color='red');
+    plt.xlabel("Importance", size=14, color='red');
+    plt.ylabel("Feature", size=14, color='red');
+    plt.show()
+    # ====
+    f = (test_y, predictions)
+    f_int = (test_y.astype(int), predictions.astype(int))
 
-df.loc[:, df.select_dtypes("O").columns] = df.select_dtypes("O").apply(lambda x: pd.Series(LabelEncoder().fit_transform(x.astype(str))).astype(str))
-train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+    print(f"accuracy_score: {metrics.accuracy_score(*f)}")
+    print(f"f1_score: {metrics.f1_score(*f_int)}")
 
-clf=RandomForestClassifier(n_estimators=1000).fit(train_X, train_y)
-predictions = clf.predict(test_X)
-feature_imp = pd.Series(clf.feature_importances_,index=train_X.columns).sort_values(ascending=False)
-if feature_imp.size > 30:
-    feature_imp = feature_imp.head(30)
-feature_imp.plot(kind='barh', figsize=(17,10), grid=True);
-plt.title("Feature importances Graph", size=18, color='red');
-plt.xlabel("Importance", size=14, color='red');
-plt.ylabel("Feature", size=14, color='red');
-plt.show()
-# ====
-f = (test_y, predictions)
-f_int = (test_y.astype(int), predictions.astype(int))
+    metrics.plot_roc_curve(clf, test_X, test_y);
+    plt.title("ROC curve plot");
+    plt.show();
 
-print(f"accuracy_score: {metrics.accuracy_score(*f)}")
-print(f"f1_score: {metrics.f1_score(*f_int)}")
+    metrics.ConfusionMatrixDisplay(metrics.confusion_matrix(*f)); plt.show()
 
-metrics.plot_roc_curve(clf, test_X, test_y);
-plt.title("ROC curve plot");
-plt.show();
+    metrics.plot_confusion_matrix(clf, test_X, test_y);
+    plt.title("Confusion matrix");
+    plt.show()
 
-metrics.ConfusionMatrixDisplay(metrics.confusion_matrix(*f)); plt.show()
-
-metrics.plot_confusion_matrix(clf, test_X, test_y);
-plt.title("Confusion matrix");
-plt.show()
-
-metrics.plot_precision_recall_curve(clf, test_X, test_y);
-plt.title("Precision recall curve");
-plt.show()
-
-
-
-
-
-
-
-
-
+    metrics.plot_precision_recall_curve(clf, test_X, test_y);
+    plt.title("Precision recall curve");
+    plt.show()
 # ================================================================================================================ END Modeling
