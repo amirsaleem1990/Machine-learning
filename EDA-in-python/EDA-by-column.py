@@ -28,18 +28,17 @@ from sklearn.preprocessing import LabelEncoder
 target_variable = "STATUS_CODE"
 
 
-
-cat_cols = df.select_dtypes("O").columns
+# cat_cols = df.select_dtypes("O").columns
 for target_variable in cat_cols:
 
     df = pickle.load(open("df.pkl", "rb"))
 
     for col in df.columns:
-        df[col] = LabelEncoder().fit_transform(df[col].astype(str))
+        df[col] = pd.Series(LabelEncoder().fit_transform(df[col].astype(str))).astype(str)
 
     train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 
-    clf=RandomForestClassifier(n_estimators=20).fit(train_X, train_y)
+    clf=RandomForestClassifier(n_estimators=1).fit(train_X, train_y)
     print(target_variable, (clf.predict(test_X) == test_y).mean())
 
 
