@@ -50,9 +50,6 @@ f_int = (test_y.astype(int), predictions.astype(int))
 
 print(f"accuracy_score: {metrics.accuracy_score(*f)}")
 print(f"f1_score: {metrics.f1_score(*f_int)}")
-print(f"mean_absolute_error: {metrics.mean_absolute_error(*f)}")
-print(f"mean_squared_error: {metrics.mean_squared_error(*f)}")
-print(f"median_absolute_error: {metrics.median_absolute_error(*f)}")
 
 metrics.plot_roc_curve(clf, test_X, test_y);
 plt.title("ROC curve plot");
