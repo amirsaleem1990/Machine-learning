@@ -244,7 +244,8 @@ all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).d
 if all_values_are_unique.size:
     new_line()
     df.drop(columns=all_values_are_unique.index, inplace=True)
-    print(f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n")
+    to_print = f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n"
+    print(colored(to_print, 'red'))
     for i in all_values_are_unique.index:
         print("\t", i)
 del all_values_are_unique
