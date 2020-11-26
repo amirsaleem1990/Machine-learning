@@ -284,7 +284,7 @@ def DTYPES():
         )
     if x.size:
         new_line()
-        print("Some columns not included in any existing catagory, those:\n")
+        print(colored("Some columns not included in any existing catagory, those:\n", 'red'))
         for i in x:
             print(f"\t<{i}, with dtype of <{df[i].dtype}>")
     #===
@@ -327,7 +327,8 @@ for date_col in date_columns:
 len_df_after_adding_date_vars  = df.shape[1]
 if len_df_after_adding_date_vars > len_df_before_adding_date_vars:
     new_line()
-    print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features")
+    to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features"
+    print(colored(to_print, 'red'))
 # ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
 f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
 if f.size:
