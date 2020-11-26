@@ -585,7 +585,9 @@ if df[target_variable].dtype in [float, int]:
     train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
     # ====
     # --------------------------------------------------------- Linear regression
-    print("\n ------------------------------------- Linear Regression -------------------------------------\n")
+    to_print = "\n ------------------------------------- Linear Regression -------------------------------------\n"
+    print(colored(to_print, 'red'))
+
     model_reg = OLS(train_y, train_X).fit()
     summary = model_reg.summary()
     summary_df = pd.DataFrame(summary.tables[1])
@@ -600,7 +602,8 @@ if df[target_variable].dtype in [float, int]:
     summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
     summary_df.to_csv()
     new_line()
-    print("NOTE: This summary saved as <summary_OLS_1.csv>")
+    print(colored("NOTE: This summary saved as <summary_OLS_1.csv>", 'red'))
+
     new_line()
     print(summary_df.to_string())
     # ============================= Model statistic
