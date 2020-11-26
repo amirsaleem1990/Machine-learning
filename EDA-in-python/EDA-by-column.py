@@ -238,7 +238,7 @@ only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
 if only_one_unique_value.size:
     new_line()
     df.drop(columns=only_one_unique_value.index, inplace=True)
-    to_print = f"There are {only_one_unique_value.size} variable/s That have only one unique value, so we droped it/those.\nThose column/s name/s (in order):}"
+    to_print = f"There are {only_one_unique_value.size} variable/s That have only one unique value, so we droped it/those.\nThose column/s name/s (in order):"
     print(colored(to_print, 'red'))
     for i in only_one_unique_value.index.sort_values():
         print(i)
