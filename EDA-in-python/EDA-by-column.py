@@ -199,32 +199,33 @@ if df.select_dtypes("number").isna().sum().sum():
 #===
 # -------------------------------- Catagoriacal variables imputating
 vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
-for col in vars_to_fill.index:
-    tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
-    tr_y = tr[col]
-    tr_X = tr.drop(columns=col)
+if vars_to_fill.size:
+    for col in vars_to_fill.index:
+        tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
+        tr_y = tr[col]
+        tr_X = tr.drop(columns=col)
 
-    tr_T = tr_X.select_dtypes("number")
-    cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
-    tr_T[cat_cols.columns.to_list()] = cat_cols
+        tr_T = tr_X.select_dtypes("number")
+        cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
+        tr_T[cat_cols.columns.to_list()] = cat_cols
 
-    tr_T[col] = tr_y
-    tr = tr_T.copy("deep")
+        tr_T[col] = tr_y
+        tr = tr_T.copy("deep")
 
-    train = tr[tr[col].notna()]
-    test  = tr[tr[col].isna()]
+        train = tr[tr[col].notna()]
+        test  = tr[tr[col].isna()]
 
-    train_y = train[col]
-    train_X = train.drop(columns=col)
+        train_y = train[col]
+        train_X = train.drop(columns=col)
 
-    test_X = test.drop(columns=col)
+        test_X = test.drop(columns=col)
 
-    clf = DecisionTreeClassifier().fit(train_X, train_y)
-    test_y = clf.predict(test_X)
+        clf = DecisionTreeClassifier().fit(train_X, train_y)
+        test_y = clf.predict(test_X)
 
-    df.loc[df[col].isna(), col] = test_y
-new_line()
-print("Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
+        df.loc[df[col].isna(), col] = test_y
+    new_line()
+    print("Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
 # ----------------------------------------------- END Imputing Missing values
 # --------------------------------------------------------- Unique values
 only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
