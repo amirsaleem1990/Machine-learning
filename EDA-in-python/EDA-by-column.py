@@ -452,7 +452,7 @@ for row in dtypes.iterrows():
 
         new_line()
         rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
-        print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}\n\n")
+        print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}")
 
         # f = pd.Series({'Count' : x.count(),
         #             'Nunique count' : x.nunique(),
