@@ -329,6 +329,7 @@ if len_df_after_adding_date_vars > len_df_before_adding_date_vars:
     new_line()
     to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features"
     print(colored(to_print, 'red'))
+
 # ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
 f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
 if f.size:
@@ -337,7 +338,8 @@ if f.size:
         df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
     len_df_after_adding_date_vars  = df.shape[1]
     new_line()
-    print(f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)")
+    to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)"
+    print(colored(to_print, 'red'))
 # =======
 def cluping_rare_cases_in_one_catagory(x):
     global df
