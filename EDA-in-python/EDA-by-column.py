@@ -579,7 +579,7 @@ if df[target_variable].dtype in [float, int]:
     predictions_rf = rf.predict(test_X)
 
     new_line()
-    print(f"RF model peramters:\n\n")
+    print(f"RF model peramters:\n")
     pprint.pprint(model_rf.get_params())
 
     new_line()
