@@ -28,6 +28,25 @@ def new_line():
 def RMSE(predictions):
     return round(np.sqrt(((test_y - predictions)**2).mean()))
 
+def cluping_rare_cases_in_one_catagory(x):
+    global df
+    x = df[x]
+    orignal  = x.copy("deep")
+    xx = x.value_counts()
+    xx = xx[xx< 10].index.to_list()
+    x =  x.replace(xx , "Rare cases")
+    if x.value_counts()[-1] < 8:
+        x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
+    if x.nunique() == 1:
+        new_line()
+        # to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
+        to_print = f"The column <{x.name}> have imbalanced, so we droped it, it has {orignal.nunique()} unique values, and most commont value frequency ratio is {orignal.mode()[0]/orignal.size}"
+        print(colored(to_print, 'red'))
+        # return orignal
+        df.drop(columns=x.name, inplace=True)
+        return None
+    return x
+    
 def plot_numerical_columns(col_name):
     if not plot_______:
         return None
@@ -360,25 +379,6 @@ if f.size:
     to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)"
     print(colored(to_print, 'red'))
 # =======
-def cluping_rare_cases_in_one_catagory(x):
-    global df
-    x = df[x]
-    orignal  = x.copy("deep")
-    xx = x.value_counts()
-    xx = xx[xx< 10].index.to_list()
-    x =  x.replace(xx , "Rare cases")
-    if x.value_counts()[-1] < 8:
-        x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
-    if x.nunique() == 1:
-        new_line()
-        # to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
-        to_print = f"The column <{x.name}> have imbalanced, so we droped it, it has {orignal.nunique()} unique values, and most commont value frequency ratio is {orignal.mode()[0]/orignal.size}"
-        print(colored(to_print, 'red'))
-        # return orignal
-        df.drop(columns=x.name, inplace=True)
-        return None
-    return x
-
 for var in df.select_dtypes("O").columns:
     m = cluping_rare_cases_in_one_catagory(var)
     if isinstance(m, pd.core.series.Series):
