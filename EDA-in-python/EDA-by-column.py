@@ -112,11 +112,17 @@ def data_shape():
 df = pd.read_csv("cleaned_data.csv", date_parser=True)
 target_variable = "SalePrice"
 
+
+
+
 import missingno as msno
-msno.matrix(df)
+msno.matrix(df);
 plt.show()
+
+
 sns.heatmap(df.isnull().sample(2500), cbar=False)#, square=False);
-plt.title("NA Graph")
+plt.title("NA Graph");
+plt.show()
 #===
 f = df[target_variable].isna().sum()
 if f:
