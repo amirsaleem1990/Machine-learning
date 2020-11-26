@@ -472,7 +472,7 @@ for row in dtypes.iterrows():
         f['Ratio'] = (f.Counts / x.count() * 100).round(4)
 
         new_line()
-        print(f"\n{f.to_string()}\n\n")
+        print(f"\n{f.to_string()}")
 
 
         f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
@@ -482,7 +482,6 @@ for row in dtypes.iterrows():
             print(f"These Years (in order) are missing:\n")
             for i in f:
                 print("\t", i, end=", ")
-            print("\n\n")
 
         f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
             x.dt.month.unique())
@@ -491,7 +490,6 @@ for row in dtypes.iterrows():
             print(f"These Months (in order) are missing:\n")
             for i in f:
                 print("\t", i, end=", ")
-            print("\n\n")
 
         f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
             x.dt.day.unique())
@@ -500,7 +498,6 @@ for row in dtypes.iterrows():
             print(f"These Days (in order) are missing:\n")
             for i in f:
                 print("\t", i, end=", ")
-            print("\n\n")
 
         new_line()
         plot_date_columns(column_name)
