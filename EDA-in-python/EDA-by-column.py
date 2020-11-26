@@ -40,13 +40,13 @@ def cluping_rare_cases_in_one_catagory(x):
     if x.nunique() == 1:
         new_line()
         # to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
-        to_print = f"The column <{x.name}> have imbalanced, so we droped it, it has {orignal.nunique()} unique values, and most commont value frequency ratio is {orignal.mode()[0]/orignal.size}"
+        to_print = f"The column <{x.name}> have imbalanced, so we droped it, it has {orignal.nunique()} unique values, and most commont value frequency ratio is {(orignal == orignal.mode()[0]).mean()}"
         print(colored(to_print, 'red'))
         # return orignal
         df.drop(columns=x.name, inplace=True)
         return None
     return x
-    
+
 def plot_numerical_columns(col_name):
     if not plot_______:
         return None
