@@ -18,6 +18,8 @@ warnings.filterwarnings("ignore")
 from sklearn.model_selection import train_test_split
 from statsmodels.regression.linear_model import OLS
 
+plot_______ = False
+
 def new_line():
     print("\n-------------------------\n")
 
@@ -25,7 +27,8 @@ def RMSE(predictions):
     return round(np.sqrt(((test_y - predictions)**2).mean()))
 
 def plot_numerical_columns(col_name):
-    # return None
+    if not plot_______:
+        return None
 
     # Histogram
     df[col_name].plot(kind="hist", figsize=(13,8));
@@ -58,7 +61,8 @@ def plot_numerical_columns(col_name):
     plt.show()
 
 def plot_date_columns(col_name):
-    # return None
+    if not plot_______:
+        return None
     df[col_name].plot(figsize=(15,7), grid=True);
     plt.xlabel("Index", size=14);
     plt.ylabel("Date", size=14);
@@ -90,7 +94,8 @@ def plot_date_columns(col_name):
     plt.show();
 
 def plot_catagorical_columns(cat_variable):
-    # return None
+    if not plot_______:
+        return None
     (df[cat_variable].value_counts() / len(df) * 100).plot.bar(figsize=(15,6), grid=True);
     plt.title(cat_variable, size=18, color='r');
     plt.xlabel("Catagory", size=14, color='r');
@@ -723,18 +728,3 @@ elif df[target_variable].dtype == "O":
         plt.title("Precision recall curve");
         plt.show()
 # ================================================================================================================ END Modeling
-
-
-
-
-
-
-
-f = open("f.txt", "r").read().splitlines()
-f = ["/home/amir/github/" + i.replace("../../", "") for i in f]
-for i in f:
-    d = pd.read_csv(i)
-    d_na = d.select_dtypes("O").isna().sum().where(lambda x:x>0).dropna()
-    print(d_na)
-
-df = pd.read_csv("/home/amir/github/Kaggle-compitations/House-Prices-Advanced-Regression-Techniques-kaggle-compitation/train.csv")
