@@ -611,7 +611,7 @@ if df[target_variable].dtype in [float, int]:
     print("\nStarting Feature selection for Linear regression........")
     selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
     print(f"Droppped {(select == False).sum()} useless features.\n")
-    
+
     train_X = train_X.iloc[:, selector]
     test_X  = test_X.iloc [:, selector]
 
