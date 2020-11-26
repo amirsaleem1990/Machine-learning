@@ -21,7 +21,10 @@ import pprint
 
 warnings.filterwarnings("ignore")
 plot_______ = False
+summary__   = False
+
 # plot_______ = True
+# summary__   = True
 
 
 def add_new_date_cols(x, suffix):
@@ -405,183 +408,184 @@ plt.show()
 # ---------------------------------------------------------------------
 #===
 # m = 0
-for row in dtypes.iterrows():
-    # m += 1
-    # if m == 3:
-        # break
-    column_name, type_ = row[1]
-    x = df[column_name]
-    to_print = f"\n\n\n========================================= {column_name} =========================================\n\n"
-    print(colored(to_print, 'red'))
-
-    for col_ in df.columns:
-        if col_ == column_name:
-            continue
-        if df[col_].nunique() == df[column_name].nunique():
-            unique_combination = df[[col_, column_name]].drop_duplicates()
-            if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
-                new_line()
-                to_print = f"This Columns is duplicate of <{col_}> column"
-                print(colored(to_print, 'red'))
-
-    # print(f"Column Type     : {type_}")
-    print(f"Column Type     : ", end="")
-    print(colored(type_, 'red'))
-    if x.isna().all():
-        new_line()
-        df.drop(columns=column_name, inplace=True)
-        print(colored("We dropped This column, because it is all Empty", 'red'))
-        continue
-    if type_ in ["O", "Date"]:
-        if x.is_unique:
-            new_line()
-            df.drop(columns=column_name, inplace=True)
-            to_print = f"We dropped This column, because it's a {type_} columns, and it's all values are unique"
-            print(colored(to_print, 'red'))
-            continue
-    if x.nunique() == 1:
-        new_line()
-        df.drop(columns=column_name, inplace=True)
-        print(colored("We dropped This column, because There is only one unique value", 'red'))
-        continue
-
-    if type_ == "Number":
-        local_cor = cor_df[column_name].drop(column_name).reset_index()
-        local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
-        if local_cor[column_name].max() == 1:
-            new_line()
-            to_print = f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them"
-            print(colored(to_print, 'red'))
-
-        new_line()
-        xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
-        xm.index = xm['Column name']
-        xm.drop(columns="Column name", inplace=True);
-        xm.plot(kind='barh', grid=True, figsize=(10,1.5));
-        plt.title("Most 3 correlated features with this columns (sorted)", size=14);
-        plt.xlabel("Correlation", size=12);
-        plt.show();
-
-        new_line()
-        skewness = x.skew(skipna = True)
-        if abs(skewness) < 0.5:
-            print(f"The data is fairly symmetrical (skewness is: {skewness})")
-        elif abs(skewness) < 1:
-            print(f"The data are moderately skewed (skewness is: {skewness})")
-        else:
-            to_print = f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed"
-            print(colored(to_print, 'red'))
-
-        # f = x.describe()
-        # f['Nunique'] = x.nunique()
-        # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
-        # f['Outlies count'] = (((x - x.mean())/x.std()).abs() > 3).sum()
-        # f['Outlies ratio'] = f.loc["Outlies count"] / f.loc["count"] * 100
-        # f['Nagative values count'] = (x < 0).sum()
-        # f['Nagative values ratio'] = f['Nagative values count'] / f['count'] * 100
-
-        ff = [x.count(), x.isna().sum(), x.mean(), x.std(), x.min()]
-        ff += x.quantile([.25,.5,.75]).to_list()
-        ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum(), (x == 0).sum()]
-
-        f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive', 'Zeros'], columns=['Count'])
-        f['Ratio'] = f.Count / x.count() * 100
-        f.loc['Mean' : 'Max', 'Ratio'] = None
-
-        new_line()
-        print(f.round(2).to_string())
-        plot_numerical_columns(column_name)
-
-    elif type_ == "Object":
-        # f = x.describe()
-        # f = x.agg(['count', pd.Series.nunique])
-        # f['len'] = len(x)
-        # f['Na count'] = x.isna().sum()
-        # f['Na ratio'] = f['Na count'] / f['count'] * 100
-        # f['Most frequent'] = x.mode().values[0]
-        # f['Most frequent count'] = (x == f['Most frequent']).sum()
-        # f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
-        # f['Least frequent'] = x.value_counts().tail(1).index[0]
-        # f['Least frequent count'] = (x == f['Least frequent']).sum()
-        # f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
-        # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-        # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
-
-        l = x.count(), x.nunique(), len(x), x.isna().sum(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
-        f = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
-        f['Ratio'] = (f.Counts / x.count() * 100).round(4)
-        f.loc[['Len'], 'Ratio'] = None
-
-        new_line()
-        print(f.to_string())
-
-
-        if x.str.lower().nunique() != x.nunique():
-            new_line()
-            to_print = f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n"
-            print(colored(to_print, 'red'))
-
-        if x.str.strip().nunique() != x.nunique():
-            new_line()
-            to_print = f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values."
-            print(colored(to_print, 'red'))
-
-        plot_catagorical_columns(column_name)
-
-    elif type == "Date":
-
-        new_line()
-        rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
-        to_print = f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}"
+if summary__:
+    for row in dtypes.iterrows():
+        # m += 1
+        # if m == 3:
+            # break
+        column_name, type_ = row[1]
+        x = df[column_name]
+        to_print = f"\n\n\n========================================= {column_name} =========================================\n\n"
         print(colored(to_print, 'red'))
 
-        # f = pd.Series({'Count' : x.count(),
-        #             'Nunique count' : x.nunique(),
-        #             'Nunique ratio' : x.nunique() / x.count() * 100,
-        #             'Most frequent value' : str(x.mode()[0]),
-        #             'Least frequent value' :  x.value_counts().tail(1).index[0]
-        #             })
-        # f['Most frequent count'] = (x == f['Most frequent value']).sum()
-        # f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
-        # f['Least frequent count'] = (x == f['Least frequent value']).sum()
-        # f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
-        # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-        # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+        for col_ in df.columns:
+            if col_ == column_name:
+                continue
+            if df[col_].nunique() == df[column_name].nunique():
+                unique_combination = df[[col_, column_name]].drop_duplicates()
+                if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
+                    new_line()
+                    to_print = f"This Columns is duplicate of <{col_}> column"
+                    print(colored(to_print, 'red'))
 
-        ff = x.count(), x.nunique(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
-        f = pd.DataFrame(ff, index=["Count", 'Nunique', 'Most frequent values', 'Least frequent values', 'Values occured only once count'], columns=['Counts'])
-        f['Ratio'] = (f.Counts / x.count() * 100).round(4)
-
-        new_line()
-        print(f"\n{f.to_string()}")
-
-
-        f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
-            x.dt.year.unique())
-        if f:
+        # print(f"Column Type     : {type_}")
+        print(f"Column Type     : ", end="")
+        print(colored(type_, 'red'))
+        if x.isna().all():
             new_line()
-            print(colored("These Years (in order) are missing:\n", 'red'))
-            for i in f:
-                print("\t", i, end=", ")
-
-        f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
-            x.dt.month.unique())
-        if f:
+            df.drop(columns=column_name, inplace=True)
+            print(colored("We dropped This column, because it is all Empty", 'red'))
+            continue
+        if type_ in ["O", "Date"]:
+            if x.is_unique:
+                new_line()
+                df.drop(columns=column_name, inplace=True)
+                to_print = f"We dropped This column, because it's a {type_} columns, and it's all values are unique"
+                print(colored(to_print, 'red'))
+                continue
+        if x.nunique() == 1:
             new_line()
-            print(colored("These Months (in order) are missing:\n", 'red'))
-            for i in f:
-                print("\t", i, end=", ")
+            df.drop(columns=column_name, inplace=True)
+            print(colored("We dropped This column, because There is only one unique value", 'red'))
+            continue
 
-        f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
-            x.dt.day.unique())
-        if f:
+        if type_ == "Number":
+            local_cor = cor_df[column_name].drop(column_name).reset_index()
+            local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
+            if local_cor[column_name].max() == 1:
+                new_line()
+                to_print = f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them"
+                print(colored(to_print, 'red'))
+
             new_line()
-            print(colored("These Days (in order) are missing:\n", 'red'))
-            for i in f:
-                print("\t", i, end=", ")
+            xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
+            xm.index = xm['Column name']
+            xm.drop(columns="Column name", inplace=True);
+            xm.plot(kind='barh', grid=True, figsize=(10,1.5));
+            plt.title("Most 3 correlated features with this columns (sorted)", size=14);
+            plt.xlabel("Correlation", size=12);
+            plt.show();
 
-        new_line()
-        plot_date_columns(column_name)
+            new_line()
+            skewness = x.skew(skipna = True)
+            if abs(skewness) < 0.5:
+                print(f"The data is fairly symmetrical (skewness is: {skewness})")
+            elif abs(skewness) < 1:
+                print(f"The data are moderately skewed (skewness is: {skewness})")
+            else:
+                to_print = f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed"
+                print(colored(to_print, 'red'))
+
+            # f = x.describe()
+            # f['Nunique'] = x.nunique()
+            # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
+            # f['Outlies count'] = (((x - x.mean())/x.std()).abs() > 3).sum()
+            # f['Outlies ratio'] = f.loc["Outlies count"] / f.loc["count"] * 100
+            # f['Nagative values count'] = (x < 0).sum()
+            # f['Nagative values ratio'] = f['Nagative values count'] / f['count'] * 100
+
+            ff = [x.count(), x.isna().sum(), x.mean(), x.std(), x.min()]
+            ff += x.quantile([.25,.5,.75]).to_list()
+            ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum(), (x == 0).sum()]
+
+            f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive', 'Zeros'], columns=['Count'])
+            f['Ratio'] = f.Count / x.count() * 100
+            f.loc['Mean' : 'Max', 'Ratio'] = None
+
+            new_line()
+            print(f.round(2).to_string())
+            plot_numerical_columns(column_name)
+
+        elif type_ == "Object":
+            # f = x.describe()
+            # f = x.agg(['count', pd.Series.nunique])
+            # f['len'] = len(x)
+            # f['Na count'] = x.isna().sum()
+            # f['Na ratio'] = f['Na count'] / f['count'] * 100
+            # f['Most frequent'] = x.mode().values[0]
+            # f['Most frequent count'] = (x == f['Most frequent']).sum()
+            # f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
+            # f['Least frequent'] = x.value_counts().tail(1).index[0]
+            # f['Least frequent count'] = (x == f['Least frequent']).sum()
+            # f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
+            # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+            # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+
+            l = x.count(), x.nunique(), len(x), x.isna().sum(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
+            f = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
+            f['Ratio'] = (f.Counts / x.count() * 100).round(4)
+            f.loc[['Len'], 'Ratio'] = None
+
+            new_line()
+            print(f.to_string())
+
+
+            if x.str.lower().nunique() != x.nunique():
+                new_line()
+                to_print = f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n"
+                print(colored(to_print, 'red'))
+
+            if x.str.strip().nunique() != x.nunique():
+                new_line()
+                to_print = f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values."
+                print(colored(to_print, 'red'))
+
+            plot_catagorical_columns(column_name)
+
+        elif type == "Date":
+
+            new_line()
+            rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
+            to_print = f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}"
+            print(colored(to_print, 'red'))
+
+            # f = pd.Series({'Count' : x.count(),
+            #             'Nunique count' : x.nunique(),
+            #             'Nunique ratio' : x.nunique() / x.count() * 100,
+            #             'Most frequent value' : str(x.mode()[0]),
+            #             'Least frequent value' :  x.value_counts().tail(1).index[0]
+            #             })
+            # f['Most frequent count'] = (x == f['Most frequent value']).sum()
+            # f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
+            # f['Least frequent count'] = (x == f['Least frequent value']).sum()
+            # f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
+            # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+            # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+
+            ff = x.count(), x.nunique(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
+            f = pd.DataFrame(ff, index=["Count", 'Nunique', 'Most frequent values', 'Least frequent values', 'Values occured only once count'], columns=['Counts'])
+            f['Ratio'] = (f.Counts / x.count() * 100).round(4)
+
+            new_line()
+            print(f"\n{f.to_string()}")
+
+
+            f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
+                x.dt.year.unique())
+            if f:
+                new_line()
+                print(colored("These Years (in order) are missing:\n", 'red'))
+                for i in f:
+                    print("\t", i, end=", ")
+
+            f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
+                x.dt.month.unique())
+            if f:
+                new_line()
+                print(colored("These Months (in order) are missing:\n", 'red'))
+                for i in f:
+                    print("\t", i, end=", ")
+
+            f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
+                x.dt.day.unique())
+            if f:
+                new_line()
+                print(colored("These Days (in order) are missing:\n", 'red'))
+                for i in f:
+                    print("\t", i, end=", ")
+
+            new_line()
+            plot_date_columns(column_name)
 
 
 # ================================================================================================================ Modeling
