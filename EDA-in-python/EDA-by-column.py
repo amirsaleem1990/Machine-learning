@@ -820,8 +820,7 @@ if modeling_:
 df = pickle.load(open("df.pkl", "rb"))
 train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 
-def best_var(model_reg):
-	model_reg = OLS(train_y, train_X).fit()
+def select_best_var(model_reg):
 	summary = model_reg.summary()
 	summary_df = pd.DataFrame(summary.tables[1])
 	summary_df.columns = summary_df.iloc[0]
@@ -831,10 +830,45 @@ def best_var(model_reg):
 	for i in summary_df.columns[1:]:
 		summary_df[i] = summary_df[i].astype(str).astype(float)
 	summary_df.Variable = summary_df.Variable.astype(str)
-	return summary_df.loc[summary_df['P>|t|'].idxmax(), 'Variable']
+	return summary.tables[0].data, summary_df
 	# summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
 	# summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
 
 
+FINAL_VARS = []
+best_adj_rsquared = 0
+FM = []
+for col in train_X.columns:
+	model_reg = OLS(train_y, train_X[col]).fit()
+	s , summary_df= select_best_var(model_reg)
+	adj_rsquared = float(s[1][-1].strip())
+	var = summary_df.loc[summary_df['P>|t|'].idxmax()]['Variable']
+	FM.append((adj_rsquared, var))
 
-var
+selected = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
+Adj_rsquared = selected.Adj_rsquared.iloc[0]
+first_var = selected['Var'].values[0]
+FINAL_VARS.append(first_var)
+
+cols_used = []
+for upper_column in train_X.columns:
+	if upper_column in FINAL_VARS:
+		continue
+	FM = []
+	for i in train_X.columns:
+		if i in FINAL_VARS:
+			continue
+		if i == upper_column:
+			continue
+		model_reg = OLS(train_y, train_X[FINAL_VARS + [i]]).fit()
+		s , summary_df= select_best_var(model_reg)
+		adj_rsquared = float(s[1][-1].strip())
+		FM.append((summary_df[summary_df.Variable == i]['P>|t|'].iloc[0], i))
+		best_cendidate = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
+		if best_cendidate.Adj_rsquared > best_adj_rsquared:
+			FINAL_VARS.append(
+				best_cendidate['Var'].iloc[0]
+				)
+		else:
+			print("Limit reached, Adj-rsquared now increasing")
+			break
