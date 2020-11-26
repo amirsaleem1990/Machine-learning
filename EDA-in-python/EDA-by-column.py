@@ -242,6 +242,7 @@ if only_one_unique_value.size:
     print(colored(to_print, 'red'))
     for i in only_one_unique_value.index.sort_values():
         print(i)
+    new_line()
     print(f"\nNow {data_shape()}")
 del only_one_unique_value
 # #===
