@@ -717,7 +717,8 @@ elif df[target_variable].dtype == "O":
         plt.ylabel("");
         plt.show()
     else:
-        print("\n-------------------- This is Multiclass Classification problem --------------------\n")
+        to_print = "\n-------------------- This is Multiclass Classification problem --------------------\n"
+        print(colored(to_print, 'red'))
         print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
 
         df.loc[:, df.select_dtypes("O").columns] = df.select_dtypes("O").apply(lambda x: pd.Series(LabelEncoder().fit_transform(x.astype(str))).astype(str))
