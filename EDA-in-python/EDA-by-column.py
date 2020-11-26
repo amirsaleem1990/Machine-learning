@@ -145,11 +145,14 @@ print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}")
 a = df.isna().sum().where(lambda x:x>0).dropna()
 if a.size:
     new_line()
-    print(f"There are {len(a)} (out of {df.shape[1]}, [{round(len(a)/df.shape[1]*100)}%]) columns that contains 1 or more NA.")
+    to_print = f"There are {len(a)} (out of {df.shape[1]}, [{round(len(a)/df.shape[1]*100)}%]) columns that contains 1 or more NA."
+    print(colored(to_print, 'red'))
+
     for i in a.index:
         df[i+"_NA_indicator"] = df[i].isna().replace({True : "Missing", False : "Not missing"})
     new_line()
-    print(f"{a.size} NA_indicator variables added to the data\n")
+    to_print = f"{a.size} NA_indicator variables added to the data\n"
+    print(colored(to_print, 'red'))
 
 
     print("========= NA Graphs =========\n")
