@@ -591,8 +591,8 @@ print("****************************************** Modeling *********************
 # Regression problem
 if df[target_variable].dtype in [float, int]:
 
-    print("\n-------------------- This is Regression problem --------------------\n")
-    print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+    to_print = "\n-------------------- This is Regression problem --------------------\n''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"
+    print(colored(to_print, 'red'))
 
     df_T = df.select_dtypes("number")
     cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
