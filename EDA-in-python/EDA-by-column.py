@@ -238,7 +238,8 @@ only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
 if only_one_unique_value.size:
     new_line()
     df.drop(columns=only_one_unique_value.index, inplace=True)
-    to_print = f"There are {only_one_unique_value.size} variable/s That have only one unique value, so we droped it/those.\nThose column/s name/s (in order):"
+    last_ = ("", "it") if  only_one_unique_value.size == 1 else ("s", "those")
+    to_print = f"There are {only_one_unique_value.size} variable{last_[0]} That have only one unique value, so we droped {last_[1]}.\nDropped column{last_[0]} name{last_[0]} (in order):"
     print(colored(to_print, 'red'))
     for i in only_one_unique_value.index.sort_values():
         print(i)
@@ -250,10 +251,13 @@ all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).d
 if all_values_are_unique.size:
     new_line()
     df.drop(columns=all_values_are_unique.index, inplace=True)
-    to_print = f"There are {all_values_are_unique.size} column/s that have all unique values, so no value repeatation, we droped those columns.\n\nNow {data_shape()}\nThose column/s name/s are:\n"
+    last_ = ("", "it") if  only_one_unique_value.size == 1 else ("s", "those")
+    to_print = f"There are {all_values_are_unique.size} column{last_[0]} that have all unique values, so no value repeatation, we droped those columns.\nDropped column{last_[0]} name{last_[0]} are:\n"
     print(colored(to_print, 'red'))
     for i in all_values_are_unique.index:
         print("\t", i)
+    new_line()
+    print(f"Now {data_shape()}")
 del all_values_are_unique
 #===
 date_columns = []
