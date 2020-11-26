@@ -255,7 +255,7 @@ if all_values_are_unique.size:
     new_line()
     df.drop(columns=all_values_are_unique.index, inplace=True)
     last_ = ("", "it") if  all_values_are_unique.size == 1 else ("s", "those")
-    to_print = f"There are {all_values_are_unique.size} column{last_[0]} that have all unique values, so no value repeatation, we droped those columns.\nDropped column{last_[0]} name{last_[0]} are:\n"
+    to_print = f"There are {all_values_are_unique.size} column{last_[0]} that have all unique values, so no value repeatation, we droped {last_[1]} column{last_[0]}.\nDropped column{last_[0]} name{last_[0]} are:\n"
     print(colored(to_print, 'red'))
     for i in all_values_are_unique.index:
         print("\t", i)
