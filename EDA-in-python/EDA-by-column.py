@@ -18,7 +18,7 @@ from sklearn.model_selection import train_test_split
 from statsmodels.regression.linear_model import OLS
 
 def new_line():
-    print("-------------------------")
+    print("\n-------------------------\n")
 
 def RMSE(predictions):
     return round(np.sqrt(((test_y - predictions)**2).mean()))
