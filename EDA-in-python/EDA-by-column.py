@@ -123,7 +123,8 @@ target_variable = "SalePrice"
 f = df[target_variable].isna().sum()
 if f:
     new_line()
-    print(f"There are {f} NAs in target values, we droped those rows")
+    to_print = f"There are {f} NAs in target values, we droped those rows"
+    print(colored(to_print, 'red'))
     df = df[df[target_variable].notna()]
 del f
 #---------------------------------------------------
@@ -180,7 +181,7 @@ new_line()
 if a.size:
     print(f"NaN Ratio (0-100)\n\n{a}")
 else:
-    print("Now There is no NaN value in our Data")
+    print(colored("Now There is no NaN value in our Data", 'red'))
 #===
 # ----------------------------------------------- Imputing Missing values
 # ------------------------------------ Numerical columns imputing
