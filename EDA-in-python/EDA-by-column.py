@@ -371,8 +371,8 @@ def cluping_rare_cases_in_one_catagory(x):
         x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
     if x.nunique() == 1:
         new_line()
-        to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
-        print(colored(to_print, 'red'))
+        # to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
+        # print(colored(to_print, 'red'))
         # return orignal
         df.drop(columns=x.name, inplace=True)
         return None
