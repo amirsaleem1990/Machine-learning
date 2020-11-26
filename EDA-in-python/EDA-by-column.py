@@ -774,3 +774,81 @@ elif df[target_variable].dtype == "O":
         plt.title("Precision recall curve");
         plt.show()
 # ================================================================================================================ END Modeling
+pickle.dump(df, open("df.pkl", "wb"))
+pickle.dump(train, open("train.pkl", "wb"))
+pickle.dump(test, open("test.pkl", "wb"))
+
+
+
+
+
+
+
+
+
+
+# train = pd.read_csv("/home/amir/Downloads/train.csv")
+# test  = pd.read_csv("/home/amir/Downloads/test.csv")
+# target_variable = "SalePrice"
+# train_y = train[target_variable]
+# train = train.drop(columns=target_variable)
+# df = pd.concat([train, test])
+# df[target_variable] = train_y.to_list() + [None]*len(test)
+
+
+
+# from sklearn.feature_selection import chi2
+# from sklearn.feature_selection import SelectKBest
+# test = SelectKBest(score_func=chi2, k=4)
+# fit = test.fit(X, Y)
+# # Summarize scores
+# np.set_printoptions(precision=3)
+# print(fit.scores_)
+#
+# features = fit.transform(X)
+# # Summarize selected features
+# print(features[0:5,:])
+#
+#
+#
+# from sklearn.feature_selection import RFE
+# model = LogisticRegression()
+# rfe = RFE(model, 3)
+# fit = rfe.fit(X, Y)
+
+
+# sklearn.feature_selection
+# <SelectKBest>             removes all but the highest scoring features
+#     from sklearn.feature_selection import SelectKBest
+#     from sklearn.feature_selection import chi2
+#     X_new = SelectKBest(chi2, k=2).fit_transform(X, y)
+# <SelectPercentile>        removes all but a user-specified highest scoring percentage of features
+# <GenericUnivariateSelect> allows to perform univariate feature selection with a configurable strategy. This allows to select the best univariate selection strategy with hyper-parameter search estimator.
+
+
+
+
+
+
+
+
+
+from sklearn.feature_selection import SelectFromModel
+from sklearn.linear_model import LogisticRegression
+X = [[ 0.87, -1.34,  0.31 ],
+     [-2.79, -0.02, -0.85 ],
+     [-1.34, -0.48, -2.55 ],
+     [ 1.92,  1.48,  0.65 ]]
+# y = [0, 1, 0, 1]
+selector = SelectFromModel(estimator=LogisticRegression()).fit(X, y)
+selector.estimator_.coef_
+# array([[-0.3252302 ,  0.83462377,  0.49750423]])
+selector.threshold_
+# 0.55245...
+selector.get_support()
+# array([False,  True, False])
+selector.transform(X)
+# array([[-1.34],
+       # [-0.02],
+       # [-0.48],
+       # [ 1.48]])
