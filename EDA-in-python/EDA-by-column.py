@@ -23,7 +23,7 @@ def RMSE(predictions):
     return round(np.sqrt(((test_y - predictions)**2).mean()))
 
 def plot_numerical_columns(col_name):
-    return None
+    # return None
 
     # Histogram
     df[col_name].plot(kind="hist", figsize=(13,8));
@@ -56,7 +56,7 @@ def plot_numerical_columns(col_name):
     plt.show()
 
 def plot_date_columns(col_name):
-    return None
+    # return None
     df[col_name].plot(figsize=(15,7), grid=True);
     plt.xlabel("Index", size=14);
     plt.ylabel("Date", size=14);
@@ -88,7 +88,7 @@ def plot_date_columns(col_name):
     plt.show();
 
 def plot_catagorical_columns(cat_variable):
-    return None
+    # return None
     (df[cat_variable].value_counts() / len(df) * 100).plot.bar(figsize=(15,6), grid=True);
     plt.title(cat_variable, size=18, color='r');
     plt.xlabel("Catagory", size=14, color='r');
@@ -101,8 +101,13 @@ def data_shape():
 # df = pd.read_csv("data.csv", date_parser=True)
 
 df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
-# target_variable = "ACTUAL_WORTH"
-target_variable = "AREA_NAME_EN"
+target_variable = "ACTUAL_WORTH"
+df = pd.concat([
+        df.select_dtypes("number").iloc[:, :3],
+        df.select_dtypes("O").iloc[:, :3],
+        df.select_dtypes(exclude=["number", "O"]),
+        df[[target_variable]]], 1)
+# target_variable = "AREA_NAME_EN"
 
 # df = pd.read_csv("cleaned_data.csv", date_parser=True)
 # target_variable = "SalePrice"
