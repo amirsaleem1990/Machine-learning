@@ -220,6 +220,7 @@ if df.select_dtypes("number").isna().sum().sum():
     del df_number
     print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
 #===
+df[target_variable]
 # -------------------------------- Catagoriacal variables imputating
 vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
 if vars_to_fill.size:
