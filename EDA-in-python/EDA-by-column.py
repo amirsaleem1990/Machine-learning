@@ -100,17 +100,17 @@ def data_shape():
 #===
 # df = pd.read_csv("data.csv", date_parser=True)
 
-df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
-target_variable = "ACTUAL_WORTH"
-df = pd.concat([
-        df.select_dtypes("number").iloc[:, :3],
-        df.select_dtypes("O").iloc[:, :3],
-        df.select_dtypes(exclude=["number", "O"]),
-        df[[target_variable]]], 1)
+# df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+# target_variable = "ACTUAL_WORTH"
+# df = pd.concat([
+#         df.select_dtypes("number").iloc[:, :3],
+#         df.select_dtypes("O").iloc[:, :3],
+#         df.select_dtypes(exclude=["number", "O"]),
+#         df[[target_variable]]], 1)
 # target_variable = "AREA_NAME_EN"
 
-# df = pd.read_csv("cleaned_data.csv", date_parser=True)
-# target_variable = "SalePrice"
+df = pd.read_csv("cleaned_data.csv", date_parser=True)
+target_variable = "SalePrice"
 #===
 f = df[target_variable].isna().sum()
 if f:
@@ -159,7 +159,15 @@ if a.size:
 else:
     print("Now There is no NaN value in our Data")
 #===
-# IMPUTING missing values??????????????
+df.select_dtypes("number").isna().sum().sum()
+from sklearn.impute import KNNImputer
+df_not_a_number  = df.select_dtypes(exclude="number")
+imputer = KNNImputer(n_neighbors=4, weights="uniform")
+imputed = imputer.fit_transform(df.select_dtypes("number"))
+df = pd.DataFrame(imputed, columns=df.select_dtypes("number").columns)
+df = pd.concat([df, df_not_a_number], axis=1)
+del df_not_a_number
+
 #===
 # --------------------------------------------------------- Unique values
 only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
