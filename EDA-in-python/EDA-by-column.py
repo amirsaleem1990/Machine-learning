@@ -123,10 +123,10 @@ def data_shape():
 train = pd.read_csv("/home/amir/Downloads/train.csv")
 test  = pd.read_csv("/home/amir/Downloads/test.csv")
 target_variable = "SalePrice"
-train_y = train.SalePrice
+train_y = train[target_variable]
 train = train.drop(columns=target_variable)
 df = pd.concat([train, test])
-df[target_variable] = len(train_y.to_list() + [None]*len(test))
+df[target_variable] = train_y.to_list() + [None]*len(test)
 
 #===
 new_line()
