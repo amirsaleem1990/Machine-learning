@@ -274,7 +274,7 @@ def DTYPES():
     #===
     if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
         new_line()
-        print("Some column/s repated in > 1 dtypes\n")
+        print(colored("Some column/s repated in > 1 dtypes\n", 'red'))
         dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
                     "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
         print(dtypes[dtypes.Column.isin(list(dtypes[dtypes.Column.duplicated()].Column.values))].to_string())
