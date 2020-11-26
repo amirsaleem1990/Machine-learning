@@ -174,7 +174,7 @@ def data_shape():
 #
 # train = pd.read_csv("/home/amir/Downloads/train.csv")
 # test  = pd.read_csv("/home/amir/Downloads/test.csv")
-# target_variable = "SalePrice"
+target_variable = "SalePrice"
 # train_y = train[target_variable]
 # train = train.drop(columns=target_variable)
 # df = pd.concat([train, test])
