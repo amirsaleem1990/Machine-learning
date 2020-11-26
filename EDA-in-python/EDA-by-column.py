@@ -497,12 +497,12 @@ for row in dtypes.iterrows():
 
         if x.str.lower().nunique() != x.nunique():
             new_line()
-            print(f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n")
-
+            to_print = f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n"
+            print(colored(to_print, 'red'))
         if x.str.strip().nunique() != x.nunique():
             new_line()
-            print(f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values.")
-
+            to_print = f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values."
+            print(colored(to_print, 'red'))
         plot_catagorical_columns(column_name)
 
     elif type == "Date":
