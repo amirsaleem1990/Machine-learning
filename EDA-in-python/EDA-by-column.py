@@ -818,6 +818,7 @@ if modeling_:
 
 # pickle.dump(df, open("df.pkl", "wb"))
 df = pickle.load(open("df.pkl", "rb"))
+target_variable = "SalePrice"
 train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
 
 def select_best_var(model_reg):
@@ -871,6 +872,7 @@ for upper_column in train_X.columns:
 		FM.append((summary_df[summary_df.Variable == i]['P>|t|'].iloc[0], i))
 		best_cendidate = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
 		if best_cendidate.Adj_rsquared.iloc[0] > best_adj_rsquared:
+			best_adj_rsquared = best_cendidate.Adj_rsquared.iloc[0]
 			FINAL_VARS.append(
 				best_cendidate['Var'].iloc[0]
 				)
