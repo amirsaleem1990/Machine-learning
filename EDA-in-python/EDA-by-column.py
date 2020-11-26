@@ -610,7 +610,7 @@ if df[target_variable].dtype in [float, int]:
     predictions = model_reg.predict(test_X)
 
     new_line()
-    print(" --- Model statistic --- \n")
+    print(colored(" --- Model statistic --- \n", 'red'))
     print(f"R-squared         : {round(model_reg.rsquared, 3)}")
     print(f"Adj. R-squared    : {round(model_reg.rsquared_adj, 3)}")
     print(f"F-statistic       : {round(model_reg.fvalue)}")
@@ -642,7 +642,7 @@ if df[target_variable].dtype in [float, int]:
     predictions_rf = rf.predict(test_X)
 
     new_line()
-    print(f"RF model peramters:\n")
+    print(colored("RF model peramters:\n", 'red'))
     pprint.pprint(model_rf.get_params())
 
     new_line()
