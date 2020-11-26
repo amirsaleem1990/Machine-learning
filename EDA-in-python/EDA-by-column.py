@@ -23,6 +23,32 @@ warnings.filterwarnings("ignore")
 plot_______ = False
 # plot_______ = True
 
+
+def add_new_date_cols(x, suffix):
+    d = {}
+    d[suffix + '_week_normalized'] = x.dt.week / 52
+    d[suffix + '_week_str'] = '"' + x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
+
+    d[suffix + '_year_after_min_year'] = x.dt.year - x.dt.year.min()
+    d[suffix + '_year_str'] = '"' + x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
+
+    d[suffix + '_day_name']  = x.dt.day_name()
+
+    d[suffix + '_day_after_min_date_str']  = '"' + (x - x.min()).apply(lambda x: str(x).split()[0]) + '"'
+
+    d[suffix + '_day_normalized'] = x.dt.day / 31
+
+    d[suffix + '_hour_normalized'] = x.dt.hour / 24
+    d[suffix + '_hour_str'] = '"' + x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
+
+    d[suffix + '_month_name'] = x.dt.month_name()
+    d[suffix + '_month_normalized'] = x.dt.month/12
+    for k,v in d.items():
+        if v.nunique() > 1:
+            df[k] = v
+    return df.drop(columns=x.name)
+    # return
+
 def new_line():
     print("\n-------------------------\n")
 
@@ -334,32 +360,7 @@ def DTYPES():
 dtypes = DTYPES()
 # ----------------------------------------------------------------------- Feature enginearing
 # ======= Adding date columns
-# >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> add polynomial, sqrt, tree, log features
-def add_new_date_cols(x, suffix):
-    d = {}
-    d[suffix + '_week_normalized'] = x.dt.week / 52
-    d[suffix + '_week_str'] = '"' + x.dt.week.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
-
-    d[suffix + '_year_after_min_year'] = x.dt.year - x.dt.year.min()
-    d[suffix + '_year_str'] = '"' + x.dt.year.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
-
-    d[suffix + '_day_name']  = x.dt.day_name()
-
-    d[suffix + '_day_after_min_date_str']  = '"' + (x - x.min()).apply(lambda x: str(x).split()[0]) + '"'
-
-    d[suffix + '_day_normalized'] = x.dt.day / 31
-
-    d[suffix + '_hour_normalized'] = x.dt.hour / 24
-    d[suffix + '_hour_str'] = '"' + x.dt.hour.apply(lambda x:np.nan if np.isnan(x) else str(x).replace(".0", "")) + '"'
-
-    d[suffix + '_month_name'] = x.dt.month_name()
-    d[suffix + '_month_normalized'] = x.dt.month/12
-    for k,v in d.items():
-        if v.nunique() > 1:
-            df[k] = v
-    return df.drop(columns=x.name)
-    # return df
-
+# ?????????????????????????? add polynomial, sqrt, tree, log features
 len_df_before_adding_date_vars = df.shape[1]
 for date_col in date_columns:
     df = add_new_date_cols(df[date_col], date_col)
@@ -782,49 +783,6 @@ elif df[target_variable].dtype == "O":
         plt.title("Precision recall curve");
         plt.show()
 # ================================================================================================================ END Modeling
-
-train = df[df[target_variable].notna()]
-test = df[df[target_variable].isna()]
-
-train_y = train[target_variable]
-train_X = train.drop(columns=target_variable)
-
-test_X = test.drop(columns=target_variable)
-
-del train
-del test
-
-
-
-# train = pd.read_csv("/home/amir/Downloads/train.csv")
-# test  = pd.read_csv("/home/amir/Downloads/test.csv")
-# target_variable = "SalePrice"
-# train_y = train[target_variable]
-# train = train.drop(columns=target_variable)
-# df = pd.concat([train, test])
-# df[target_variable] = train_y.to_list() + [None]*len(test)
-
-
-
-# from sklearn.feature_selection import chi2
-# from sklearn.feature_selection import SelectKBest
-# test = SelectKBest(score_func=chi2, k=4)
-# fit = test.fit(X, Y)
-# # Summarize scores
-# np.set_printoptions(precision=3)
-# print(fit.scores_)
-#
-# features = fit.transform(X)
-# # Summarize selected features
-# print(features[0:5,:])
-#
-#
-#
-# from sklearn.feature_selection import RFE
-# model = LogisticRegression()
-# rfe = RFE(model, 3)
-# fit = rfe.fit(X, Y)
-
 
 # sklearn.feature_selection
 # <SelectKBest>             removes all but the highest scoring features
