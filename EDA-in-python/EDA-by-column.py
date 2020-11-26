@@ -24,6 +24,16 @@ def RMSE(predictions):
 
 def plot_numerical_columns(col_name):
     return None
+
+    # Histogram
+    df[col_name].plot(kind="hist", figsize=(13,8));
+    plt.title(col_name, size=18);
+    plt.axhline(y=df[col_name].mean(), color='red');
+    plt.axhline(y=df[col_name].median(), color='green');
+    plt.legend(['Actual', 'Mean', 'Median']);
+    plt.show()
+
+    # Scatter plot
     df[col_name].plot(figsize=(13,8));
     plt.title(col_name, size=18);
     plt.axhline(y=df[col_name].mean(), color='red');
@@ -31,6 +41,7 @@ def plot_numerical_columns(col_name):
     plt.legend(['Actual', 'Mean', 'Median']);
     plt.show()
 
+    # scatter plot (sort by values), values Vs index
     df[col_name].sort_values().reset_index(drop=True).plot(figsize=(13,8));
     plt.title(col_name+" (SORTED)", size=18);
     plt.axhline(y=df[col_name].mean(), color='red');
@@ -38,6 +49,7 @@ def plot_numerical_columns(col_name):
     plt.legend(['Actual', 'Mean', 'Median']);
     plt.show()
 
+    # box plot
     df[col_name].plot(kind="box", figsize=(13,8))
     plt.title(col_name, size=18);
     plt.xlabel("");
