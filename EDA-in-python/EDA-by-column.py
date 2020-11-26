@@ -718,7 +718,9 @@ if modeling_:
                             ], 1)
 
             train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-            clf = LogisticRegression().fit(train_X, train_y)
+            clf = LogisticRegression()
+            rfe = RFE(clf, 3)
+			clf = rfe.fit(train_X, train_y)
             predictions = clf.predict_proba(test_X)
             predictions = pd.Series(predictions[:, 0])
             lst = []
