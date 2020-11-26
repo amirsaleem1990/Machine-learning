@@ -547,7 +547,7 @@ for row in dtypes.iterrows():
             x.dt.month.unique())
         if f:
             new_line()
-            print(f"These Months (in order) are missing:\n")
+            print(colored("These Months (in order) are missing:\n", 'red'))
             for i in f:
                 print("\t", i, end=", ")
 
@@ -555,7 +555,7 @@ for row in dtypes.iterrows():
             x.dt.day.unique())
         if f:
             new_line()
-            print(f"These Days (in order) are missing:\n")
+            print(colored("These Days (in order) are missing:\n", 'red'))
             for i in f:
                 print("\t", i, end=", ")
 
