@@ -409,18 +409,19 @@ for row in dtypes.iterrows():
     if x.isna().all():
         new_line()
         df.drop(columns=column_name, inplace=True)
-        print("We dropped This column, because it is all Empty")
+        print(colored("We dropped This column, because it is all Empty", 'red'))
         continue
     if type_ in ["O", "Date"]:
         if x.is_unique:
             new_line()
             df.drop(columns=column_name, inplace=True)
-            print(f"We dropped This column, because it's a {type_} columns, and it's all values are unique")
+            to_print = f"We dropped This column, because it's a {type_} columns, and it's all values are unique"
+            print(colored(to_print, 'red'))
             continue
     if x.nunique() == 1:
         new_line()
         df.drop(columns=column_name, inplace=True)
-        print(f"We dropped This column, because There is only one unique value")
+        print(colored("We dropped This column, because There is only one unique value", 'red'))
         continue
 
     if type_ == "Number":
