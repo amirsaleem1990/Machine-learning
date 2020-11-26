@@ -120,6 +120,9 @@ def data_shape():
 df = pd.read_csv("cleaned_data.csv", date_parser=True)
 target_variable = "SalePrice"
 #===
+new_line()
+print(data_shape())
+#===
 f = df[target_variable].isna().sum()
 if f:
     new_line()
@@ -136,9 +139,6 @@ del f
 # profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
 # profile.to_file("your_report.html")
 #---------------------------------------------------
-new_line()
-print(data_shape())
-#===
 new_line()
 print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}")
 #---------------------------------------- NA
