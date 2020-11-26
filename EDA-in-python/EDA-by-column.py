@@ -199,20 +199,25 @@ if a.size:
 else:
     print(colored("Now There is no NaN value in our Data", 'red'))
 #===
+# pickle.dump(df, open('_df.pkl', 'wb'))
+df = pickle.load(open("_df.pkl", "rb"))
+print(df.select_dtypes("O").isna().sum().sum())
+print(df.select_dtypes("number").isna().sum().sum())
 # ----------------------------------------------- Imputing Missing values
 # ------------------------------------ Numerical columns imputing
 if df.select_dtypes("number").isna().sum().sum():
     new_line()
     print(f'(Before Missing values treatment)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
-
     from sklearn.impute import KNNImputer
     df_not_a_number  = df.select_dtypes(exclude="number")
+    df_number        = df.select_dtypes("number")
+    del df
     imputer = KNNImputer(n_neighbors=4, weights="uniform")
-    imputed = imputer.fit_transform(df.select_dtypes("number"))
-    df = pd.DataFrame(imputed, columns=df.select_dtypes("number").columns)
-    df = pd.concat([df, df_not_a_number], axis=1)
+    imputed = imputer.fit_transform(df_number)
+    df_number = pd.DataFrame(imputed, columns=df_number.columns)
+    df = pd.concat([df_not_a_number.reset_index(drop=True), df_number.reset_index(drop=True)], axis=1)
     del df_not_a_number
-
+    del df_number
     print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
 #===
 # -------------------------------- Catagoriacal variables imputating
