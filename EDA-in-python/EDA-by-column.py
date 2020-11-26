@@ -112,16 +112,6 @@ def data_shape():
 
 df = pd.read_csv("cleaned_data.csv", date_parser=True)
 target_variable = "SalePrice"
-
-new_line()
-print("========= NA Graphs =========\n")
-msno.matrix(df);
-plt.show()
-
-new_line()
-sns.heatmap(df.isnull().sample(2500), cbar=False)#, square=False);
-plt.title("NA Graph");
-plt.show()
 #===
 f = df[target_variable].isna().sum()
 if f:
@@ -152,6 +142,16 @@ if a.size:
         df[i+"_NA_indicator"] = df[i].isna().replace({True : "Missing", False : "Not missing"})
     new_line()
     print(f"{a.size} NA_indicator variables added to the data\n")
+
+
+    print("========= NA Graphs =========\n")
+    msno.matrix(df);
+    plt.show()
+
+    new_line()
+    sns.heatmap(df.isnull().sample(2500), cbar=False)#, square=False);
+    plt.title("NA Graph");
+    plt.show()
 #===
 a = a.sort_values()/len(df)*100
 if (a == 100).sum():
