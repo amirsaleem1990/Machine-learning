@@ -159,17 +159,19 @@ if a.size:
 else:
     print("Now There is no NaN value in our Data")
 #===
-new_line()
-print(f'(Before Missing values treatment)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
-df.select_dtypes("number").isna().sum().sum()
-from sklearn.impute import KNNImputer
-df_not_a_number  = df.select_dtypes(exclude="number")
-imputer = KNNImputer(n_neighbors=4, weights="uniform")
-imputed = imputer.fit_transform(df.select_dtypes("number"))
-df = pd.DataFrame(imputed, columns=df.select_dtypes("number").columns)
-df = pd.concat([df, df_not_a_number], axis=1)
-del df_not_a_number
-print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
+if df.select_dtypes("number").isna().sum().sum():
+    new_line()
+    print(f'(Before Missing values treatment)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
+
+    from sklearn.impute import KNNImputer
+    df_not_a_number  = df.select_dtypes(exclude="number")
+    imputer = KNNImputer(n_neighbors=4, weights="uniform")
+    imputed = imputer.fit_transform(df.select_dtypes("number"))
+    df = pd.DataFrame(imputed, columns=df.select_dtypes("number").columns)
+    df = pd.concat([df, df_not_a_number], axis=1)
+    del df_not_a_number
+
+    print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
 #===
 # --------------------------------------------------------- Unique values
 only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
