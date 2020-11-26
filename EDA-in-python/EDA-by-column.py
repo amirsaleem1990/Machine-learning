@@ -157,443 +157,443 @@ def plot_catagorical_columns(cat_variable):
 
 def data_shape():
     return f"The Data have:\n\t{df.shape[0]} rows\n\t{df.shape[1]} columns\n"
-# #===
-# # df = pd.read_csv("data.csv", date_parser=True)
-#
-# # df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
-# # target_variable = "ACTUAL_WORTH"
-# # df = pd.concat([
-# #         df.select_dtypes("number").iloc[:, :3],
-# #         df.select_dtypes("O").iloc[:, :3],
-# #         df.select_dtypes(exclude=["number", "O"]),
-# #         df[[target_variable]]], 1)
-# # target_variable = "AREA_NAME_EN"
-#
-# # df = pd.read_csv("cleaned_data.csv", date_parser=True)
-# # target_variable = "SalePrice"
-#
-# train = pd.read_csv("/home/amir/Downloads/train.csv")
-# test  = pd.read_csv("/home/amir/Downloads/test.csv")
+#===
+# df = pd.read_csv("data.csv", date_parser=True)
+
+# df = pd.read_csv("df_only_selected_columns_using_PCA.csv", date_parser=True)
+# target_variable = "ACTUAL_WORTH"
+# df = pd.concat([
+#         df.select_dtypes("number").iloc[:, :3],
+#         df.select_dtypes("O").iloc[:, :3],
+#         df.select_dtypes(exclude=["number", "O"]),
+#         df[[target_variable]]], 1)
+# target_variable = "AREA_NAME_EN"
+
+# df = pd.read_csv("cleaned_data.csv", date_parser=True)
+# target_variable = "SalePrice"
+
+train = pd.read_csv("/home/amir/Downloads/train.csv")
+test  = pd.read_csv("/home/amir/Downloads/test.csv")
 target_variable = "SalePrice"
-# train_y = train[target_variable]
-# train = train.drop(columns=target_variable)
-# df = pd.concat([train, test])
-# df[target_variable] = train_y.to_list() + [None]*len(test)
+train_y = train[target_variable]
+train = train.drop(columns=target_variable)
+df = pd.concat([train, test])
+df[target_variable] = train_y.to_list() + [None]*len(test)
+#===
+new_line()
+print(data_shape())
+#===
+new_line()
+print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}\n")
+df.dtypes.value_counts().plot(kind='barh', figsize=(10, 2), grid=True, title="Variable types Count Graph");
+plt.xlabel("Count");
+plt.show()
+#===
+f = df[target_variable].isna().sum()
+if f:
+    new_line()
+    to_print = f"There are {f} NAs in target values, we droped those rows"
+    print(colored(to_print, 'red'))
+    df = df[df[target_variable].notna()]
+del f
+#---------------------------------------------------
+# df.select_dtypes("O").columns[:5]
+# D = df.select_dtypes(exclude="O")
+# D2 = df.select_dtypes("O").iloc[:,:5]
+# df = pd.concat([D, D2], 1)
+
+# profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
+# profile.to_file("your_report.html")
+#---------------------------------------- NA
+a = df.isna().sum().where(lambda x:x>0).dropna()
+if a.size:
+    new_line()
+    to_print = f"There are {len(a)} (out of {df.shape[1]}, [{round(len(a)/df.shape[1]*100)}%]) columns that contains 1 or more NA."
+    print(colored(to_print, 'red'))
+
+    for i in a.index:
+        df[i+"_NA_indicator"] = df[i].isna().replace({True : "Missing", False : "Not missing"})
+    new_line()
+    to_print = f"{a.size} NA_indicator variables added to the data\n"
+    print(colored(to_print, 'red'))
+
+
+    print("========= NA Graphs =========\n")
+    msno.matrix(df);
+    plt.title("NA Graph");
+    plt.show()
+
+    new_line()
+    sns.heatmap(df.isnull(), cbar=False);
+    plt.title("NA Graph");
+    plt.show()
+#===
+a = a.sort_values()/len(df)*100
+if (a == 100).sum():
+    new_line()
+    df.drop(columns=a[a==100].index, inplace=True)
+    to_print = f"There are {(a == 100).sum()} columns that are all Missing values, so we droped those.\nNow {data_shape()}\n\nDropped columns names:"
+    print(colored(to_print, 'red'))
+    for i in a[a==100].index:
+        print("\t",i)
+    a = a[a != 100]
+#===
+x = df[a.index].dtypes.value_counts()
+if x.size:
+    new_line()
+    print(f"NA columns data type Distribution:\n\n{x}")
+del x
+#===
+new_line()
+if a.size:
+    print(f"NaN Ratio (0-100)\n\n{a}")
+else:
+    print(colored("Now There is no NaN value in our Data", 'red'))
+#===
+# ----------------------------------------------- Imputing Missing values
+# ------------------------------------ Numerical columns imputing
+if df.select_dtypes("number").isna().sum().sum():
+    new_line()
+    print(f'(Before Missing values treatment)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
+    from sklearn.impute import KNNImputer
+    df_not_a_number  = df.select_dtypes(exclude="number")
+    df_number        = df.select_dtypes("number")
+    del df
+    imputer = KNNImputer(n_neighbors=4, weights="uniform")
+    imputed = imputer.fit_transform(df_number)
+    df_number = pd.DataFrame(imputed, columns=df_number.columns)
+    df = pd.concat([df_not_a_number.reset_index(drop=True), df_number.reset_index(drop=True)], axis=1)
+    del df_not_a_number
+    del df_number
+    print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
+#===
+# -------------------------------- Catagoriacal variables imputating
+vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
+if vars_to_fill.size:
+    for col in vars_to_fill.index:
+        tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
+        tr_y = tr[col]
+        tr_X = tr.drop(columns=col)
+
+        tr_T = tr_X.select_dtypes("number")
+        cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
+        tr_T[cat_cols.columns.to_list()] = cat_cols
+
+        tr_T[col] = tr_y
+        tr = tr_T.copy("deep")
+
+        train = tr[tr[col].notna()]
+        test  = tr[tr[col].isna()]
+
+        train_y = train[col]
+        train_X = train.drop(columns=col)
+
+        test_X = test.drop(columns=col)
+
+        clf = DecisionTreeClassifier().fit(train_X, train_y)
+        test_y = clf.predict(test_X)
+
+        df.loc[df[col].isna(), col] = test_y
+    new_line()
+    print(f"Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
+# ----------------------------------------------- END Imputing Missing values
+# --------------------------------------------------------- Unique values
+only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
+if only_one_unique_value.size:
+    new_line()
+    df.drop(columns=only_one_unique_value.index, inplace=True)
+    last_ = ("", "it") if  only_one_unique_value.size == 1 else ("s", "those")
+    to_print = f"There are {only_one_unique_value.size} variable{last_[0]} That have only one unique value, so we droped {last_[1]}.\nDropped column{last_[0]} name{last_[0]} (in order):"
+    print(colored(to_print, 'red'))
+    for i in only_one_unique_value.index.sort_values():
+        print(i)
+    new_line()
+    print(f"\nNow {data_shape()}")
+del only_one_unique_value
 # #===
-# new_line()
-# print(data_shape())
-# #===
-# new_line()
-# print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}\n")
-# df.dtypes.value_counts().plot(kind='barh', figsize=(10, 2), grid=True, title="Variable types Count Graph");
-# plt.xlabel("Count");
-# plt.show()
-# #===
-# f = df[target_variable].isna().sum()
-# if f:
-#     new_line()
-#     to_print = f"There are {f} NAs in target values, we droped those rows"
-#     print(colored(to_print, 'red'))
-#     df = df[df[target_variable].notna()]
-# del f
-# #---------------------------------------------------
-# # df.select_dtypes("O").columns[:5]
-# # D = df.select_dtypes(exclude="O")
-# # D2 = df.select_dtypes("O").iloc[:,:5]
-# # df = pd.concat([D, D2], 1)
-#
-# # profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
-# # profile.to_file("your_report.html")
-# #---------------------------------------- NA
-# a = df.isna().sum().where(lambda x:x>0).dropna()
-# if a.size:
-#     new_line()
-#     to_print = f"There are {len(a)} (out of {df.shape[1]}, [{round(len(a)/df.shape[1]*100)}%]) columns that contains 1 or more NA."
-#     print(colored(to_print, 'red'))
-#
-#     for i in a.index:
-#         df[i+"_NA_indicator"] = df[i].isna().replace({True : "Missing", False : "Not missing"})
-#     new_line()
-#     to_print = f"{a.size} NA_indicator variables added to the data\n"
-#     print(colored(to_print, 'red'))
-#
-#
-#     print("========= NA Graphs =========\n")
-#     msno.matrix(df);
-#     plt.title("NA Graph");
-#     plt.show()
-#
-#     new_line()
-#     sns.heatmap(df.isnull(), cbar=False);
-#     plt.title("NA Graph");
-#     plt.show()
-# #===
-# a = a.sort_values()/len(df)*100
-# if (a == 100).sum():
-#     new_line()
-#     df.drop(columns=a[a==100].index, inplace=True)
-#     to_print = f"There are {(a == 100).sum()} columns that are all Missing values, so we droped those.\nNow {data_shape()}\n\nDropped columns names:"
-#     print(colored(to_print, 'red'))
-#     for i in a[a==100].index:
-#         print("\t",i)
-#     a = a[a != 100]
-# #===
-# x = df[a.index].dtypes.value_counts()
-# if x.size:
-#     new_line()
-#     print(f"NA columns data type Distribution:\n\n{x}")
-# del x
-# #===
-# new_line()
-# if a.size:
-#     print(f"NaN Ratio (0-100)\n\n{a}")
-# else:
-#     print(colored("Now There is no NaN value in our Data", 'red'))
-# #===
-# # ----------------------------------------------- Imputing Missing values
-# # ------------------------------------ Numerical columns imputing
-# if df.select_dtypes("number").isna().sum().sum():
-#     new_line()
-#     print(f'(Before Missing values treatment)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
-#     from sklearn.impute import KNNImputer
-#     df_not_a_number  = df.select_dtypes(exclude="number")
-#     df_number        = df.select_dtypes("number")
-#     del df
-#     imputer = KNNImputer(n_neighbors=4, weights="uniform")
-#     imputed = imputer.fit_transform(df_number)
-#     df_number = pd.DataFrame(imputed, columns=df_number.columns)
-#     df = pd.concat([df_not_a_number.reset_index(drop=True), df_number.reset_index(drop=True)], axis=1)
-#     del df_not_a_number
-#     del df_number
-#     print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
-# #===
-# # -------------------------------- Catagoriacal variables imputating
-# vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
-# if vars_to_fill.size:
-#     for col in vars_to_fill.index:
-#         tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
-#         tr_y = tr[col]
-#         tr_X = tr.drop(columns=col)
-#
-#         tr_T = tr_X.select_dtypes("number")
-#         cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
-#         tr_T[cat_cols.columns.to_list()] = cat_cols
-#
-#         tr_T[col] = tr_y
-#         tr = tr_T.copy("deep")
-#
-#         train = tr[tr[col].notna()]
-#         test  = tr[tr[col].isna()]
-#
-#         train_y = train[col]
-#         train_X = train.drop(columns=col)
-#
-#         test_X = test.drop(columns=col)
-#
-#         clf = DecisionTreeClassifier().fit(train_X, train_y)
-#         test_y = clf.predict(test_X)
-#
-#         df.loc[df[col].isna(), col] = test_y
-#     new_line()
-#     print(f"Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
-# # ----------------------------------------------- END Imputing Missing values
-# # --------------------------------------------------------- Unique values
-# only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
-# if only_one_unique_value.size:
-#     new_line()
-#     df.drop(columns=only_one_unique_value.index, inplace=True)
-#     last_ = ("", "it") if  only_one_unique_value.size == 1 else ("s", "those")
-#     to_print = f"There are {only_one_unique_value.size} variable{last_[0]} That have only one unique value, so we droped {last_[1]}.\nDropped column{last_[0]} name{last_[0]} (in order):"
-#     print(colored(to_print, 'red'))
-#     for i in only_one_unique_value.index.sort_values():
-#         print(i)
-#     new_line()
-#     print(f"\nNow {data_shape()}")
-# del only_one_unique_value
-# # #===
-# all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
-# if all_values_are_unique.size:
-#     new_line()
-#     df.drop(columns=all_values_are_unique.index, inplace=True)
-#     last_ = ("", "it") if  all_values_are_unique.size == 1 else ("s", "those")
-#     to_print = f"There are {all_values_are_unique.size} column{last_[0]} that have all unique values, so no value repeatation, we droped {last_[1]} column{last_[0]}.\nDropped column{last_[0]} name{last_[0]} are:\n"
-#     print(colored(to_print, 'red'))
-#     for i in all_values_are_unique.index:
-#         print("\t", i)
-#     new_line()
-#     print(f"Now {data_shape()}")
-# del all_values_are_unique
-# #===
-# date_columns = []
-# def DTYPES():
-#     global date_columns
-#     catagorical_columns = df.head().select_dtypes("O").columns
-#     numerical_columns   = df.head().select_dtypes("number").columns
-#     date_columns        = []
-#
-#     for i in catagorical_columns:
-#         try:
-#             df[i] = pd.to_datetime(df[i])
-#             date_columns.append(i)
-#         except:
-#             pass
-#
-#     catagorical_columns = catagorical_columns.drop(date_columns)
-#     if date_columns:
-#         date_columns = pd.Index(date_columns)
-#     #===
-#     if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
-#         new_line()
-#         print(colored("Some column/s repated in > 1 dtypes\n", 'red'))
-#         dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
-#                     "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
-#         print(dtypes[dtypes.Column.isin(list(dtypes[dtypes.Column.duplicated()].Column.values))].to_string())
-#     #===
-#     x = df.columns.difference(
-#         catagorical_columns.append(numerical_columns).append(date_columns)
-#         )
-#     if x.size:
-#         new_line()
-#         print(colored("Some columns not included in any existing catagory, those:\n", 'red'))
-#         for i in x:
-#             print(f"\t<{i}, with dtype of <{df[i].dtype}>")
-#     #===
-#     dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
-#                 "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
-#     return dtypes
-# #===
-# dtypes = DTYPES()
-# # ----------------------------------------------------------------------- Feature enginearing
-# # ======= Adding date columns
-# # ?????????????????????????? add polynomial, sqrt, tree, log features
-# len_df_before_adding_date_vars = df.shape[1]
-# for date_col in date_columns:
-#     df = add_new_date_cols(df[date_col], date_col)
-# len_df_after_adding_date_vars  = df.shape[1]
-# if len_df_after_adding_date_vars > len_df_before_adding_date_vars:
-#     new_line()
-#     to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features"
-#     print(colored(to_print, 'red'))
-#
-# # ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
-# f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
-# if f.size:
-#     len_df_before_adding_date_vars = df.shape[1]
-#     for col_num_to_str in f:
-#         df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
-#     len_df_after_adding_date_vars  = df.shape[1]
-#     new_line()
-#     to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)"
-#     print(colored(to_print, 'red'))
-# # =======
-# for var in df.select_dtypes("O").columns:
-#     m = cluping_rare_cases_in_one_catagory(var)
-#     if isinstance(m, pd.core.series.Series):
-#         df[var] = m
-# new_line()
-#
-# xx = (df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna()
-# xx = pd.DataFrame({"Count" : xx,
-#                 "Ratio" : round(xx/len(df)*100, 4)})
-# print(f"<Rare case> catagory:\n{xx.to_string()}")
-# # ----------------------------------------------------------------------- END (Feature enginearing)
-# dtypes = DTYPES()
-# # ---------------------------------------------------- Correlation plot
-# new_line()
-# cor_df = df.select_dtypes('number').corr().abs()
-# mask = np.triu(np.ones_like(cor_df, dtype=bool));
-# f, ax = plt.subplots(figsize=(17, 10));
-# cmap = sns.color_palette("viridis", as_cmap=True);
-# plot_ = sns.heatmap(cor_df, mask=mask, cmap=cmap, vmax=.3, square=True, linewidths=.5, cbar_kws={"shrink": .5});
-# plot_.axes.set_title("abs (Correlation) plot",fontsize=25);
-# plt.show()
-# # ---------------------------------------------------------------------
-# #===
-# # m = 0
-# if summary__:
-#     for row in dtypes.iterrows():
-#         # m += 1
-#         # if m == 3:
-#             # break
-#         column_name, type_ = row[1]
-#         x = df[column_name]
-#         to_print = f"\n\n\n========================================= {column_name} =========================================\n\n"
-#         print(colored(to_print, 'red'))
-#
-#         for col_ in df.columns:
-#             if col_ == column_name:
-#                 continue
-#             if df[col_].nunique() == df[column_name].nunique():
-#                 unique_combination = df[[col_, column_name]].drop_duplicates()
-#                 if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
-#                     new_line()
-#                     to_print = f"This Columns is duplicate of <{col_}> column"
-#                     print(colored(to_print, 'red'))
-#
-#         # print(f"Column Type     : {type_}")
-#         print(f"Column Type     : ", end="")
-#         print(colored(type_, 'red'))
-#         if x.isna().all():
-#             new_line()
-#             df.drop(columns=column_name, inplace=True)
-#             print(colored("We dropped This column, because it is all Empty", 'red'))
-#             continue
-#         if type_ in ["O", "Date"]:
-#             if x.is_unique:
-#                 new_line()
-#                 df.drop(columns=column_name, inplace=True)
-#                 to_print = f"We dropped This column, because it's a {type_} columns, and it's all values are unique"
-#                 print(colored(to_print, 'red'))
-#                 continue
-#         if x.nunique() == 1:
-#             new_line()
-#             df.drop(columns=column_name, inplace=True)
-#             print(colored("We dropped This column, because There is only one unique value", 'red'))
-#             continue
-#
-#         if type_ == "Number":
-#             local_cor = cor_df[column_name].drop(column_name).reset_index()
-#             local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
-#             if local_cor[column_name].max() == 1:
-#                 new_line()
-#                 to_print = f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them"
-#                 print(colored(to_print, 'red'))
-#
-#             new_line()
-#             xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
-#             xm.index = xm['Column name']
-#             xm.drop(columns="Column name", inplace=True);
-#             xm.plot(kind='barh', grid=True, figsize=(10,1.5));
-#             plt.title("Most 3 correlated features with this columns (sorted)", size=14);
-#             plt.xlabel("Correlation", size=12);
-#             plt.show();
-#
-#             new_line()
-#             skewness = x.skew(skipna = True)
-#             if abs(skewness) < 0.5:
-#                 print(f"The data is fairly symmetrical (skewness is: {skewness})")
-#             elif abs(skewness) < 1:
-#                 print(f"The data are moderately skewed (skewness is: {skewness})")
-#             else:
-#                 to_print = f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed"
-#                 print(colored(to_print, 'red'))
-#
-#             # f = x.describe()
-#             # f['Nunique'] = x.nunique()
-#             # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
-#             # f['Outlies count'] = (((x - x.mean())/x.std()).abs() > 3).sum()
-#             # f['Outlies ratio'] = f.loc["Outlies count"] / f.loc["count"] * 100
-#             # f['Nagative values count'] = (x < 0).sum()
-#             # f['Nagative values ratio'] = f['Nagative values count'] / f['count'] * 100
-#
-#             ff = [x.count(), x.isna().sum(), x.mean(), x.std(), x.min()]
-#             ff += x.quantile([.25,.5,.75]).to_list()
-#             ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum(), (x == 0).sum()]
-#
-#             f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive', 'Zeros'], columns=['Count'])
-#             f['Ratio'] = f.Count / x.count() * 100
-#             f.loc['Mean' : 'Max', 'Ratio'] = None
-#
-#             new_line()
-#             print(f.round(2).to_string())
-#             plot_numerical_columns(column_name)
-#
-#         elif type_ == "Object":
-#             # f = x.describe()
-#             # f = x.agg(['count', pd.Series.nunique])
-#             # f['len'] = len(x)
-#             # f['Na count'] = x.isna().sum()
-#             # f['Na ratio'] = f['Na count'] / f['count'] * 100
-#             # f['Most frequent'] = x.mode().values[0]
-#             # f['Most frequent count'] = (x == f['Most frequent']).sum()
-#             # f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
-#             # f['Least frequent'] = x.value_counts().tail(1).index[0]
-#             # f['Least frequent count'] = (x == f['Least frequent']).sum()
-#             # f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
-#             # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-#             # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
-#
-#             l = x.count(), x.nunique(), len(x), x.isna().sum(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
-#             f = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
-#             f['Ratio'] = (f.Counts / x.count() * 100).round(4)
-#             f.loc[['Len'], 'Ratio'] = None
-#
-#             new_line()
-#             print(f.to_string())
-#
-#
-#             if x.str.lower().nunique() != x.nunique():
-#                 new_line()
-#                 to_print = f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n"
-#                 print(colored(to_print, 'red'))
-#
-#             if x.str.strip().nunique() != x.nunique():
-#                 new_line()
-#                 to_print = f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values."
-#                 print(colored(to_print, 'red'))
-#
-#             plot_catagorical_columns(column_name)
-#
-#         elif type == "Date":
-#
-#             new_line()
-#             rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
-#             to_print = f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}"
-#             print(colored(to_print, 'red'))
-#
-#             # f = pd.Series({'Count' : x.count(),
-#             #             'Nunique count' : x.nunique(),
-#             #             'Nunique ratio' : x.nunique() / x.count() * 100,
-#             #             'Most frequent value' : str(x.mode()[0]),
-#             #             'Least frequent value' :  x.value_counts().tail(1).index[0]
-#             #             })
-#             # f['Most frequent count'] = (x == f['Most frequent value']).sum()
-#             # f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
-#             # f['Least frequent count'] = (x == f['Least frequent value']).sum()
-#             # f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
-#             # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
-#             # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
-#
-#             ff = x.count(), x.nunique(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
-#             f = pd.DataFrame(ff, index=["Count", 'Nunique', 'Most frequent values', 'Least frequent values', 'Values occured only once count'], columns=['Counts'])
-#             f['Ratio'] = (f.Counts / x.count() * 100).round(4)
-#
-#             new_line()
-#             print(f"\n{f.to_string()}")
-#
-#
-#             f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
-#                 x.dt.year.unique())
-#             if f:
-#                 new_line()
-#                 print(colored("These Years (in order) are missing:\n", 'red'))
-#                 for i in f:
-#                     print("\t", i, end=", ")
-#
-#             f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
-#                 x.dt.month.unique())
-#             if f:
-#                 new_line()
-#                 print(colored("These Months (in order) are missing:\n", 'red'))
-#                 for i in f:
-#                     print("\t", i, end=", ")
-#
-#             f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
-#                 x.dt.day.unique())
-#             if f:
-#                 new_line()
-#                 print(colored("These Days (in order) are missing:\n", 'red'))
-#                 for i in f:
-#                     print("\t", i, end=", ")
-#
-#             new_line()
-#             plot_date_columns(column_name)
-#
+all_values_are_unique = df.apply(lambda x:x.is_unique).where(lambda x:x==True).dropna()
+if all_values_are_unique.size:
+    new_line()
+    df.drop(columns=all_values_are_unique.index, inplace=True)
+    last_ = ("", "it") if  all_values_are_unique.size == 1 else ("s", "those")
+    to_print = f"There are {all_values_are_unique.size} column{last_[0]} that have all unique values, so no value repeatation, we droped {last_[1]} column{last_[0]}.\nDropped column{last_[0]} name{last_[0]} are:\n"
+    print(colored(to_print, 'red'))
+    for i in all_values_are_unique.index:
+        print("\t", i)
+    new_line()
+    print(f"Now {data_shape()}")
+del all_values_are_unique
+#===
+date_columns = []
+def DTYPES():
+    global date_columns
+    catagorical_columns = df.head().select_dtypes("O").columns
+    numerical_columns   = df.head().select_dtypes("number").columns
+    date_columns        = []
+
+    for i in catagorical_columns:
+        try:
+            df[i] = pd.to_datetime(df[i])
+            date_columns.append(i)
+        except:
+            pass
+
+    catagorical_columns = catagorical_columns.drop(date_columns)
+    if date_columns:
+        date_columns = pd.Index(date_columns)
+    #===
+    if not catagorical_columns.append(numerical_columns).append(date_columns).is_unique:
+        new_line()
+        print(colored("Some column/s repated in > 1 dtypes\n", 'red'))
+        dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
+                    "dtype" : ['O']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+        print(dtypes[dtypes.Column.isin(list(dtypes[dtypes.Column.duplicated()].Column.values))].to_string())
+    #===
+    x = df.columns.difference(
+        catagorical_columns.append(numerical_columns).append(date_columns)
+        )
+    if x.size:
+        new_line()
+        print(colored("Some columns not included in any existing catagory, those:\n", 'red'))
+        for i in x:
+            print(f"\t<{i}, with dtype of <{df[i].dtype}>")
+    #===
+    dtypes = pd.DataFrame({"Column" : catagorical_columns.append(numerical_columns).append(date_columns),
+                "dtype" : ['Object']*len(catagorical_columns) + ['Number']*len(numerical_columns) + ['Date']*len(date_columns)})
+    return dtypes
+#===
+dtypes = DTYPES()
+# ----------------------------------------------------------------------- Feature enginearing
+# ======= Adding date columns
+# ?????????????????????????? add polynomial, sqrt, tree, log features
+len_df_before_adding_date_vars = df.shape[1]
+for date_col in date_columns:
+    df = add_new_date_cols(df[date_col], date_col)
+len_df_after_adding_date_vars  = df.shape[1]
+if len_df_after_adding_date_vars > len_df_before_adding_date_vars:
+    new_line()
+    to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} date Features"
+    print(colored(to_print, 'red'))
+
+# ======= type casting of numerical variable (those who have < 4% unique values) to catagorical variables
+f = (df.select_dtypes("number").nunique() / len(df) * 100).where(lambda x:x<4).dropna().index
+if f.size:
+    len_df_before_adding_date_vars = df.shape[1]
+    for col_num_to_str in f:
+        df[col_num_to_str+"_str"] = '"' + df[col_num_to_str].astype(str) + '"'
+    len_df_after_adding_date_vars  = df.shape[1]
+    new_line()
+    to_print = f"Added {len_df_after_adding_date_vars - len_df_before_adding_date_vars} String Features (Extracted from numerical variables)"
+    print(colored(to_print, 'red'))
+# =======
+for var in df.select_dtypes("O").columns:
+    m = cluping_rare_cases_in_one_catagory(var)
+    if isinstance(m, pd.core.series.Series):
+        df[var] = m
+new_line()
+
+xx = (df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna()
+xx = pd.DataFrame({"Count" : xx,
+                "Ratio" : round(xx/len(df)*100, 4)})
+print(f"<Rare case> catagory:\n{xx.to_string()}")
+# ----------------------------------------------------------------------- END (Feature enginearing)
+dtypes = DTYPES()
+# ---------------------------------------------------- Correlation plot
+new_line()
+cor_df = df.select_dtypes('number').corr().abs()
+mask = np.triu(np.ones_like(cor_df, dtype=bool));
+f, ax = plt.subplots(figsize=(17, 10));
+cmap = sns.color_palette("viridis", as_cmap=True);
+plot_ = sns.heatmap(cor_df, mask=mask, cmap=cmap, vmax=.3, square=True, linewidths=.5, cbar_kws={"shrink": .5});
+plot_.axes.set_title("abs (Correlation) plot",fontsize=25);
+plt.show()
+# ---------------------------------------------------------------------
+#===
+# m = 0
+if summary__:
+    for row in dtypes.iterrows():
+        # m += 1
+        # if m == 3:
+            # break
+        column_name, type_ = row[1]
+        x = df[column_name]
+        to_print = f"\n\n\n========================================= {column_name} =========================================\n\n"
+        print(colored(to_print, 'red'))
+
+        for col_ in df.columns:
+            if col_ == column_name:
+                continue
+            if df[col_].nunique() == df[column_name].nunique():
+                unique_combination = df[[col_, column_name]].drop_duplicates()
+                if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
+                    new_line()
+                    to_print = f"This Columns is duplicate of <{col_}> column"
+                    print(colored(to_print, 'red'))
+
+        # print(f"Column Type     : {type_}")
+        print(f"Column Type     : ", end="")
+        print(colored(type_, 'red'))
+        if x.isna().all():
+            new_line()
+            df.drop(columns=column_name, inplace=True)
+            print(colored("We dropped This column, because it is all Empty", 'red'))
+            continue
+        if type_ in ["O", "Date"]:
+            if x.is_unique:
+                new_line()
+                df.drop(columns=column_name, inplace=True)
+                to_print = f"We dropped This column, because it's a {type_} columns, and it's all values are unique"
+                print(colored(to_print, 'red'))
+                continue
+        if x.nunique() == 1:
+            new_line()
+            df.drop(columns=column_name, inplace=True)
+            print(colored("We dropped This column, because There is only one unique value", 'red'))
+            continue
+
+        if type_ == "Number":
+            local_cor = cor_df[column_name].drop(column_name).reset_index()
+            local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
+            if local_cor[column_name].max() == 1:
+                new_line()
+                to_print = f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them"
+                print(colored(to_print, 'red'))
+
+            new_line()
+            xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
+            xm.index = xm['Column name']
+            xm.drop(columns="Column name", inplace=True);
+            xm.plot(kind='barh', grid=True, figsize=(10,1.5));
+            plt.title("Most 3 correlated features with this columns (sorted)", size=14);
+            plt.xlabel("Correlation", size=12);
+            plt.show();
+
+            new_line()
+            skewness = x.skew(skipna = True)
+            if abs(skewness) < 0.5:
+                print(f"The data is fairly symmetrical (skewness is: {skewness})")
+            elif abs(skewness) < 1:
+                print(f"The data are moderately skewed (skewness is: {skewness})")
+            else:
+                to_print = f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed"
+                print(colored(to_print, 'red'))
+
+            # f = x.describe()
+            # f['Nunique'] = x.nunique()
+            # f['Nunique ratio'] = f.loc["Nunique"] / f.loc["count"] * 100
+            # f['Outlies count'] = (((x - x.mean())/x.std()).abs() > 3).sum()
+            # f['Outlies ratio'] = f.loc["Outlies count"] / f.loc["count"] * 100
+            # f['Nagative values count'] = (x < 0).sum()
+            # f['Nagative values ratio'] = f['Nagative values count'] / f['count'] * 100
+
+            ff = [x.count(), x.isna().sum(), x.mean(), x.std(), x.min()]
+            ff += x.quantile([.25,.5,.75]).to_list()
+            ff += [x.max(), x.nunique(), (((x - x.mean())/x.std()).abs() > 3).sum(), (x < 0).sum(), (x == 0).sum()]
+
+            f = pd.DataFrame(ff, index=['Count', 'NA', 'Mean', 'Std', 'Min', '25%', '50%', '75%', 'Max', 'Nunique', 'Outlies', 'Nagetive', 'Zeros'], columns=['Count'])
+            f['Ratio'] = f.Count / x.count() * 100
+            f.loc['Mean' : 'Max', 'Ratio'] = None
+
+            new_line()
+            print(f.round(2).to_string())
+            plot_numerical_columns(column_name)
+
+        elif type_ == "Object":
+            # f = x.describe()
+            # f = x.agg(['count', pd.Series.nunique])
+            # f['len'] = len(x)
+            # f['Na count'] = x.isna().sum()
+            # f['Na ratio'] = f['Na count'] / f['count'] * 100
+            # f['Most frequent'] = x.mode().values[0]
+            # f['Most frequent count'] = (x == f['Most frequent']).sum()
+            # f['Most frequent ratio'] = f['Most frequent count'] / f['count'] * 100
+            # f['Least frequent'] = x.value_counts().tail(1).index[0]
+            # f['Least frequent count'] = (x == f['Least frequent']).sum()
+            # f['Least frequent ratio'] = f['Least frequent count'] / f['count'] * 100
+            # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+            # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+
+            l = x.count(), x.nunique(), len(x), x.isna().sum(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
+            f = pd.DataFrame(l, index=['Count', 'Nunique', 'Len', 'NA', 'Most frequent', 'Least frequent', 'Values occured only once'], columns=['Counts'])
+            f['Ratio'] = (f.Counts / x.count() * 100).round(4)
+            f.loc[['Len'], 'Ratio'] = None
+
+            new_line()
+            print(f.to_string())
+
+
+            if x.str.lower().nunique() != x.nunique():
+                new_line()
+                to_print = f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n"
+                print(colored(to_print, 'red'))
+
+            if x.str.strip().nunique() != x.nunique():
+                new_line()
+                to_print = f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values."
+                print(colored(to_print, 'red'))
+
+            plot_catagorical_columns(column_name)
+
+        elif type == "Date":
+
+            new_line()
+            rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
+            to_print = f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}"
+            print(colored(to_print, 'red'))
+
+            # f = pd.Series({'Count' : x.count(),
+            #             'Nunique count' : x.nunique(),
+            #             'Nunique ratio' : x.nunique() / x.count() * 100,
+            #             'Most frequent value' : str(x.mode()[0]),
+            #             'Least frequent value' :  x.value_counts().tail(1).index[0]
+            #             })
+            # f['Most frequent count'] = (x == f['Most frequent value']).sum()
+            # f['Most frequent ratio'] = f['Most frequent count'] / f['Count'] * 100
+            # f['Least frequent count'] = (x == f['Least frequent value']).sum()
+            # f['Least frequent ratio'] = f['Least frequent count'] / f['Count'] * 100
+            # f['Values occured only once count'] = x.value_counts().where(lambda x:x==1).dropna().size
+            # f['Values occured only once Ratio'] = f['Values occured only once count'] / x.count() * 100
+
+            ff = x.count(), x.nunique(), (x == x.mode().values[0]).sum(), (x == x.value_counts().tail(1).index[0]).sum(), x.value_counts().where(lambda x:x==1).dropna().size
+            f = pd.DataFrame(ff, index=["Count", 'Nunique', 'Most frequent values', 'Least frequent values', 'Values occured only once count'], columns=['Counts'])
+            f['Ratio'] = (f.Counts / x.count() * 100).round(4)
+
+            new_line()
+            print(f"\n{f.to_string()}")
+
+
+            f = set(np.arange(x.dt.year.min(),x.dt.year.max()+1)).difference(
+                x.dt.year.unique())
+            if f:
+                new_line()
+                print(colored("These Years (in order) are missing:\n", 'red'))
+                for i in f:
+                    print("\t", i, end=", ")
+
+            f = set(np.arange(x.dt.month.min(),x.dt.month.max()+1)).difference(
+                x.dt.month.unique())
+            if f:
+                new_line()
+                print(colored("These Months (in order) are missing:\n", 'red'))
+                for i in f:
+                    print("\t", i, end=", ")
+
+            f = set(np.arange(x.dt.day.min(),x.dt.day.max()+1)).difference(
+                x.dt.day.unique())
+            if f:
+                new_line()
+                print(colored("These Days (in order) are missing:\n", 'red'))
+                for i in f:
+                    print("\t", i, end=", ")
+
+            new_line()
+            plot_date_columns(column_name)
+
 
 # ================================================================================================================ Modeling
 if modeling_:
     # pickle.dump(df, open("df.pkl", "wb"))
-    df = pickle.load(open("df.pkl", "rb"))
+    # df = pickle.load(open("df.pkl", "rb"))
     print("\n\n")
     to_print = "----------------------------------------------------------------------------------------------\n****************************************** Modeling ******************************************"
     print(colored(to_print, 'red'))
@@ -618,12 +618,12 @@ if modeling_:
         to_print = "\n ------------------------------------- Linear Regression -------------------------------------\n"
         print(colored(to_print, 'red'))
 
-        print("\nStarting Feature selection for Linear regression........")
-        selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
-        print(f"Droppped {(selector == False).sum()} useless features.\n")
-
-        train_X = train_X.iloc[:, selector]
-        test_X  = test_X.iloc [:, selector]
+        # print("\nStarting Feature selection for Linear regression........")
+        # selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
+        # print(f"Droppped {(selector == False).sum()} useless features.\n")
+        #
+        # train_X = train_X.iloc[:, selector]
+        # test_X  = test_X.iloc [:, selector]
 
         model_reg = OLS(train_y, train_X).fit()
         summary = model_reg.summary()
