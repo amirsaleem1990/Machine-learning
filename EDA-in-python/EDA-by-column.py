@@ -548,7 +548,7 @@ if df[target_variable].dtype in [float, int]:
 
     # --------------------------------------------------------- Random Forest
     print("\n")
-    print(" ------------------------------------- Linear Regression -------------------------------------\n")
+    print(" ------------------------------------- Random Forest -------------------------------------\n")
 
     rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
     model_rf = rf.fit(train_X, train_y);
