@@ -400,7 +400,8 @@ for row in dtypes.iterrows():
             unique_combination = df[[col_, column_name]].drop_duplicates()
             if unique_combination.apply(lambda x:x.is_unique).sum() == 2:
                 new_line()
-                print(f"This Columns is duplicate of <{col_}> column")
+                to_print = f"This Columns is duplicate of <{col_}> column"
+                print(colored(to_print, 'red'))
 
     print(f"Column Type     : {type_}")
     if x.isna().all():
