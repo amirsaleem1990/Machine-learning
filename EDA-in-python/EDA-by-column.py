@@ -1,3 +1,4 @@
+import missingno as msno
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import LabelEncoder
@@ -112,14 +113,12 @@ def data_shape():
 df = pd.read_csv("cleaned_data.csv", date_parser=True)
 target_variable = "SalePrice"
 
-
-
-
-import missingno as msno
+new_line()
+print("========= NA Graphs =========\n")
 msno.matrix(df);
 plt.show()
 
-
+new_line()
 sns.heatmap(df.isnull().sample(2500), cbar=False)#, square=False);
 plt.title("NA Graph");
 plt.show()
