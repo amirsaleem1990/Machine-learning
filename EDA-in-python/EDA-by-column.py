@@ -20,7 +20,7 @@ from sklearn.model_selection import train_test_split
 from statsmodels.regression.linear_model import OLS
 
 plot_______ = False
-plot_______ = True
+# plot_______ = True
 
 def new_line():
     print("\n-------------------------\n")
@@ -833,22 +833,22 @@ pickle.dump(test, open("test.pkl", "wb"))
 
 
 
-from sklearn.feature_selection import SelectFromModel
-from sklearn.linear_model import LogisticRegression
-X = [[ 0.87, -1.34,  0.31 ],
-     [-2.79, -0.02, -0.85 ],
-     [-1.34, -0.48, -2.55 ],
-     [ 1.92,  1.48,  0.65 ]]
-# y = [0, 1, 0, 1]
-selector = SelectFromModel(estimator=LogisticRegression()).fit(X, y)
-selector.estimator_.coef_
-# array([[-0.3252302 ,  0.83462377,  0.49750423]])
-selector.threshold_
-# 0.55245...
-selector.get_support()
-# array([False,  True, False])
-selector.transform(X)
-# array([[-1.34],
-       # [-0.02],
-       # [-0.48],
-       # [ 1.48]])
+# from sklearn.feature_selection import SelectFromModel
+# from sklearn.linear_model import LogisticRegression
+# X = [[ 0.87, -1.34,  0.31 ],
+#      [-2.79, -0.02, -0.85 ],
+#      [-1.34, -0.48, -2.55 ],
+#      [ 1.92,  1.48,  0.65 ]]
+# # y = [0, 1, 0, 1]
+# selector = SelectFromModel(estimator=LogisticRegression()).fit(X, y)
+# selector.estimator_.coef_
+# # array([[-0.3252302 ,  0.83462377,  0.49750423]])
+# selector.threshold_
+# # 0.55245...
+# selector.get_support()
+# # array([False,  True, False])
+# selector.transform(X)
+# # array([[-1.34],
+#        # [-0.02],
+#        # [-0.48],
+#        # [ 1.48]])
