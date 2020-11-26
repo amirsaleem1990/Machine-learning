@@ -176,6 +176,8 @@ if a.size:
 else:
     print("Now There is no NaN value in our Data")
 #===
+# ----------------------------------------------- Imputing Missing values
+# ------------------------------------ Numerical columns imputing
 if df.select_dtypes("number").isna().sum().sum():
     new_line()
     print(f'(Before Missing values treatment)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
@@ -190,6 +192,35 @@ if df.select_dtypes("number").isna().sum().sum():
 
     print(f'\n(After filling numeric missing values)\nThere are {df.isna().sum().sum()} Missing values:\n\t{df.select_dtypes("O").isna().sum().sum()} in catagorical variables\n\t{df.select_dtypes("number").isna().sum().sum()} in numerical columns\n\t{df.select_dtypes(exclude=["O", "number"]).isna().sum().sum()} in others')
 #===
+# -------------------------------- Catagoriacal variables imputating
+vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
+for col in vars_to_fill.index:
+    tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
+    tr_y = tr[col]
+    tr_X = tr.drop(columns=col)
+
+    tr_T = tr_X.select_dtypes("number")
+    cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
+    tr_T[cat_cols.columns.to_list()] = cat_cols
+
+    tr_T[col] = tr_y
+    tr = tr_T.copy("deep")
+
+    train = tr[tr[col].notna()]
+    test  = tr[tr[col].isna()]
+
+    train_y = train[col]
+    train_X = train.drop(columns=col)
+
+    test_X = test.drop(columns=col)
+
+    clf = DecisionTreeClassifier().fit(train_X, train_y)
+    test_y = clf.predict(test_X)
+
+    df.loc[df[col].isna(), col] = test_y
+new_line()
+print("Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
+# ----------------------------------------------- END Imputing Missing values
 # --------------------------------------------------------- Unique values
 only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
 if only_one_unique_value.size:
@@ -707,42 +738,3 @@ for i in f:
     print(d_na)
 
 df = pd.read_csv("/home/amir/github/Kaggle-compitations/House-Prices-Advanced-Regression-Techniques-kaggle-compitation/train.csv")
-c = "GarageCond"
-vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
-
-for col in vars_to_fill:
-    col = vars_to_fill.index[0]
-    tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
-    tr_y = tr[col]
-    tr_X = tr.drop(columns=col)
-
-    tr_T = tr_X.select_dtypes("number")
-    cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
-    tr_T[cat_cols.columns.to_list()] = cat_cols
-
-
-    tr_T[col] = tr_y
-    tr = tr_T.copy("deep")
-
-    del tr_T
-    del cat_cols
-    del tr_X
-    del tr_y
-
-    train = tr[tr[col].notna()]
-    test  = tr[tr[col].isna()]
-
-
-
-train_y = train[col]
-train_X = train.drop(columns=col)
-
-test_X = test.drop(columns=col)
-
-clf = DecisionTreeClassifier().fit(train_X, train_y)
-test_y = clf.predict(test_X)
-
-train_X[col] = train_y
-test_X[col] = test_y
-
-df = pd.concat([train_X, test_X])
