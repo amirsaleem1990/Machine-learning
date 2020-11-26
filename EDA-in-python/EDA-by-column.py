@@ -1,3 +1,4 @@
+from sklearn.tree import DecisionTreeClassifier
 import missingno as msno
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
@@ -691,3 +692,57 @@ elif df[target_variable].dtype == "O":
         plt.title("Precision recall curve");
         plt.show()
 # ================================================================================================================ END Modeling
+
+
+
+
+
+
+
+f = open("f.txt", "r").read().splitlines()
+f = ["/home/amir/github/" + i.replace("../../", "") for i in f]
+for i in f:
+    d = pd.read_csv(i)
+    d_na = d.select_dtypes("O").isna().sum().where(lambda x:x>0).dropna()
+    print(d_na)
+
+df = pd.read_csv("/home/amir/github/Kaggle-compitations/House-Prices-Advanced-Regression-Techniques-kaggle-compitation/train.csv")
+c = "GarageCond"
+vars_to_fill = df.select_dtypes("O").isna().mean().where(lambda x:x>0).dropna().sort_values(ascending=True)
+
+for col in vars_to_fill:
+    col = vars_to_fill.index[0]
+    tr = pd.concat([df[[col]], df.loc[:,df.isna().sum() == 0]], 1)
+    tr_y = tr[col]
+    tr_X = tr.drop(columns=col)
+
+    tr_T = tr_X.select_dtypes("number")
+    cat_cols = pd.get_dummies(tr_X.select_dtypes(exclude="number"), prefix_sep="__")
+    tr_T[cat_cols.columns.to_list()] = cat_cols
+
+
+    tr_T[col] = tr_y
+    tr = tr_T.copy("deep")
+
+    del tr_T
+    del cat_cols
+    del tr_X
+    del tr_y
+
+    train = tr[tr[col].notna()]
+    test  = tr[tr[col].isna()]
+
+
+
+train_y = train[col]
+train_X = train.drop(columns=col)
+
+test_X = test.drop(columns=col)
+
+clf = DecisionTreeClassifier().fit(train_X, train_y)
+test_y = clf.predict(test_X)
+
+train_X[col] = train_y
+test_X[col] = test_y
+
+df = pd.concat([train_X, test_X])
