@@ -146,10 +146,11 @@ if a.size:
 
     print("========= NA Graphs =========\n")
     msno.matrix(df);
+    plt.title("NA Graph");
     plt.show()
 
     new_line()
-    sns.heatmap(df.isnull().sample(2500), cbar=False)#, square=False);
+    sns.heatmap(df.isnull(), cbar=False);
     plt.title("NA Graph");
     plt.show()
 #===
