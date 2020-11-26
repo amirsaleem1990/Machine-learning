@@ -440,11 +440,11 @@ for row in dtypes.iterrows():
 
         if x.str.lower().nunique() != x.nunique():
             new_line()
-            print(f"\n\nCase issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.")
+            print(f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n")
 
         if x.str.strip().nunique() != x.nunique():
             new_line()
-            print(f"\n\nSpace issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values.")
+            print(f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values.")
 
         plot_catagorical_columns(column_name)
 
