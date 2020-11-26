@@ -525,8 +525,7 @@ if df[target_variable].dtype in [float, int]:
     train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
     # ====
     # --------------------------------------------------------- Linear regression
-    print("\n")
-    print(" ------------------------------------- Linear Regression -------------------------------------\n")
+    print("\n ------------------------------------- Linear Regression -------------------------------------\n")
     model_reg = OLS(train_y, train_X).fit()
     summary = model_reg.summary()
     summary_df = pd.DataFrame(summary.tables[1])
@@ -571,8 +570,7 @@ if df[target_variable].dtype in [float, int]:
 
 
     # --------------------------------------------------------- Random Forest
-    print("\n")
-    print(" ------------------------------------- Random Forest -------------------------------------\n")
+    print("\n ------------------------------------- Random Forest -------------------------------------\n")
 
     rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
     model_rf = rf.fit(train_X, train_y);
