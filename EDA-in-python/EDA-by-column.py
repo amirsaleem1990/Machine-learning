@@ -20,8 +20,6 @@ import pickle
 import pprint
 
 warnings.filterwarnings("ignore")
-
-
 plot_______ = False
 # plot_______ = True
 
@@ -610,6 +608,11 @@ if df[target_variable].dtype in [float, int]:
     to_print = "\n ------------------------------------- Linear Regression -------------------------------------\n"
     print(colored(to_print, 'red'))
 
+    selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
+
+    train_X = train_X.iloc[:, selector]
+    test_X  = test_X.iloc [:, selector]
+    
     model_reg = OLS(train_y, train_X).fit()
     summary = model_reg.summary()
     summary_df = pd.DataFrame(summary.tables[1])
@@ -828,28 +831,3 @@ del test
 #     X_new = SelectKBest(chi2, k=2).fit_transform(X, y)
 # <SelectPercentile>        removes all but a user-specified highest scoring percentage of features
 # <GenericUnivariateSelect> allows to perform univariate feature selection with a configurable strategy. This allows to select the best univariate selection strategy with hyper-parameter search estimator.
-
-
-
-
-
-
-
-selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
-N = N.iloc[:, t]
-
-#
-#
-#
-#
-N = df.select_dtypes("number")
-cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
-N[cat_cols.columns.to_list()] = cat_cols
-
-
-
-train_X = N[N[target_variable].notna()].drop(columns=target_variable)
-train_y = N[target_variable]
-
-test_X = N[N[target_variable].isna()].drop(columns=target_variable)
-del N
