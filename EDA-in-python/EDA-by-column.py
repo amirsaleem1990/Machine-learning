@@ -371,7 +371,8 @@ def cluping_rare_cases_in_one_catagory(x):
         x[x == "Rare cases"] = x.mode()[0] # agar "Rare cases" vali catogery me 8 sy bhi kam values hon to un ko most common value sy replace kar do
     if x.nunique() == 1:
         new_line()
-        to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
+        # to_print = f"The column <{x.name}> have only one unique value, We droped it from the data."
+        to_print = f"The column <{x.name}> have imbalanced, so we droped it, it has {orignal.nunique()} unique values, and most commont value frequency ratio is {orignal.mode()[0]/orignal.size}"
         print(colored(to_print, 'red'))
         # return orignal
         df.drop(columns=x.name, inplace=True)
@@ -383,7 +384,6 @@ for var in df.select_dtypes("O").columns:
     if isinstance(m, pd.core.series.Series):
         df[var] = m
 new_line()
-
 
 xx = (df == 'Rare cases').sum().sort_values().where(lambda x:x>0).dropna()
 xx = pd.DataFrame({"Count" : xx,
