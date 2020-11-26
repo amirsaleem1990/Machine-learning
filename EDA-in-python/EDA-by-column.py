@@ -409,12 +409,8 @@ plot_.axes.set_title("abs (Correlation) plot",fontsize=25);
 plt.show()
 # ---------------------------------------------------------------------
 #===
-# m = 0
 if summary__:
     for row in dtypes.iterrows():
-        # m += 1
-        # if m == 3:
-            # break
         column_name, type_ = row[1]
         x = df[column_name]
         to_print = f"\n\n\n========================================= {column_name} =========================================\n\n"
@@ -430,7 +426,6 @@ if summary__:
                     to_print = f"This Columns is duplicate of <{col_}> column"
                     print(colored(to_print, 'red'))
 
-        # print(f"Column Type     : {type_}")
         print(f"Column Type     : ", end="")
         print(colored(type_, 'red'))
         if x.isna().all():
