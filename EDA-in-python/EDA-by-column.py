@@ -774,16 +774,17 @@ elif df[target_variable].dtype == "O":
         plt.title("Precision recall curve");
         plt.show()
 # ================================================================================================================ END Modeling
-pickle.dump(df, open("df.pkl", "wb"))
-pickle.dump(train, open("train.pkl", "wb"))
-pickle.dump(test, open("test.pkl", "wb"))
 
+train = df[df[target_variable].notna()]
+test = df[df[target_variable].isna()]
 
+train_y = train[target_variable]
+train_X = train.drop(columns=target_variable)
 
+test_X = test.drop(columns=target_variable)
 
-
-
-
+del train
+del test
 
 
 
@@ -827,28 +828,39 @@ pickle.dump(test, open("test.pkl", "wb"))
 
 
 
+train = pickle.load(open("train.pkl", "rb"))
+test  = pickle.load(open("test.pkl", "rb"))train.shape, test.shape
+train.shape, test.shape
+
+
+from sklearn.feature_selection import SelectFromModel
+from sklearn.linear_model import LinearRegression
+selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y)
+selector.estimator_.coef_
+# array([[-0.3252302 ,  0.83462377,  0.49750423]])
+selector.threshold_
+# 0.55245...
+selector.get_support()
+# array([False,  True, False])
+selector.transform(X)
+# array([[-1.34],
+       # [-0.02],
+       # [-0.48],
+       # [ 1.48]])
 
 
 
 
 
 
-# from sklearn.feature_selection import SelectFromModel
-# from sklearn.linear_model import LogisticRegression
-# X = [[ 0.87, -1.34,  0.31 ],
-#      [-2.79, -0.02, -0.85 ],
-#      [-1.34, -0.48, -2.55 ],
-#      [ 1.92,  1.48,  0.65 ]]
-# # y = [0, 1, 0, 1]
-# selector = SelectFromModel(estimator=LogisticRegression()).fit(X, y)
-# selector.estimator_.coef_
-# # array([[-0.3252302 ,  0.83462377,  0.49750423]])
-# selector.threshold_
-# # 0.55245...
-# selector.get_support()
-# # array([False,  True, False])
-# selector.transform(X)
-# # array([[-1.34],
-#        # [-0.02],
-#        # [-0.48],
-#        # [ 1.48]])
+N = df.select_dtypes("number")
+cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
+N[cat_cols.columns.to_list()] = cat_cols
+
+
+
+train_X = N[N[target_variable].notna()].drop(columns=target_variable)
+train_y = N[target_variable]
+
+test_X = N[N[target_variable].isna()].drop(columns=target_variable)
+del N
