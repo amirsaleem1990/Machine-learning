@@ -499,17 +499,20 @@ for row in dtypes.iterrows():
             new_line()
             to_print = f"Case issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin lower verstion there are   {x.str.lower().nunique()} unique values.\n"
             print(colored(to_print, 'red'))
+
         if x.str.strip().nunique() != x.nunique():
             new_line()
             to_print = f"Space issue\n\tin orignal variable There are {x.nunique()} unique values\n\tin striped verstion there are {x.str.strip().nunique()} unique values."
             print(colored(to_print, 'red'))
+
         plot_catagorical_columns(column_name)
 
     elif type == "Date":
 
         new_line()
         rd = relativedelta.relativedelta( pd.to_datetime(x.max()), pd.to_datetime(x.min()))
-        print(f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}")
+        to_print = f"Diffrenece between first and last date:\n\tYears : {rd.years}\n\tMonths: {rd.months}\n\tDays  : {rd.days}"
+        print(colored(to_print, 'red'))
 
         # f = pd.Series({'Count' : x.count(),
         #             'Nunique count' : x.nunique(),
@@ -536,7 +539,7 @@ for row in dtypes.iterrows():
             x.dt.year.unique())
         if f:
             new_line()
-            print(f"These Years (in order) are missing:\n")
+            print(colored("These Years (in order) are missing:\n", 'red'))
             for i in f:
                 print("\t", i, end=", ")
 
