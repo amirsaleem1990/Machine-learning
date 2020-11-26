@@ -625,7 +625,7 @@ if modeling_:
 		# model.fit(X_rfe,train_y)
 		# rfe.support_
 		# rfe.ranking_
-		  
+
 
 		model_reg = OLS(train_y, train_X).fit()
 		summary = model_reg.summary()
@@ -731,7 +731,7 @@ if modeling_:
 			# clf = LogisticRegression()
 			# rfe = RFE(clf, 3)
 			# clf = rfe.fit(train_X, train_y)
-			
+
 			predictions = clf.predict_proba(test_X)
 			predictions = pd.Series(predictions[:, 0])
 			lst = []
@@ -808,3 +808,33 @@ if modeling_:
 #     X_new = SelectKBest(chi2, k=2).fit_transform(X, y)
 # <SelectPercentile>        removes all but a user-specified highest scoring percentage of features
 # <GenericUnivariateSelect> allows to perform univariate feature selection with a configurable strategy. This allows to select the best univariate selection strategy with hyper-parameter search estimator.
+
+
+
+
+
+
+
+
+# pickle.dump(df, open("df.pkl", "wb"))
+df = pickle.load(open("df.pkl", "rb"))
+train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+
+def best_var(model_reg):
+	model_reg = OLS(train_y, train_X).fit()
+	summary = model_reg.summary()
+	summary_df = pd.DataFrame(summary.tables[1])
+	summary_df.columns = summary_df.iloc[0]
+	summary_df.drop(0, inplace=True)
+	summary_df.columns = summary_df.columns.astype(str)
+	summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
+	for i in summary_df.columns[1:]:
+		summary_df[i] = summary_df[i].astype(str).astype(float)
+	summary_df.Variable = summary_df.Variable.astype(str)
+	return summary_df.loc[summary_df['P>|t|'].idxmax(), 'Variable']
+	# summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
+	# summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
+
+
+
+var
