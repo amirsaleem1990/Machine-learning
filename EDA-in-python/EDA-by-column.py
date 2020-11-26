@@ -123,6 +123,12 @@ target_variable = "SalePrice"
 new_line()
 print(data_shape())
 #===
+new_line()
+print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}\n")
+df.dtypes.value_counts().plot(kind='barh', figsize=(10, 2), grid=True, title="Variable types Count Graph");
+plt.xlabel("Count");
+
+#===
 f = df[target_variable].isna().sum()
 if f:
     new_line()
@@ -138,9 +144,6 @@ del f
 
 # profile = ProfileReport(df, title='Pandas Profiling Report', explorative=True)
 # profile.to_file("your_report.html")
-#---------------------------------------------------
-new_line()
-print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}")
 #---------------------------------------- NA
 a = df.isna().sum().where(lambda x:x>0).dropna()
 if a.size:
