@@ -613,12 +613,19 @@ if modeling_:
 		to_print = "\n ------------------------------------- Linear Regression -------------------------------------\n"
 		print(colored(to_print, 'red'))
 
-		print("\nStarting Feature selection for Linear regression........")
-		selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
-		print(f"Droppped {(selector == False).sum()} useless features.\n")
+		# print("\nStarting Feature selection for Linear regression........")
+		# selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
+		# print(f"Droppped {(selector == False).sum()} useless features.\n")
+		# train_X = train_X.iloc[:, selector]
+		# test_X  = test_X.iloc [:, selector]
 
-		train_X = train_X.iloc[:, selector]
-		test_X  = test_X.iloc [:, selector]
+		# model = LinearRegression()
+		# rfe = RFE(model, 7)
+		# X_rfe = rfe.fit_transform(train_X,train_y)
+		# model.fit(X_rfe,train_y)
+		# rfe.support_
+		# rfe.ranking_
+		  
 
 		model_reg = OLS(train_y, train_X).fit()
 		summary = model_reg.summary()
