@@ -20,6 +20,7 @@ from sklearn.model_selection import train_test_split
 from statsmodels.regression.linear_model import OLS
 
 plot_______ = False
+plot_______ = True
 
 def new_line():
     print("\n-------------------------\n")
@@ -408,7 +409,7 @@ for row in dtypes.iterrows():
         # break
     column_name, type_ = row[1]
     x = df[column_name]
-    to_print = "\n\n\n========================================= {column_name} =========================================\n\n"
+    to_print = "f\n\n\n========================================= {column_name} =========================================\n\n"
     print(colored(to_print, 'red'))
 
     for col_ in df.columns:
