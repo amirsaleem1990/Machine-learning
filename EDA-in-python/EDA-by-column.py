@@ -849,13 +849,14 @@ selected = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rs
 Adj_rsquared = selected.Adj_rsquared.iloc[0]
 first_var = selected['Var'].values[0]
 FINAL_VARS.append(first_var)
-
-cols_used = []
+k = 0
 for upper_column in train_X.columns:
+	print(k, end=",")
 	if upper_column in FINAL_VARS:
 		continue
 	FM = []
 	for i in train_X.columns:
+		k += 1
 		if i in FINAL_VARS:
 			continue
 		if i == upper_column:
