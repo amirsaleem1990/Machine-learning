@@ -1,23 +1,26 @@
-from termcolor import colored
-from sklearn.tree import DecisionTreeClassifier
-import missingno as msno
-from sklearn.linear_model import LogisticRegression
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder
-from sklearn import metrics
-import pickle
-import pprint
-from sklearn.ensemble import RandomForestRegressor
-from pandas_profiling import ProfileReport
-from dateutil import relativedelta
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import seaborn as sns
-import warnings
-warnings.filterwarnings("ignore")
+from sklearn.feature_selection import SelectFromModel
 from sklearn.model_selection import train_test_split
 from statsmodels.regression.linear_model import OLS
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.linear_model import LinearRegression
+from sklearn.tree import DecisionTreeClassifier
+from sklearn.preprocessing import LabelEncoder
+from pandas_profiling import ProfileReport
+from dateutil import relativedelta
+import matplotlib.pyplot as plt
+from termcolor import colored
+from sklearn import metrics
+import missingno as msno
+import seaborn as sns
+import pandas as pd
+import numpy as np
+import warnings
+import pickle
+import pprint
+
+warnings.filterwarnings("ignore")
+
 
 plot_______ = False
 # plot_______ = True
@@ -831,34 +834,22 @@ del test
 
 
 
-# from sklearn.feature_selection import SelectFromModel
-# from sklearn.linear_model import LinearRegression
-# selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y)
-# selector.estimator_.coef_
-# # array([[-0.3252302 ,  0.83462377,  0.49750423]])
-# selector.threshold_
-# # 0.55245...
-# selector.get_support()
-# # array([False,  True, False])
-# selector.transform(X)
-# # array([[-1.34],
-#        # [-0.02],
-#        # [-0.48],
-#        # [ 1.48]])
-#
-# df = df.dropna(axis=1)
+
+selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
+N = N.iloc[:, t]
+
 #
 #
 #
 #
-# N = df.select_dtypes("number")
-# cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
-# N[cat_cols.columns.to_list()] = cat_cols
-#
-#
-#
-# train_X = N[N[target_variable].notna()].drop(columns=target_variable)
-# train_y = N[target_variable]
-#
-# test_X = N[N[target_variable].isna()].drop(columns=target_variable)
-# del N
+N = df.select_dtypes("number")
+cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
+N[cat_cols.columns.to_list()] = cat_cols
+
+
+
+train_X = N[N[target_variable].notna()].drop(columns=target_variable)
+train_y = N[target_variable]
+
+test_X = N[N[target_variable].isna()].drop(columns=target_variable)
+del N
