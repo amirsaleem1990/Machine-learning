@@ -135,7 +135,7 @@ new_line()
 print(f"Columns types distribution:\n\n{df.dtypes.value_counts()}\n")
 df.dtypes.value_counts().plot(kind='barh', figsize=(10, 2), grid=True, title="Variable types Count Graph");
 plt.xlabel("Count");
-
+plt.show()
 #===
 f = df[target_variable].isna().sum()
 if f:
