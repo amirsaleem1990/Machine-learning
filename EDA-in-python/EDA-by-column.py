@@ -243,7 +243,7 @@ if vars_to_fill.size:
 
         df.loc[df[col].isna(), col] = test_y
     new_line()
-    print("Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
+    print(f"Missing values imputed, Now there are {df.isna().sum().sum()} Missing values")
 # ----------------------------------------------- END Imputing Missing values
 # --------------------------------------------------------- Unique values
 only_one_unique_value = df.nunique().where(lambda x:x == 1).dropna()
