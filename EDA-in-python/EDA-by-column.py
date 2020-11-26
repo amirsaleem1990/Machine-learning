@@ -117,8 +117,17 @@ def data_shape():
 #         df[[target_variable]]], 1)
 # target_variable = "AREA_NAME_EN"
 
-df = pd.read_csv("cleaned_data.csv", date_parser=True)
+# df = pd.read_csv("cleaned_data.csv", date_parser=True)
+# target_variable = "SalePrice"
+
+train = pd.read_csv("/home/amir/Downloads/train.csv")
+test  = pd.read_csv("/home/amir/Downloads/test.csv")
 target_variable = "SalePrice"
+train_y = train.SalePrice
+train = train.drop(columns=target_variable)
+df = pd.concat([train, test])
+df[target_variable] = len(train_y.to_list() + [None]*len(test))
+
 #===
 new_line()
 print(data_shape())
