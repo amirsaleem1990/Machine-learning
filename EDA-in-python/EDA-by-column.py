@@ -403,7 +403,9 @@ for row in dtypes.iterrows():
                 to_print = f"This Columns is duplicate of <{col_}> column"
                 print(colored(to_print, 'red'))
 
-    print(f"Column Type     : {type_}")
+    # print(f"Column Type     : {type_}")
+    print(f"Column Type     : ", end="")
+    print(colored(type_, 'red'))
     if x.isna().all():
         new_line()
         df.drop(columns=column_name, inplace=True)
