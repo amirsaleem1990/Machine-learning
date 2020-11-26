@@ -429,7 +429,8 @@ for row in dtypes.iterrows():
         local_cor = local_cor.reindex(local_cor[column_name].abs().sort_values().index)
         if local_cor[column_name].max() == 1:
             new_line()
-            print(f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them")
+            to_print = f"This column is perfactly correlated with column <{local_cor[local_cor[column_name] == 1]['index'].values[0]}, so remove one of them"
+            print(colored(to_print, 'red'))
 
         new_line()
         xm = local_cor[-3:].rename(columns={'index' : 'Column name', column_name : 'Correlation'}).reset_index(drop=True)
@@ -447,7 +448,8 @@ for row in dtypes.iterrows():
         elif abs(skewness) < 1:
             print(f"The data are moderately skewed (skewness is: {skewness})")
         else:
-            print(f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed")
+            to_print = f"The data are highly skewed (skewness is: {skewness})\nNote: When skewness exceed |1| we called it highly skewed"
+            print(colored(to_print, 'red'))
 
         # f = x.describe()
         # f['Nunique'] = x.nunique()
