@@ -169,7 +169,8 @@ a = a.sort_values()/len(df)*100
 if (a == 100).sum():
     new_line()
     df.drop(columns=a[a==100].index, inplace=True)
-    print(f"There are {(a == 100).sum()} columns that are all Missing values, so we droped those.\nNow {data_shape()}\n\nDropped columns names:")
+    to_print = f"There are {(a == 100).sum()} columns that are all Missing values, so we droped those.\nNow {data_shape()}\n\nDropped columns names:"
+    print(colored(to_print, 'red'))
     for i in a[a==100].index:
         print("\t",i)
     a = a[a != 100]
