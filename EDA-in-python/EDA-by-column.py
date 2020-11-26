@@ -1,3 +1,4 @@
+from termcolor import colored
 from sklearn.tree import DecisionTreeClassifier
 import missingno as msno
 from sklearn.linear_model import LogisticRegression
