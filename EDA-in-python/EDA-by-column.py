@@ -850,8 +850,9 @@ Adj_rsquared = selected.Adj_rsquared.iloc[0]
 first_var = selected['Var'].values[0]
 FINAL_VARS.append(first_var)
 k = 0
+cols_used = []
 for upper_column in train_X.columns:
-	print(k, end=",")
+
 	if upper_column in FINAL_VARS:
 		continue
 	FM = []
@@ -861,15 +862,16 @@ for upper_column in train_X.columns:
 			continue
 		if i == upper_column:
 			continue
+		if i in cols_used:
+			continue
+		cols_used.append(i)
 		model_reg = OLS(train_y, train_X[FINAL_VARS + [i]]).fit()
 		s , summary_df= select_best_var(model_reg)
 		adj_rsquared = float(s[1][-1].strip())
 		FM.append((summary_df[summary_df.Variable == i]['P>|t|'].iloc[0], i))
 		best_cendidate = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
-		if best_cendidate.Adj_rsquared > best_adj_rsquared:
+		if best_cendidate.Adj_rsquared.iloc[0] > best_adj_rsquared:
 			FINAL_VARS.append(
 				best_cendidate['Var'].iloc[0]
 				)
-		else:
-			print("Limit reached, Adj-rsquared now increasing")
-			break
+		print(k, end=",")
