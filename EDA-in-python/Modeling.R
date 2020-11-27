@@ -68,6 +68,21 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     errors_RF <- test[[target_variable_name]] - predictions_RF
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
 
+    if (plot_ == TRUE){
+        cat ("\n\n")
+        errors_RF %>% plot(main="Random Forest Reseduals")
+        abline(h=c(mean(errors_RF),median(errors_RF)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+
+        cat ("\n\n")
+        errors_RF_normalized <- (errors_RF - mean(errors_RF)) / sd(errors_RF)
+        errors_RF_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
+        abline(h=c(mean(errors_RF_normalized),median(errors_RF_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+
+        cat ("\n\n")
+        errors_RF %>% boxplot(main="Linear Regression Reseduals Boxplot")
+        abline(h=mean(errors_RF), col="red", lty=3, lwd=2)
+    }
+
     print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
     # get only numeric columns
     train_KNN <- Filter(is.numeric, train)
