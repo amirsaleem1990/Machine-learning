@@ -588,6 +588,8 @@ if summary__:
 
 pickle.dump(df, open("df.pkl", "wb"))
 df.to_csv("df.csv", index=False)
+target_variable = "SalePrice"
+open("target_variable.txt", "w").write(target_variable)
 # ================================================================================================================ Modeling
 if modeling_:
 	# df = pickle.load(open("df.pkl", "rb"))
