@@ -123,7 +123,3 @@ cat("=== Models RMSE (sorted) ===\n\n")
 for (i in seq(1:length(k))){
     print(paste(k[[i]],round(v[[i]])))
 }
-
-
-title_ <- "Linear Regression"
-errors_ <- errors_RF
