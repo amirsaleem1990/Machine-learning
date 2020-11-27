@@ -16,6 +16,7 @@ plot_func <- function(title_, errors_, RMSE_){
         cat ("\n\n")
         errors_ %>% boxplot(main=paste0(title_, " Boxplot", title_end))
         abline(h=mean(errors_), col="red", lty=3, lwd=2)
+        Sys.sleep(1)
         cat("\n\n")
     }
 }
