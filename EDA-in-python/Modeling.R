@@ -1,4 +1,5 @@
 rm(list=ls())
+library(ranger)
 suppressWarnings(library(dplyr))
 library(readr)
 df <- read.csv("df.csv")
@@ -35,5 +36,17 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
 
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
+    rf1 <- ranger(
+            formula   = as.formula( paste(target_variable_name, " ~ .") ),
+            data      = train,
+            num.trees = 200,
+            sample.fraction = 0.7,
+            min.node.size = 4,
+            classification = F,
+            mtry = floor(ncol(train) / 3))
+    rf1 <- predict(rf1, test)
+    predictions_RF <- rf1$predictions
+    errors_RF <- test[[target_variable_name]] - predictions_RF
+    RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
     
 }
