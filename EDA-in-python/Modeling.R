@@ -26,9 +26,10 @@ library(ranger)
 suppressWarnings(library(dplyr))
 library(readr)
 
-# options(repr.plot.width = 15, repr.plot.height = 10)
+options(repr.plot.width = 15, repr.plot.height = 10)
 
-plot_ = FALSE
+# plot_ = FALSE
+plot_ = TRUE
 
 df <- read.csv("df.csv")
 target_variable_name <- read_file("target_variable.txt")
