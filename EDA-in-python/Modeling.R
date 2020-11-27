@@ -12,7 +12,7 @@ plot_func <- function(title_, errors_){
     title_ <- paste0(title_, " Reseduals")
     if (plot_ == TRUE){
         cat ("\n\n")
-        errors_ %>% plot(main=paste0(title_))
+        errors_ %>% plot(main=paste0(title_, "         (RMSE:", RMSE_, ")"))
         abline(h=c(mean(errors_),median(errors_)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
 
         cat ("\n\n")
@@ -100,7 +100,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     rm(train_KNN, test_KNN)
 
     # Plots
-    plot_func(title_ = "KNN", errors_ = errors_KNN)
+    plot_func(title_ = paste0("KNN (k=", x[which.max(res)], ")"), errors_ = errors_KNN)
 
     print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
