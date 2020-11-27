@@ -8,20 +8,21 @@ library(readr)
 options(repr.plot.width = 15, repr.plot.height = 10)
 plot_ = TRUE
 
-plot_func <- function(title_, errors_){
+plot_func <- function(title_, errors_, RMSE_){
     title_ <- paste0(title_, " Reseduals")
+    title_end <- "         (RMSE:", RMSE_, ")"
     if (plot_ == TRUE){
         cat ("\n\n")
-        errors_ %>% plot(main=paste0(title_, "         (RMSE:", RMSE_, ")"))
+        errors_ %>% plot(main=paste0(title_, title_end))
         abline(h=c(mean(errors_),median(errors_)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
 
         cat ("\n\n")
         errors__normalized <- (errors_ - mean(errors_)) / sd(errors_)
-        errors__normalized %>% plot(main=paste0(title_, " (standrized)"))
+        errors__normalized %>% plot(main=paste0(title_, " (standrized)", title_end))
         abline(h=c(mean(errors__normalized),median(errors__normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
 
         cat ("\n\n")
-        errors_ %>% boxplot(main=paste0(title_, " Boxplot"))
+        errors_ %>% boxplot(main=paste0(title_, " Boxplot", title_end))
         abline(h=mean(errors_), col="red", lty=3, lwd=2)
         cat("\n\n")
     }
@@ -58,10 +59,10 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     adj.r.squared_LR <- summary_LR$adj.r.squared
     predictions_LR <- model_LR_final %>% predict(test)
     errors_LR <- test[[target_variable_name]] - predictions_LR
-    RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
+    RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt %>% round(2)
 
     # Plots
-    plot_func(title_ = "Linear Regression", errors_ = errors_LR)
+    plot_func(title_ = "Linear Regression", errors_ = errors_LR, RMSE_=RMSE_LR)
 
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     rf1 <- ranger(
