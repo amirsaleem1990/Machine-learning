@@ -26,7 +26,7 @@ plot_func <- function(title_, errors_){
         cat("\n\n")
     }
 }
-plot_func(title_ = "Linear Regression", errors_ = errors_LR)
+
 df <- read.csv("df.csv")
 target_variable_name <- read_file("target_variable.txt")
 
@@ -59,7 +59,10 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     predictions_LR <- model_LR_final %>% predict(test)
     errors_LR <- test[[target_variable_name]] - predictions_LR
     RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
-    plot_func(title = "Linear Regression", errors_ = errors_LR)
+
+    # Plots
+    plot_func(title_ = "Linear Regression", errors_ = errors_LR)
+
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     rf1 <- ranger(
             formula   = as.formula( paste(target_variable_name, " ~ .") ),
@@ -74,6 +77,8 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     errors_RF <- test[[target_variable_name]] - predictions_RF
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
 
+    # Plots
+    plot_func(title_ = "Random Forest", errors_ = errors_RF)
 
 
     print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
@@ -94,12 +99,17 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
     rm(train_KNN, test_KNN)
 
+    # Plots
+    plot_func(title_ = "KNN", errors_ = errors_KNN)
 
     print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
     predictions_SVM  <- model_svm %>% predict(test)
     errors_SVM <- test[[target_variable_name]] - predictions_SVM
     RMSE_SVM <- errors_SVM ^ 2 %>% mean %>% sqrt
+
+    # Plots
+    plot_func(title_ = "SVM", errors_ = errors_SVM)
 }
 
 f <- list(`Linear regression: `=RMSE_LR,
