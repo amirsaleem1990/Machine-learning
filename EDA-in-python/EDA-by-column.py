@@ -591,293 +591,293 @@ df.to_csv("df.csv", index=False)
 target_variable = "SalePrice"
 open("target_variable.txt", "w").write(target_variable)
 # ================================================================================================================ Modeling
-if modeling_:
-	# df = pickle.load(open("df.pkl", "rb"))
-	print("\n\n")
-	to_print = "----------------------------------------------------------------------------------------------\n****************************************** Modeling ******************************************"
-	print(colored(to_print, 'red'))
-
-	# Regression problem
-	if df[target_variable].dtype in [float, int]:
-
-		to_print = "\n-------------------- This is Regression problem --------------------\n''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"
-		print(colored(to_print, 'red'))
-
-		df_T = df.select_dtypes("number")
-		cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
-		df_T[cat_cols.columns.to_list()] = cat_cols
-
-		df = df_T.copy("deep")
-		del df_T
-		del cat_cols
-		# ====
-		train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-		# ====
-		# --------------------------------------------------------- Linear regression
-		to_print = "\n ------------------------------------- Linear Regression -------------------------------------\n"
-		print(colored(to_print, 'red'))
-
-		# print("\nStarting Feature selection for Linear regression........")
-		# selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
-		# print(f"Droppped {(selector == False).sum()} useless features.\n")
-		# train_X = train_X.iloc[:, selector]
-		# test_X  = test_X.iloc [:, selector]
-
-		# model = LinearRegression()
-		# rfe = RFE(model, 7)
-		# X_rfe = rfe.fit_transform(train_X,train_y)
-		# model.fit(X_rfe,train_y)
-		# rfe.support_
-		# rfe.ranking_
-
-
-		model_reg = OLS(train_y, train_X).fit()
-		summary = model_reg.summary()
-		summary_df = pd.DataFrame(summary.tables[1])
-		summary_df.columns = summary_df.iloc[0]
-		summary_df.drop(0, inplace=True)
-		summary_df.columns = summary_df.columns.astype(str)
-		summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
-		for i in summary_df.columns[1:]:
-			summary_df[i] = summary_df[i].astype(str).astype(float)
-		summary_df.Variable = summary_df.Variable.astype(str)
-		summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
-		summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
-		summary_df.to_csv()
-		new_line()
-		print(colored("NOTE: This summary saved as <summary_OLS_1.csv>", 'red'))
-
-		new_line()
-		print(summary_df.to_string())
-		# ============================= Model statistic
-		predictions = model_reg.predict(test_X)
-
-		new_line()
-		print(colored(" --- Model statistic --- \n", 'red'))
-		print(f"R-squared         : {round(model_reg.rsquared, 3)}")
-		print(f"Adj. R-squared    : {round(model_reg.rsquared_adj, 3)}")
-		print(f"F-statistic       : {round(model_reg.fvalue)}")
-		print(f"Prob (F-statistic): {model_reg.f_pvalue}")
-		print(f"No. Observations  : {round(model_reg.nobs)}")
-		print(f"AIC               : {round(model_reg.aic)}")
-		print(f"Df Residuals      : {round(model_reg.df_resid)}")
-		print(f"BIC               : {round(model_reg.bic)}")
-		print(f"RMSE (test)       : {RMSE(predictions)}")
-		# ======
-		f = train_X.copy("deep")
-		f['Errors__'] = model_reg.resid
-		f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
-		new_line()
-		print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
-		print(f"Mean of train reseduals: {model_reg.resid.mean()}")
-		del f
-		# ============================= END (Model statistic)
-		# --------------------------------------------------------- END Linear regression
-
-
-
-
-		# --------------------------------------------------------- Random Forest
-		print("\n ------------------------------------- Random Forest -------------------------------------\n")
-
-		rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
-		model_rf = rf.fit(train_X, train_y);
-		predictions_rf = rf.predict(test_X)
-
-		new_line()
-		print(colored("RF model peramters:\n", 'red'))
-		pprint.pprint(model_rf.get_params())
-
-		new_line()
-		importances = list(rf.feature_importances_)
-		feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
-		featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
-		if len(featuresImportance) > 30:
-			featuresImportance = featuresImportance.head(30)
-		featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
-		plt.title("RandomForest Feature importances Graph", size=18,color='red');
-		plt.xlabel("Features", size=14, color='red');
-		plt.ylabel("Importance", size=14, color='red');
-		plt.show();
-		del featuresImportance
-
-		new_line()
-		print(colored("--- Model statistic ---", 'red'))
-		# The coefficient of determination R^2 of the prediction.
-		# https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
-		print(f"R^2 (test) : {rf.score(test_X, test_y)}")
-		print(f"R^2 (train): {rf.score(train_X, train_y)}")
-		print(f"RMSE (test): {RMSE(predictions_rf)}")
-		print(f"oob score  : {model_rf.oob_score_}")
-
-		f = test_X.copy("deep")
-		errors_rf = predictions_rf - test_y
-		f['Errors__'] = errors_rf
-		f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
-		new_line()
-		print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
-		# --------------------------------------------------------- END Random Forest
-	elif df[target_variable].dtype == "O":
-		# Classififcation problem
-		if df[target_variable].nunique() == 2:
-			print("\n-------------------- This is Binary Classification problem --------------------\n")
-			print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
-			df = pd.concat([
-							df.select_dtypes(exclude = "O"),
-							pd.get_dummies(df.drop(columns=target_variable).select_dtypes("O")),
-							df[[target_variable]]
-							], 1)
-
-			train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-			clf = LogisticRegression().fit(train_X, train_y)
-
-			# Feture selection
-			# clf = LogisticRegression()
-			# rfe = RFE(clf, 3)
-			# clf = rfe.fit(train_X, train_y)
-
-			predictions = clf.predict_proba(test_X)
-			predictions = pd.Series(predictions[:, 0])
-			lst = []
-			for thresh in np.linspace(predictions.min(), predictions.max(), 50)[1:]:
-				pred = predictions < thresh
-
-				pred.loc[pred == True] = clf.classes_[0]
-				pred.loc[pred == False] = clf.classes_[1]
-
-				test_y = test_y.reset_index(drop=True)
-
-				TN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[0])).sum()
-				TP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[1])).sum()
-				FN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[1])).sum()
-				FP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[0])).sum()
-
-				p = TP / (TP + FP)
-				r = TP / (TP + FN)
-				f = 2 * ((p * r) / (p+r))
-
-				lst.append((thresh, (pred == test_y).mean(), p, r , f))
-
-			d = pd.DataFrame(lst, columns=["Thresold", "Accurecy(0-1)", "Precision", "Recall", "F1"])
-			d = d.set_index("Thresold")
-			d.plot(grid=True, figsize=(18,7));
-			plt.title("Model performance at diffrent Thresolds", size=18, color='red');
-			plt.xlabel("Thresold", size=14, color='red');
-			plt.ylabel("");
-			plt.show()
-		else:
-			to_print = "\n-------------------- This is Multiclass Classification problem --------------------\n"
-			print(colored(to_print, 'red'))
-			print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
-
-			df.loc[:, df.select_dtypes("O").columns] = df.select_dtypes("O").apply(lambda x: pd.Series(LabelEncoder().fit_transform(x.astype(str))).astype(str))
-			train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-
-			clf=RandomForestClassifier(n_estimators=1000).fit(train_X, train_y)
-			predictions = clf.predict(test_X)
-			feature_imp = pd.Series(clf.feature_importances_,index=train_X.columns).sort_values(ascending=False)
-			if feature_imp.size > 30:
-				feature_imp = feature_imp.head(30)
-			feature_imp.plot(kind='barh', figsize=(17,10), grid=True);
-			plt.title("Feature importances Graph", size=18, color='red');
-			plt.xlabel("Importance", size=14, color='red');
-			plt.ylabel("Feature", size=14, color='red');
-			plt.show()
-			# ====
-			f = (test_y, predictions)
-			f_int = (test_y.astype(int), predictions.astype(int))
-
-			print(f"accuracy_score: {metrics.accuracy_score(*f)}")
-			print(f"f1_score: {metrics.f1_score(*f_int)}")
-
-			metrics.plot_roc_curve(clf, test_X, test_y);
-			plt.title("ROC curve plot");
-			plt.show();
-
-			metrics.ConfusionMatrixDisplay(metrics.confusion_matrix(*f)); plt.show()
-
-			metrics.plot_confusion_matrix(clf, test_X, test_y);
-			plt.title("Confusion matrix");
-			plt.show()
-
-			metrics.plot_precision_recall_curve(clf, test_X, test_y);
-			plt.title("Precision recall curve");
-			plt.show()
-	# ================================================================================================================ END Modeling
-
-# sklearn.feature_selection
-# <SelectKBest>             removes all but the highest scoring features
-#     from sklearn.feature_selection import SelectKBest
-#     from sklearn.feature_selection import chi2
-#     X_new = SelectKBest(chi2, k=2).fit_transform(X, y)
-# <SelectPercentile>        removes all but a user-specified highest scoring percentage of features
-# <GenericUnivariateSelect> allows to perform univariate feature selection with a configurable strategy. This allows to select the best univariate selection strategy with hyper-parameter search estimator.
-
-
-
-
-
-
-
-
-# pickle.dump(df, open("df.pkl", "wb"))
-df = pickle.load(open("df.pkl", "rb"))
-target_variable = "SalePrice"
-train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
-
-def select_best_var(model_reg):
-	summary = model_reg.summary()
-	summary_df = pd.DataFrame(summary.tables[1])
-	summary_df.columns = summary_df.iloc[0]
-	summary_df.drop(0, inplace=True)
-	summary_df.columns = summary_df.columns.astype(str)
-	summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
-	for i in summary_df.columns[1:]:
-		summary_df[i] = summary_df[i].astype(str).astype(float)
-	summary_df.Variable = summary_df.Variable.astype(str)
-	return summary.tables[0].data, summary_df
-	# summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
-	# summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
-
-
-FINAL_VARS = []
-best_adj_rsquared = 0
-FM = []
-for col in train_X.columns:
-	model_reg = OLS(train_y, train_X[col]).fit()
-	s , summary_df= select_best_var(model_reg)
-	adj_rsquared = float(s[1][-1].strip())
-	var = summary_df.loc[summary_df['P>|t|'].idxmax()]['Variable']
-	FM.append((adj_rsquared, var))
-
-selected = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
-Adj_rsquared = selected.Adj_rsquared.iloc[0]
-first_var = selected['Var'].values[0]
-FINAL_VARS.append(first_var)
-k = 0
-cols_used = []
-for upper_column in train_X.columns:
-
-	if upper_column in FINAL_VARS:
-		continue
-	FM = []
-	for i in train_X.columns:
-		k += 1
-		if i in FINAL_VARS:
-			continue
-		if i == upper_column:
-			continue
-		if i in cols_used:
-			continue
-		cols_used.append(i)
-		model_reg = OLS(train_y, train_X[FINAL_VARS + [i]]).fit()
-		s , summary_df= select_best_var(model_reg)
-		adj_rsquared = float(s[1][-1].strip())
-		FM.append((summary_df[summary_df.Variable == i]['P>|t|'].iloc[0], i))
-		best_cendidate = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
-		if best_cendidate.Adj_rsquared.iloc[0] > best_adj_rsquared:
-			best_adj_rsquared = best_cendidate.Adj_rsquared.iloc[0]
-			FINAL_VARS.append(
-				best_cendidate['Var'].iloc[0]
-				)
-		print(k, end=",")
+# if modeling_:
+# 	# df = pickle.load(open("df.pkl", "rb"))
+# 	print("\n\n")
+# 	to_print = "----------------------------------------------------------------------------------------------\n****************************************** Modeling ******************************************"
+# 	print(colored(to_print, 'red'))
+#
+# 	# Regression problem
+# 	if df[target_variable].dtype in [float, int]:
+#
+# 		to_print = "\n-------------------- This is Regression problem --------------------\n''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''"
+# 		print(colored(to_print, 'red'))
+#
+# 		df_T = df.select_dtypes("number")
+# 		cat_cols = pd.get_dummies(df.select_dtypes(exclude="number"), prefix_sep="__")
+# 		df_T[cat_cols.columns.to_list()] = cat_cols
+#
+# 		df = df_T.copy("deep")
+# 		del df_T
+# 		del cat_cols
+# 		# ====
+# 		train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+# 		# ====
+# 		# --------------------------------------------------------- Linear regression
+# 		to_print = "\n ------------------------------------- Linear Regression -------------------------------------\n"
+# 		print(colored(to_print, 'red'))
+#
+# 		# print("\nStarting Feature selection for Linear regression........")
+# 		# selector = SelectFromModel(estimator=LinearRegression()).fit(train_X, train_y).get_support(True)
+# 		# print(f"Droppped {(selector == False).sum()} useless features.\n")
+# 		# train_X = train_X.iloc[:, selector]
+# 		# test_X  = test_X.iloc [:, selector]
+#
+# 		# model = LinearRegression()
+# 		# rfe = RFE(model, 7)
+# 		# X_rfe = rfe.fit_transform(train_X,train_y)
+# 		# model.fit(X_rfe,train_y)
+# 		# rfe.support_
+# 		# rfe.ranking_
+#
+#
+# 		model_reg = OLS(train_y, train_X).fit()
+# 		summary = model_reg.summary()
+# 		summary_df = pd.DataFrame(summary.tables[1])
+# 		summary_df.columns = summary_df.iloc[0]
+# 		summary_df.drop(0, inplace=True)
+# 		summary_df.columns = summary_df.columns.astype(str)
+# 		summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
+# 		for i in summary_df.columns[1:]:
+# 			summary_df[i] = summary_df[i].astype(str).astype(float)
+# 		summary_df.Variable = summary_df.Variable.astype(str)
+# 		summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
+# 		summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
+# 		summary_df.to_csv()
+# 		new_line()
+# 		print(colored("NOTE: This summary saved as <summary_OLS_1.csv>", 'red'))
+#
+# 		new_line()
+# 		print(summary_df.to_string())
+# 		# ============================= Model statistic
+# 		predictions = model_reg.predict(test_X)
+#
+# 		new_line()
+# 		print(colored(" --- Model statistic --- \n", 'red'))
+# 		print(f"R-squared         : {round(model_reg.rsquared, 3)}")
+# 		print(f"Adj. R-squared    : {round(model_reg.rsquared_adj, 3)}")
+# 		print(f"F-statistic       : {round(model_reg.fvalue)}")
+# 		print(f"Prob (F-statistic): {model_reg.f_pvalue}")
+# 		print(f"No. Observations  : {round(model_reg.nobs)}")
+# 		print(f"AIC               : {round(model_reg.aic)}")
+# 		print(f"Df Residuals      : {round(model_reg.df_resid)}")
+# 		print(f"BIC               : {round(model_reg.bic)}")
+# 		print(f"RMSE (test)       : {RMSE(predictions)}")
+# 		# ======
+# 		f = train_X.copy("deep")
+# 		f['Errors__'] = model_reg.resid
+# 		f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+# 		new_line()
+# 		print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
+# 		print(f"Mean of train reseduals: {model_reg.resid.mean()}")
+# 		del f
+# 		# ============================= END (Model statistic)
+# 		# --------------------------------------------------------- END Linear regression
+#
+#
+#
+#
+# 		# --------------------------------------------------------- Random Forest
+# 		print("\n ------------------------------------- Random Forest -------------------------------------\n")
+#
+# 		rf = RandomForestRegressor(n_estimators = 200, oob_score=True)
+# 		model_rf = rf.fit(train_X, train_y);
+# 		predictions_rf = rf.predict(test_X)
+#
+# 		new_line()
+# 		print(colored("RF model peramters:\n", 'red'))
+# 		pprint.pprint(model_rf.get_params())
+#
+# 		new_line()
+# 		importances = list(rf.feature_importances_)
+# 		feature_importances = [(feature, round(importance, 2)) for feature, importance in zip(test_X, importances)]
+# 		featuresImportance = pd.Series(model_rf.feature_importances_, index=train_X.columns).sort_values(ascending=False)
+# 		if len(featuresImportance) > 30:
+# 			featuresImportance = featuresImportance.head(30)
+# 		featuresImportance.plot(figsize=(20,10), kind='bar', grid=True);
+# 		plt.title("RandomForest Feature importances Graph", size=18,color='red');
+# 		plt.xlabel("Features", size=14, color='red');
+# 		plt.ylabel("Importance", size=14, color='red');
+# 		plt.show();
+# 		del featuresImportance
+#
+# 		new_line()
+# 		print(colored("--- Model statistic ---", 'red'))
+# 		# The coefficient of determination R^2 of the prediction.
+# 		# https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestRegressor.html
+# 		print(f"R^2 (test) : {rf.score(test_X, test_y)}")
+# 		print(f"R^2 (train): {rf.score(train_X, train_y)}")
+# 		print(f"RMSE (test): {RMSE(predictions_rf)}")
+# 		print(f"oob score  : {model_rf.oob_score_}")
+#
+# 		f = test_X.copy("deep")
+# 		errors_rf = predictions_rf - test_y
+# 		f['Errors__'] = errors_rf
+# 		f = f.corr()['Errors__'].drop("Errors__").abs().sort_values().dropna().tail(1)
+# 		new_line()
+# 		print(f"Maximum correlation between Reseduals and any data columns is {f.values[0]}, with columns <{f.index[0]}>")
+# 		# --------------------------------------------------------- END Random Forest
+# 	elif df[target_variable].dtype == "O":
+# 		# Classififcation problem
+# 		if df[target_variable].nunique() == 2:
+# 			print("\n-------------------- This is Binary Classification problem --------------------\n")
+# 			print("''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+# 			df = pd.concat([
+# 							df.select_dtypes(exclude = "O"),
+# 							pd.get_dummies(df.drop(columns=target_variable).select_dtypes("O")),
+# 							df[[target_variable]]
+# 							], 1)
+#
+# 			train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+# 			clf = LogisticRegression().fit(train_X, train_y)
+#
+# 			# Feture selection
+# 			# clf = LogisticRegression()
+# 			# rfe = RFE(clf, 3)
+# 			# clf = rfe.fit(train_X, train_y)
+#
+# 			predictions = clf.predict_proba(test_X)
+# 			predictions = pd.Series(predictions[:, 0])
+# 			lst = []
+# 			for thresh in np.linspace(predictions.min(), predictions.max(), 50)[1:]:
+# 				pred = predictions < thresh
+#
+# 				pred.loc[pred == True] = clf.classes_[0]
+# 				pred.loc[pred == False] = clf.classes_[1]
+#
+# 				test_y = test_y.reset_index(drop=True)
+#
+# 				TN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[0])).sum()
+# 				TP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[1])).sum()
+# 				FN = ((pred == clf.classes_[0]) & (test_y == clf.classes_[1])).sum()
+# 				FP = ((pred == clf.classes_[1]) & (test_y == clf.classes_[0])).sum()
+#
+# 				p = TP / (TP + FP)
+# 				r = TP / (TP + FN)
+# 				f = 2 * ((p * r) / (p+r))
+#
+# 				lst.append((thresh, (pred == test_y).mean(), p, r , f))
+#
+# 			d = pd.DataFrame(lst, columns=["Thresold", "Accurecy(0-1)", "Precision", "Recall", "F1"])
+# 			d = d.set_index("Thresold")
+# 			d.plot(grid=True, figsize=(18,7));
+# 			plt.title("Model performance at diffrent Thresolds", size=18, color='red');
+# 			plt.xlabel("Thresold", size=14, color='red');
+# 			plt.ylabel("");
+# 			plt.show()
+# 		else:
+# 			to_print = "\n-------------------- This is Multiclass Classification problem --------------------\n"
+# 			print(colored(to_print, 'red'))
+# 			print("'''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''")
+#
+# 			df.loc[:, df.select_dtypes("O").columns] = df.select_dtypes("O").apply(lambda x: pd.Series(LabelEncoder().fit_transform(x.astype(str))).astype(str))
+# 			train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+#
+# 			clf=RandomForestClassifier(n_estimators=1000).fit(train_X, train_y)
+# 			predictions = clf.predict(test_X)
+# 			feature_imp = pd.Series(clf.feature_importances_,index=train_X.columns).sort_values(ascending=False)
+# 			if feature_imp.size > 30:
+# 				feature_imp = feature_imp.head(30)
+# 			feature_imp.plot(kind='barh', figsize=(17,10), grid=True);
+# 			plt.title("Feature importances Graph", size=18, color='red');
+# 			plt.xlabel("Importance", size=14, color='red');
+# 			plt.ylabel("Feature", size=14, color='red');
+# 			plt.show()
+# 			# ====
+# 			f = (test_y, predictions)
+# 			f_int = (test_y.astype(int), predictions.astype(int))
+#
+# 			print(f"accuracy_score: {metrics.accuracy_score(*f)}")
+# 			print(f"f1_score: {metrics.f1_score(*f_int)}")
+#
+# 			metrics.plot_roc_curve(clf, test_X, test_y);
+# 			plt.title("ROC curve plot");
+# 			plt.show();
+#
+# 			metrics.ConfusionMatrixDisplay(metrics.confusion_matrix(*f)); plt.show()
+#
+# 			metrics.plot_confusion_matrix(clf, test_X, test_y);
+# 			plt.title("Confusion matrix");
+# 			plt.show()
+#
+# 			metrics.plot_precision_recall_curve(clf, test_X, test_y);
+# 			plt.title("Precision recall curve");
+# 			plt.show()
+# 	# ================================================================================================================ END Modeling
+#
+# # sklearn.feature_selection
+# # <SelectKBest>             removes all but the highest scoring features
+# #     from sklearn.feature_selection import SelectKBest
+# #     from sklearn.feature_selection import chi2
+# #     X_new = SelectKBest(chi2, k=2).fit_transform(X, y)
+# # <SelectPercentile>        removes all but a user-specified highest scoring percentage of features
+# # <GenericUnivariateSelect> allows to perform univariate feature selection with a configurable strategy. This allows to select the best univariate selection strategy with hyper-parameter search estimator.
+#
+#
+#
+#
+#
+#
+#
+#
+# # pickle.dump(df, open("df.pkl", "wb"))
+# df = pickle.load(open("df.pkl", "rb"))
+# target_variable = "SalePrice"
+# train_X, test_X, train_y, test_y = train_test_split(df.drop(columns=target_variable), df[target_variable])
+#
+# def select_best_var(model_reg):
+# 	summary = model_reg.summary()
+# 	summary_df = pd.DataFrame(summary.tables[1])
+# 	summary_df.columns = summary_df.iloc[0]
+# 	summary_df.drop(0, inplace=True)
+# 	summary_df.columns = summary_df.columns.astype(str)
+# 	summary_df.columns = ["Variable"] + summary_df.columns[1:].to_list()
+# 	for i in summary_df.columns[1:]:
+# 		summary_df[i] = summary_df[i].astype(str).astype(float)
+# 	summary_df.Variable = summary_df.Variable.astype(str)
+# 	return summary.tables[0].data, summary_df
+# 	# summary_df['Indicator'] = summary_df['P>|t|'].apply(lambda x:"***" if x < 0.001 else "**" if x < 0.01 else "*" if x < 0.05 else "." if x < 0.1  else "")
+# 	# summary_df = summary_df.sort_values("Variable").reset_index(drop=True)
+#
+#
+# FINAL_VARS = []
+# best_adj_rsquared = 0
+# FM = []
+# for col in train_X.columns:
+# 	model_reg = OLS(train_y, train_X[col]).fit()
+# 	s , summary_df= select_best_var(model_reg)
+# 	adj_rsquared = float(s[1][-1].strip())
+# 	var = summary_df.loc[summary_df['P>|t|'].idxmax()]['Variable']
+# 	FM.append((adj_rsquared, var))
+#
+# selected = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
+# Adj_rsquared = selected.Adj_rsquared.iloc[0]
+# first_var = selected['Var'].values[0]
+# FINAL_VARS.append(first_var)
+# k = 0
+# cols_used = []
+# for upper_column in train_X.columns:
+#
+# 	if upper_column in FINAL_VARS:
+# 		continue
+# 	FM = []
+# 	for i in train_X.columns:
+# 		k += 1
+# 		if i in FINAL_VARS:
+# 			continue
+# 		if i == upper_column:
+# 			continue
+# 		if i in cols_used:
+# 			continue
+# 		cols_used.append(i)
+# 		model_reg = OLS(train_y, train_X[FINAL_VARS + [i]]).fit()
+# 		s , summary_df= select_best_var(model_reg)
+# 		adj_rsquared = float(s[1][-1].strip())
+# 		FM.append((summary_df[summary_df.Variable == i]['P>|t|'].iloc[0], i))
+# 		best_cendidate = pd.DataFrame(FM, columns=['Adj_rsquared', 'Var']).sort_values('Adj_rsquared').tail(1)
+# 		if best_cendidate.Adj_rsquared.iloc[0] > best_adj_rsquared:
+# 			best_adj_rsquared = best_cendidate.Adj_rsquared.iloc[0]
+# 			FINAL_VARS.append(
+# 				best_cendidate['Var'].iloc[0]
+# 				)
+# 		print(k, end=",")
