@@ -8,6 +8,23 @@ library(readr)
 options(repr.plot.width = 15, repr.plot.height = 10)
 plot_ = TRUE
 
+plot_func <- function(title_, errors_){
+    if (plot_ == TRUE){
+        cat ("\n\n")
+        errors_ %>% plot(main=paste0(title_))
+        abline(h=c(mean(errors_),median(errors_)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+
+        cat ("\n\n")
+        errors__normalized <- (errors_ - mean(errors_)) / sd(errors_)
+        errors__normalized %>% plot(main=paste0(title_, " (standrized)"))
+        abline(h=c(mean(errors__normalized),median(errors__normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+
+        cat ("\n\n")
+        errors_ %>% boxplot(main=paste0(title_, " Boxplot"))
+        abline(h=mean(errors_), col="red", lty=3, lwd=2)
+    }
+}
+plot_func(title_ = "Linear Regression", errors_ = errors_LR)
 df <- read.csv("df.csv")
 target_variable_name <- read_file("target_variable.txt")
 
@@ -18,42 +35,29 @@ test <- df[-train_ind, ]
 
 if  ( is.numeric( df[[target_variable_name]] ) ){
     cat("\n----------------- This is a Regression Problem -----------------\n\n")
-    # print("<<<<<<<<<<<<< Linear Regression >>>>>>>>>>>>>")
-    # # ----------------------------- Linear regression -----------------------------
-    # # lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
-    # # lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
-    # #
-    # # model_LR.aic.both <- step(
-    # #   lm.full, direction = "both", scope = as.formula(paste(target_variable_name, "~ ", paste(names(train), collapse = " + ")))
-    # # )
-    # # cat("\nLinear regression model saved as <model_LR.aic.both.rda>\n")
-    # # save(model_LR.aic.both, file="model_LR.aic.both.rda")
-    # load("model_LR.aic.both.rda")
+    print("<<<<<<<<<<<<< Linear Regression >>>>>>>>>>>>>")
+    # ----------------------------- Linear regression -----------------------------
+    # lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
+    # lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
     #
-    # model_LR_final <- lm(
-    #                     as.formula(
-    #                         paste(target_variable_name, " ~ ", paste(names(model_LR.aic.both$model)[-c(1)], collapse = " + "))
-    #                     ), data=train)
-    # summary_LR <- (model_LR_final %>% summary)
-    # f_value_LR <- summary_LR$fstatistic[['value']]
-    # adj.r.squared_LR <- summary_LR$adj.r.squared
-    # predictions_LR <- model_LR_final %>% predict(test)
-    # errors_LR <- test[[target_variable_name]] - predictions_LR
-    # RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
-    # if (plot_ == TRUE){
-    #     cat ("\n\n")
-    #     errors_LR %>% plot(main="Linear Regression Reseduals")
-    #     abline(h=c(mean(errors_LR),median(errors_LR)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
-    #
-    #     cat ("\n\n")
-    #     errors_LR_normalized <- (errors_LR - mean(errors_LR)) / sd(errors_LR)
-    #     errors_LR_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
-    #     abline(h=c(mean(errors_LR_normalized),median(errors_LR_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
-    #
-    #     cat ("\n\n")
-    #     errors_LR %>% boxplot(main="Linear Regression Reseduals Boxplot")
-    #     abline(h=mean(errors_LR), col="red", lty=3, lwd=2)
-    # }
+    # model_LR.aic.both <- step(
+    #   lm.full, direction = "both", scope = as.formula(paste(target_variable_name, "~ ", paste(names(train), collapse = " + ")))
+    # )
+    # cat("\nLinear regression model saved as <model_LR.aic.both.rda>\n")
+    # save(model_LR.aic.both, file="model_LR.aic.both.rda")
+    load("model_LR.aic.both.rda")
+
+    model_LR_final <- lm(
+                        as.formula(
+                            paste(target_variable_name, " ~ ", paste(names(model_LR.aic.both$model)[-c(1)], collapse = " + "))
+                        ), data=train)
+    summary_LR <- (model_LR_final %>% summary)
+    f_value_LR <- summary_LR$fstatistic[['value']]
+    adj.r.squared_LR <- summary_LR$adj.r.squared
+    predictions_LR <- model_LR_final %>% predict(test)
+    errors_LR <- test[[target_variable_name]] - predictions_LR
+    RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
+    plot_func(title = "Linear Regression", errors_ = errors_LR)
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     rf1 <- ranger(
             formula   = as.formula( paste(target_variable_name, " ~ .") ),
@@ -68,20 +72,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     errors_RF <- test[[target_variable_name]] - predictions_RF
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
 
-    if (plot_ == TRUE){
-        cat ("\n\n")
-        errors_RF %>% plot(main="Random Forest Reseduals")
-        abline(h=c(mean(errors_RF),median(errors_RF)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
 
-        cat ("\n\n")
-        errors_RF_normalized <- (errors_RF - mean(errors_RF)) / sd(errors_RF)
-        errors_RF_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
-        abline(h=c(mean(errors_RF_normalized),median(errors_RF_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
-
-        cat ("\n\n")
-        errors_RF %>% boxplot(main="Linear Regression Reseduals Boxplot")
-        abline(h=mean(errors_RF), col="red", lty=3, lwd=2)
-    }
 
     print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
     # get only numeric columns
@@ -120,3 +111,7 @@ cat("=== Models RMSE (sorted) ===\n\n")
 for (i in seq(1:length(k))){
     print(paste(k[[i]],round(v[[i]])))
 }
+
+
+title_ <- "Linear Regression"
+errors_ <- errors_RF
