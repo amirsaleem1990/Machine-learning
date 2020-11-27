@@ -1,5 +1,6 @@
 #!/bin/bash
 cp Modeling.{R,py}
+ipynb-py-convert Modeling.py Modeling.ipynb
 ./py-to-R.py
 if [[ $? != 0 ]] ; then exit ; fi
 jupyter nbconvert --to notebook --execute  Modeling.ipynb --output Modeling.ipynb
