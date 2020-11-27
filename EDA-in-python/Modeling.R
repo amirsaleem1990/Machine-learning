@@ -14,4 +14,7 @@ if is.numeric(df[[target_variable_name]]){
     save(model.aic.both, file="model.aic.both.rda")
 }
 
-install.packages("scorecard")
+smp_size <- floor(0.75 * nrow(df))
+train_ind <- sample(seq_len(nrow(df)), size = smp_size)
+train <- df[train_ind, ]
+test <- df[-train_ind, ]
