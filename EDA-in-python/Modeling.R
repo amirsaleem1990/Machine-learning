@@ -138,14 +138,14 @@ models_summary <- models_summary %>% arrange(RMSE)
 models_summary$RMSE.base_line_RMSE <- models_summary$RMSE.base_line_RMSE %>% round(5)
 
 
-models_summary %>% ggplot(aes(x=reorder(Model, -RMSE.base_line_RMSE), y=RMSE.base_line_RMSE	)) +
+models_summary %>% ggplot(aes(x=reorder(Model, -RMSE.base_line_RMSE), y=(1-RMSE.base_line_RMSE)	)) +
                 geom_bar(stat="identity") +
                 geom_text(aes(label=RMSE.base_line_RMSE), vjust=1.6, color="white", size=3.5)+
                 labs(
                     title="Models Comparison",
                     x = "Models",
                     y = "RMSE / base_RMSE",
-                    subtitle = "0-1, The minimum the batter") +
+                    subtitle = "0-1, The maximum the batter") +
                 theme(
                     plot.title   = element_text(size=18, color='brown', face="bold", hjust = 0.5),
                     axis.title.x = element_text(size=18, color='brown', face="bold"),
