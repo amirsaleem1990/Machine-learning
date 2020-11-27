@@ -151,5 +151,5 @@ models_summary %>% ggplot(aes(x=reorder(Model, -RMSE.base_line_RMSE), y=RMSE.bas
                     axis.title.x = element_text(size=18, color='brown', face="bold"),
                     axis.title.y = element_text(size=18, color='brown', face="bold"),
                     axis.text=element_text(size=16),
-                    plot.subtitle = element_text(size=10, color='black')
+                    plot.subtitle = element_text(size=14, color='black')
                     )
