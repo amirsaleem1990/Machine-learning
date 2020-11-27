@@ -48,7 +48,6 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
         errors_LR_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
         abline(h=c(mean(errors_LR_normalized),median(errors_LR_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
 
-
         errors_LR %>% boxplot(main="Linear Regression Reseduals Boxplot")
         abline(h=mean(errors_LR), col="red", lty=3, lwd=2)
     }
