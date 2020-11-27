@@ -88,3 +88,18 @@ cat("=== Models RMSE (sorted) ===\n\n")
 for (i in seq(1:length(k))){
     print(paste(k[[i]],round(v[[i]])))
 }
+
+options(repr.plot.width = 15, repr.plot.height = 10)
+
+errors_LR %>% plot(main="Linear Regression Reseduals")
+abline(h=c(mean(errors_LR),median(errors_LR)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+
+errors_LR_normalized <- (errors_LR - mean(errors_LR)) / sd(errors_LR)
+errors_LR_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
+abline(h=c(mean(errors_LR_normalized),median(errors_LR_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+
+
+errors_LR %>% boxplot(main="Linear Regression Reseduals Boxplot")
+abline(h=mean(errors_LR), col="red", lty=3, lwd=2)
+
+errors_LR %>% mean() %>% round
