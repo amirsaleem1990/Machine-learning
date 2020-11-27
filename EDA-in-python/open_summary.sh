@@ -9,7 +9,6 @@ gopen EDA-by-column.html
 read -p "Press any key when you closed your Summary: "
 echo -e "\nRemoving files EDA-by-column.{ipynb,html}.......... "
 DEL -rf EDA-by-column.{ipynb,html}
-DEL -rf Modeling.{ipynb,html}
 if [[ $? == 0 ]] ; then
 	echo -e "\nFiles removed Successfully\n"
 fi
@@ -30,3 +29,9 @@ if [[ $? != 0 ]] ; then exit ; fi
 jupyter nbconvert --to html Modeling.ipynb
 if [[ $? != 0 ]] ; then exit ; fi
 gopen Modeling.html
+read -p "Press any key when you closed your Summary: "
+echo -e "\nRemoving files Modeling.{ipynb,html}.......... "
+DEL -rf DEL -rf Modeling.{ipynb,html}
+if [[ $? == 0 ]] ; then
+	echo -e "\nFiles removed Successfully\n"
+fi
