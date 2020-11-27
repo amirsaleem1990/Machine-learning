@@ -67,5 +67,11 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     errors_KNN = test_KNN[[target_variable_name]] - predictions_KNN
     RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
 
+    print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
+    model_svm <- svm(ACTUAL_WORTH ~ . , train)
+    predictedions  <- model_svm %>% predict(test)
+    error <- test$ACTUAL_WORTH - predictedions
+    rmse_SVM <- rmse(predictedions)
+    plot_(error, "SVM")
 
 }
