@@ -9,6 +9,7 @@ options(repr.plot.width = 15, repr.plot.height = 10)
 plot_ = TRUE
 
 plot_func <- function(title_, errors_){
+    title_ <- paste0(title_, " Reseduals")
     if (plot_ == TRUE){
         cat ("\n\n")
         errors_ %>% plot(main=paste0(title_))
@@ -22,6 +23,7 @@ plot_func <- function(title_, errors_){
         cat ("\n\n")
         errors_ %>% boxplot(main=paste0(title_, " Boxplot"))
         abline(h=mean(errors_), col="red", lty=3, lwd=2)
+        cat("\n\n")
     }
 }
 plot_func(title_ = "Linear Regression", errors_ = errors_LR)
