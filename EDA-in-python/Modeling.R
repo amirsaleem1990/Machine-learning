@@ -1,0 +1,7 @@
+rm(list=ls())
+suppressWarnings(library(dplyr))
+library(readr)
+df <- read.csv("df.csv")
+target_variable_name <- read_file("target_variable.txt")
+target_variable <- df %>% select(target_variable_name)
+df <- df %>% select(-target_variable_name)
