@@ -18,42 +18,42 @@ test <- df[-train_ind, ]
 
 if  ( is.numeric( df[[target_variable_name]] ) ){
     cat("\n----------------- This is a Regression Problem -----------------\n\n")
-    print("<<<<<<<<<<<<< Linear Regression >>>>>>>>>>>>>")
-    # ----------------------------- Linear regression -----------------------------
-    # lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
-    # lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
+    # print("<<<<<<<<<<<<< Linear Regression >>>>>>>>>>>>>")
+    # # ----------------------------- Linear regression -----------------------------
+    # # lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
+    # # lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
+    # #
+    # # model_LR.aic.both <- step(
+    # #   lm.full, direction = "both", scope = as.formula(paste(target_variable_name, "~ ", paste(names(train), collapse = " + ")))
+    # # )
+    # # cat("\nLinear regression model saved as <model_LR.aic.both.rda>\n")
+    # # save(model_LR.aic.both, file="model_LR.aic.both.rda")
+    # load("model_LR.aic.both.rda")
     #
-    # model_LR.aic.both <- step(
-    #   lm.full, direction = "both", scope = as.formula(paste(target_variable_name, "~ ", paste(names(train), collapse = " + ")))
-    # )
-    # cat("\nLinear regression model saved as <model_LR.aic.both.rda>\n")
-    # save(model_LR.aic.both, file="model_LR.aic.both.rda")
-    load("model_LR.aic.both.rda")
-
-    model_LR_final <- lm(
-                        as.formula(
-                            paste(target_variable_name, " ~ ", paste(names(model_LR.aic.both$model)[-c(1)], collapse = " + "))
-                        ), data=train)
-    summary_LR <- (model_LR_final %>% summary)
-    f_value_LR <- summary_LR$fstatistic[['value']]
-    adj.r.squared_LR <- summary_LR$adj.r.squared
-    predictions_LR <- model_LR_final %>% predict(test)
-    errors_LR <- test[[target_variable_name]] - predictions_LR
-    RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
-    if (plot_ == TRUE){
-        cat ("\n\n")
-        errors_LR %>% plot(main="Linear Regression Reseduals")
-        abline(h=c(mean(errors_LR),median(errors_LR)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
-
-        cat ("\n\n")
-        errors_LR_normalized <- (errors_LR - mean(errors_LR)) / sd(errors_LR)
-        errors_LR_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
-        abline(h=c(mean(errors_LR_normalized),median(errors_LR_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
-
-        cat ("\n\n")
-        errors_LR %>% boxplot(main="Linear Regression Reseduals Boxplot")
-        abline(h=mean(errors_LR), col="red", lty=3, lwd=2)
-    }
+    # model_LR_final <- lm(
+    #                     as.formula(
+    #                         paste(target_variable_name, " ~ ", paste(names(model_LR.aic.both$model)[-c(1)], collapse = " + "))
+    #                     ), data=train)
+    # summary_LR <- (model_LR_final %>% summary)
+    # f_value_LR <- summary_LR$fstatistic[['value']]
+    # adj.r.squared_LR <- summary_LR$adj.r.squared
+    # predictions_LR <- model_LR_final %>% predict(test)
+    # errors_LR <- test[[target_variable_name]] - predictions_LR
+    # RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
+    # if (plot_ == TRUE){
+    #     cat ("\n\n")
+    #     errors_LR %>% plot(main="Linear Regression Reseduals")
+    #     abline(h=c(mean(errors_LR),median(errors_LR)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+    #
+    #     cat ("\n\n")
+    #     errors_LR_normalized <- (errors_LR - mean(errors_LR)) / sd(errors_LR)
+    #     errors_LR_normalized %>% plot(main="Linear Regression Reseduals (standrized)")
+    #     abline(h=c(mean(errors_LR_normalized),median(errors_LR_normalized)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
+    #
+    #     cat ("\n\n")
+    #     errors_LR %>% boxplot(main="Linear Regression Reseduals Boxplot")
+    #     abline(h=mean(errors_LR), col="red", lty=3, lwd=2)
+    # }
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     rf1 <- ranger(
             formula   = as.formula( paste(target_variable_name, " ~ .") ),
