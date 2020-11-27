@@ -67,6 +67,5 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     errors_KNN = test_KNN[[target_variable_name]] - predictions_KNN
     RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
 
-    
 
 }
