@@ -20,13 +20,15 @@ import pickle
 import pprint
 
 warnings.filterwarnings("ignore")
-plot_______ = False
-summary__   = False
-modeling_   = False
 
-# plot_______ = True
-# summary__   = True
-# modeling_     = True
+modeling_   = False
+# modeling_   = True
+
+# plot_______ = False
+plot_______ = True
+
+summary__   = True
+# summary__   = False
 
 
 def add_new_date_cols(x, suffix):
