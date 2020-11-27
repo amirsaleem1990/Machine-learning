@@ -124,7 +124,3 @@ cat("=== Models RMSE (sorted) ===\n\n")
 for (i in seq(1:length(k))){
     print(paste(k[[i]],round(v[[i]])))
 }
-
-
-
-library(stats)
