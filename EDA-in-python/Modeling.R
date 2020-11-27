@@ -11,12 +11,21 @@ test <- df[-train_ind, ]
 
 if  ( is.numeric( df[[target_variable_name]] ) ){
 
-    lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
-    lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
+    # lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
+    # lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
+    #
+    # model_LR.aic.both <- step(
+    #   lm.full, direction = "both", scope = as.formula(paste(target_variable_name, "~ ", paste(names(train), collapse = " + ")))
+    # )
+    # cat("\nLinear regression model saved as <model_LR.aic.both.rda>\n")
+    # save(model_LR.aic.both, file="model_LR.aic.both.rda")
+    load("model_LR.aic.both.rda")
 
-    model.aic.both <- step(
-      lm.full, direction = "both", scope = as.formula(paste(target_variable_name, "~ ", paste(names(train), collapse = " + ")))
-    )
-    cat("\nLinear regression model saved as <model_LM.aic.both.rda>\n")
-    save(model.aic.both, file="model_LM.aic.both.rda")
+    model_LR_final <- lm(
+                        as.formula(
+                            paste(target_variable_name, " ~ ", paste(names(model_LR.aic.both$model)[-c(1)], collapse = " + "))
+                        ), data=train)
+    summary_LR <- (model_1 %>% summary)
+    # summary_LR$fstatistic[['value']]
+    # summary_LR$adj.r.squared
 }
