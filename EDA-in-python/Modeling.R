@@ -10,7 +10,8 @@ train <- df[train_ind, ]
 test <- df[-train_ind, ]
 
 if  ( is.numeric( df[[target_variable_name]] ) ){
-
+    print("\n----------------- This is a Regression Problem -----------------\n")
+    # ----------------------------- Linear regression -----------------------------
     # lm.full <- lm(as.formula(paste(target_variable_name, " ~ .")), data = train)
     # lm.null <- lm(as.formula(paste(target_variable_name, " ~ 1")), data = train)
     #
