@@ -31,6 +31,9 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     f_value_LR <- summary_LR$fstatistic[['value']]
     adj.r.squared_LR <- summary_LR$adj.r.squared
     predictions_LR <- model_LR_final %>% predict(test)
-    RMSE_LR <- (test[[target_variable_name]] - predictions_LR)^2 %>% mean %>% sqrt
-        
+    errors_LR <- test[[target_variable_name]] - predictions_LR
+    RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
+
+    print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
+    
 }
