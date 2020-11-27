@@ -586,11 +586,10 @@ if summary__:
 			new_line()
 			plot_date_columns(column_name)
 
+pickle.dump(df, open("df.pkl", "wb"))
+df.to_csv("df.csv", index=False)
 # ================================================================================================================ Modeling
 if modeling_:
-	# pickle.dump(df, open("df.pkl", "wb"))
-	# df.to_csv("df.csv", index=False)
-
 	# df = pickle.load(open("df.pkl", "rb"))
 	print("\n\n")
 	to_print = "----------------------------------------------------------------------------------------------\n****************************************** Modeling ******************************************"
