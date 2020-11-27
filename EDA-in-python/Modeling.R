@@ -1,4 +1,5 @@
 rm(list=ls())
+library(e1071)
 library(FNN)
 library(ranger)
 suppressWarnings(library(dplyr))
@@ -29,7 +30,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
                         as.formula(
                             paste(target_variable_name, " ~ ", paste(names(model_LR.aic.both$model)[-c(1)], collapse = " + "))
                         ), data=train)
-    summary_LR <- (model_1 %>% summary)
+    summary_LR <- (model_LR_final %>% summary)
     f_value_LR <- summary_LR$fstatistic[['value']]
     adj.r.squared_LR <- summary_LR$adj.r.squared
     predictions_LR <- model_LR_final %>% predict(test)
@@ -66,12 +67,12 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     predictions_KNN = knn.reg(train = train_KNN, test = test_KNN, y = train_KNN[[target_variable_name]], k = x[which.max(res)])$pred
     errors_KNN = test_KNN[[target_variable_name]] - predictions_KNN
     RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
+    rm(train_KNN, test_KNN)
+
 
     print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
-    model_svm <- svm(ACTUAL_WORTH ~ . , train)
-    predictedions  <- model_svm %>% predict(test)
-    error <- test$ACTUAL_WORTH - predictedions
-    rmse_SVM <- rmse(predictedions)
-    plot_(error, "SVM")
-
+    model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
+    predictions_SVM  <- model_svm %>% predict(test)
+    errors_SVM <- test[[target_variable_name]] - predictions_SVM
+    RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
 }
