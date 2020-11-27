@@ -4,6 +4,8 @@ plot_func <- function(title_, errors_, RMSE_){
     title_ <- paste0(title_, " Reseduals")
     title_end <- paste0("         (RMSE:", RMSE_, ")")
     if (plot_ == TRUE){
+        Sys.sleep(5)
+        
         cat ("\n\n")
         errors_ %>% plot(main=paste0(title_, title_end))
         abline(h=c(mean(errors_),median(errors_)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
@@ -17,8 +19,6 @@ plot_func <- function(title_, errors_, RMSE_){
         errors_ %>% boxplot(main=paste0(title_, " Boxplot", title_end))
         abline(h=mean(errors_), col="red", lty=3, lwd=2)
         cat("\n\n")
-
-        Sys.sleep(5)
     }
 }
 
