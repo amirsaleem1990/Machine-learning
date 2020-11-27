@@ -36,7 +36,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     predictions_LR <- model_LR_final %>% predict(test)
     errors_LR <- test[[target_variable_name]] - predictions_LR
     RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt
-
+    
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     rf1 <- ranger(
             formula   = as.formula( paste(target_variable_name, " ~ .") ),
@@ -101,5 +101,3 @@ abline(h=c(mean(errors_LR_normalized),median(errors_LR_normalized)), col=c("blue
 
 errors_LR %>% boxplot(main="Linear Regression Reseduals Boxplot")
 abline(h=mean(errors_LR), col="red", lty=3, lwd=2)
-
-errors_LR %>% mean() %>% round
