@@ -1,4 +1,5 @@
 rm(list=ls())
+library(FNN)
 library(ranger)
 suppressWarnings(library(dplyr))
 library(readr)
@@ -48,5 +49,24 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     predictions_RF <- rf1$predictions
     errors_RF <- test[[target_variable_name]] - predictions_RF
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
+
+    print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
+    # get only numeric columns
+    train_KNN <- Filter(is.numeric, train)
+    test_KNN  <- Filter(is.numeric, test)
+    x = 3:20
+    res <- c()
+    for (i in x){
+        predictions_KNN = knn.reg(train = train_KNN, test = test_KNN, y = train_KNN[[target_variable_name]], k = i)$pred
+        errors_KNN <- test_KNN[[target_variable_name]] - predictions_KNN
+        res <- append(res, round(mean(errors_KNN <= 0.15), 2))
+    }
+
+    cat("The best K is ", x[which.max(res)], "\n")
+    predictions_KNN = knn.reg(train = train_KNN, test = test_KNN, y = train_KNN[[target_variable_name]], k = x[which.max(res)])$pred
+    errors_KNN = test_KNN[[target_variable_name]] - predictions_KNN
+    RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
+
     
+
 }
