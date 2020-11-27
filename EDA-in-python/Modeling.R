@@ -134,6 +134,18 @@ models_summary$Model <- models_summary %>% row.names
 row.names(models_summary) <- 1:nrow(models_summary)
 models_summary$RMSE <- round(models_summary$RMSE)
 models_summary <- models_summary %>% arrange(RMSE)
-models_summary[, 2:3] %>% ggplot(aes(x=Model, y=RMSE.base_line_RMSE	)) + 
+models_summary$RMSE.base_line_RMSE <- models_summary$RMSE.base_line_RMSE %>% round(5)
+
+models_summary[, 2:3] %>% ggplot(aes(x=reorder(Model, -RMSE.base_line_RMSE), y=RMSE.base_line_RMSE	)) +
                 geom_bar(stat="identity") +
-                geom_text(aes(label=RMSE.base_line_RMSE), vjust=1.6, color="white", size=3.5)
+                geom_text(aes(label=RMSE.base_line_RMSE), vjust=1.6, color="white", size=3.5)+
+                labs(
+                    title="Models Comparison",
+                    x = "Models",
+                    y = "RMSE / base_RMSE") +
+                theme(
+                    plot.title   = element_text(size=18, color='brown', face="bold", hjust = 0.5),
+                    axis.title.x = element_text(size=18, color='brown', face="bold"),
+                    axis.title.y = element_text(size=18, color='brown', face="bold"),
+                    axis.text=element_text(size=16)
+                    )
