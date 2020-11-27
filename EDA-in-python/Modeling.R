@@ -65,7 +65,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     plot_func(title_ = "Linear Regression", errors_ = errors_LR, RMSE_=RMSE_LR)
 
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
-    rf1 <- ranger(
+    model_RF <- ranger(
             formula   = as.formula( paste(target_variable_name, " ~ .") ),
             data      = train,
             num.trees = 200,
@@ -73,8 +73,8 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
             min.node.size = 4,
             classification = F,
             mtry = floor(ncol(train) / 3))
-    rf1 <- predict(rf1, test)
-    predictions_RF <- rf1$predictions
+    model_RF <- predict(model_RF, test)
+    predictions_RF <- model_RF$predictions
     errors_RF <- test[[target_variable_name]] - predictions_RF
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
 
@@ -124,3 +124,7 @@ cat("=== Models RMSE (sorted) ===\n\n")
 for (i in seq(1:length(k))){
     print(paste(k[[i]],round(v[[i]])))
 }
+
+
+
+library(stats)
