@@ -1,13 +1,5 @@
 rm(list=ls())
-library(e1071)
-library(FNN)
-library(ranger)
-suppressWarnings(library(dplyr))
-library(readr)
-
-options(repr.plot.width = 15, repr.plot.height = 10)
-plot_ = TRUE
-
+library(ggplot2)
 plot_func <- function(title_, errors_, RMSE_){
     title_ <- paste0(title_, " Reseduals")
     title_end <- paste0("         (RMSE:", RMSE_, ")")
@@ -28,6 +20,16 @@ plot_func <- function(title_, errors_, RMSE_){
     }
 }
 
+library(e1071)
+library(FNN)
+library(ranger)
+suppressWarnings(library(dplyr))
+library(readr)
+
+# options(repr.plot.width = 15, repr.plot.height = 10)
+
+plot_ = FALSE
+
 df <- read.csv("df.csv")
 target_variable_name <- read_file("target_variable.txt")
 
@@ -35,6 +37,9 @@ smp_size <- floor(0.75 * nrow(df))
 train_ind <- sample(seq_len(nrow(df)), size = smp_size)
 train <- df[train_ind, ]
 test <- df[-train_ind, ]
+test_y <- test[[target_variable_name]]
+
+base_test_RMSE <- mean((test_y - mean(test_y))**2) %>% sqrt %>% round
 
 if  ( is.numeric( df[[target_variable_name]] ) ){
     cat("\n----------------- This is a Regression Problem -----------------\n\n")
@@ -58,7 +63,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     f_value_LR <- summary_LR$fstatistic[['value']]
     adj.r.squared_LR <- summary_LR$adj.r.squared
     predictions_LR <- model_LR_final %>% predict(test)
-    errors_LR <- test[[target_variable_name]] - predictions_LR
+    errors_LR <- test_y - predictions_LR
     RMSE_LR <- errors_LR ^ 2 %>% mean %>% sqrt %>% round(2)
 
     # Plots
@@ -75,7 +80,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
             mtry = floor(ncol(train) / 3))
     model_RF <- predict(model_RF, test)
     predictions_RF <- model_RF$predictions
-    errors_RF <- test[[target_variable_name]] - predictions_RF
+    errors_RF <- test_y - predictions_RF
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
 
     # Plots
@@ -106,21 +111,29 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
     predictions_SVM  <- model_svm %>% predict(test)
-    errors_SVM <- test[[target_variable_name]] - predictions_SVM
+    errors_SVM <- test_y - predictions_SVM
     RMSE_SVM <- errors_SVM ^ 2 %>% mean %>% sqrt
 
     # Plots
     plot_func(title_ = "SVM", errors_ = errors_SVM, RMSE_=RMSE_SVM)
 }
 
-f <- list(`Linear regression: `=RMSE_LR,
-          `Random Forest:     `=RMSE_RF,
-          `KNN:               `=RMSE_KNN,
-          `SVM:               `=RMSE_SVM)
-f <- f[order(-unlist(f))]
-k <- names(f)
-v <- as.numeric(f)
-cat("=== Models RMSE (sorted) ===\n\n")
-for (i in seq(1:length(k))){
-    print(paste(k[[i]],round(v[[i]])))
-}
+f <- list("Linear regression"=c(RMSE_LR, RMSE_LR / base_test_RMSE),
+          "Random Forest"=c(RMSE_RF, RMSE_RF / base_test_RMSE),
+          "KNN"=c(RMSE_KNN, RMSE_KNN / base_test_RMSE),
+          "SVM"=c(RMSE_SVM, RMSE_SVM / base_test_RMSE))
+# f <- f[order(-unlist(f))]
+# k <- names(f)
+# v <- as.numeric(f)
+# cat("=== Models RMSE (sorted) ===\n\n")
+# for (i in seq(1:length(k))){
+#     print(paste(k[[i]],round(v[[i]])))
+# }
+models_summary <- data.frame(f, row.names=c("RMSE", "RMSE/base_line_RMSE")) %>% t %>% data.frame()
+models_summary$Model <- models_summary %>% row.names
+row.names(models_summary) <- 1:nrow(models_summary)
+models_summary$RMSE <- round(models_summary$RMSE)
+models_summary <- models_summary %>% arrange(RMSE)
+models_summary[, 2:3] %>% ggplot(aes(x=Model, y=RMSE.base_line_RMSE	)) + 
+                geom_bar(stat="identity") +
+                geom_text(aes(label=RMSE.base_line_RMSE), vjust=1.6, color="white", size=3.5)
