@@ -10,7 +10,7 @@ plot_ = TRUE
 
 plot_func <- function(title_, errors_, RMSE_){
     title_ <- paste0(title_, " Reseduals")
-    title_end <- "         (RMSE:", RMSE_, ")"
+    title_end <- paste0("         (RMSE:", RMSE_, ")")
     if (plot_ == TRUE){
         cat ("\n\n")
         errors_ %>% plot(main=paste0(title_, title_end))
@@ -79,7 +79,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     RMSE_RF <- errors_RF ^ 2 %>% mean %>% sqrt
 
     # Plots
-    plot_func(title_ = "Random Forest", errors_ = errors_RF)
+    plot_func(title_ = "Random Forest", errors_ = errors_RF, RMSE_=RMSE_RF)
 
 
     print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
@@ -101,7 +101,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     rm(train_KNN, test_KNN)
 
     # Plots
-    plot_func(title_ = paste0("KNN (k=", x[which.max(res)], ")"), errors_ = errors_KNN)
+    plot_func(title_ = paste0("KNN (k=", x[which.max(res)], ")"), errors_ = errors_KNN, RMSE_=RMSE_KNN)
 
     print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
@@ -110,7 +110,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     RMSE_SVM <- errors_SVM ^ 2 %>% mean %>% sqrt
 
     # Plots
-    plot_func(title_ = "SVM", errors_ = errors_SVM)
+    plot_func(title_ = "SVM", errors_ = errors_SVM, RMSE_=RMSE_SVM)
 }
 
 f <- list(`Linear regression: `=RMSE_LR,
