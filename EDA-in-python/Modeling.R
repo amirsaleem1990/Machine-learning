@@ -70,9 +70,21 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     rm(train_KNN, test_KNN)
 
 
-    print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
+    print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
     predictions_SVM  <- model_svm %>% predict(test)
     errors_SVM <- test[[target_variable_name]] - predictions_SVM
-    RMSE_KNN <- errors_KNN ^ 2 %>% mean %>% sqrt
+    RMSE_SVM <- errors_SVM ^ 2 %>% mean %>% sqrt
+}
+
+f <- list(`Linear regression: `=RMSE_LR,
+          `Random Forest:     `=RMSE_RF,
+          `KNN:               `=RMSE_KNN,
+          `SVM:               `=RMSE_SVM)
+f <- f[order(-unlist(f))]
+k <- names(f)
+v <- as.numeric(f)
+cat("=== Models RMSE (sorted) ===\n\n")
+for (i in seq(1:length(k))){
+    print(paste(k[[i]],round(v[[i]])))
 }
