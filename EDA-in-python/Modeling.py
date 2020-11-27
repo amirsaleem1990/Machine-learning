@@ -4,8 +4,8 @@ plot_func <- function(title_, errors_, RMSE_){
     title_ <- paste0(title_, " Reseduals")
     title_end <- paste0("         (RMSE:", RMSE_, ")")
     if (plot_ == TRUE){
-        Sys.sleep(5)
-        
+        # Sys.sleep(5)
+
         cat ("\n\n")
         errors_ %>% plot(main=paste0(title_, title_end))
         abline(h=c(mean(errors_),median(errors_)), col=c("blue", "red"), lty=c(1,2), lwd=c(1, 3))
@@ -72,7 +72,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     # Plots
     plot_func(title_ = "Linear Regression", errors_ = errors_LR, RMSE_=RMSE_LR)
 
-    print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
+    message("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     model_RF <- ranger(
             formula   = as.formula( paste(target_variable_name, " ~ .") ),
             data      = train,
@@ -89,7 +89,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     # Plots
     plot_func(title_ = "Random Forest", errors_ = errors_RF, RMSE_=RMSE_RF)
 
-    print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
+    message("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
     # get only numeric columns
     train_KNN <- Filter(is.numeric, train)
     test_KNN  <- Filter(is.numeric, test)
@@ -110,7 +110,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
     # Plots
     plot_func(title_ = paste0("KNN (k=", x[which.max(res)], ")"), errors_ = errors_KNN, RMSE_=RMSE_KNN)
 
-    print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
+    message("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
     predictions_SVM  <- model_svm %>% predict(test)
     errors_SVM <- test_y - predictions_SVM
@@ -138,7 +138,7 @@ models_summary$RMSE <- round(models_summary$RMSE)
 models_summary <- models_summary %>% arrange(RMSE)
 models_summary$RMSE.base_line_RMSE <- models_summary$RMSE.base_line_RMSE %>% round(5)
 
-print(models_summary[,c(3,1,2)])
+message(models_summary[,c(3,1,2)])
 cat("\n")
 
 models_summary %>% ggplot(aes(x=reorder(Model, -RMSE.base_line_RMSE), y=RMSE.base_line_RMSE	)) +
