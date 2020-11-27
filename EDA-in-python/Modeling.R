@@ -17,8 +17,6 @@ plot_func <- function(title_, errors_, RMSE_){
         errors_ %>% boxplot(main=paste0(title_, " Boxplot", title_end))
         abline(h=mean(errors_), col="red", lty=3, lwd=2)
         cat("\n\n")
-        
-        Sys.sleep(2)
     }
 }
 
@@ -71,6 +69,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
 
     # Plots
     plot_func(title_ = "Linear Regression", errors_ = errors_LR, RMSE_=RMSE_LR)
+    Sys.sleep(2)
 
     print("<<<<<<<<<<<<< Random Forest >>>>>>>>>>>>>")
     model_RF <- ranger(
@@ -88,7 +87,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
 
     # Plots
     plot_func(title_ = "Random Forest", errors_ = errors_RF, RMSE_=RMSE_RF)
-
+    Sys.sleep(2)
 
     print("<<<<<<<<<<<<< KNN >>>>>>>>>>>>>")
     # get only numeric columns
@@ -110,6 +109,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
 
     # Plots
     plot_func(title_ = paste0("KNN (k=", x[which.max(res)], ")"), errors_ = errors_KNN, RMSE_=RMSE_KNN)
+    Sys.sleep(2)
 
     print("<<<<<<<<<<<<< SVM >>>>>>>>>>>>>")
     model_svm <- svm(as.formula( paste(target_variable_name, " ~ .") ),train)
@@ -119,6 +119,7 @@ if  ( is.numeric( df[[target_variable_name]] ) ){
 
     # Plots
     plot_func(title_ = "SVM", errors_ = errors_SVM, RMSE_=RMSE_SVM)
+    Sys.sleep(2)
 }
 
 f <- list("Linear regression"=c(RMSE_LR, RMSE_LR / base_test_RMSE),
