@@ -1,0 +1,6 @@
+1606484970340	mozrunner::runner	INFO	Running command: "/usr/bin/firefox" "-marionette" "-foreground" "-no-remote" "-profile" "/tmp/rust_mozprofile.DnndUTHhdvGW"
+console.warn: SearchSettings: "get: No settings file exists, new profile?" (new Error("", "(unknown module)"))
+1606484972675	Marionette	INFO	Listening on port 44699
+1606484972832	Marionette	WARN	TLS certificate errors will be ignored for this session
+1606484995884	Marionette	INFO	Stopped listening on port 44699
+JavaScript error: https://ohrm.lfdanalytics.com/symfony/web/webres_5d69118beeec64.10301452/js/jquery/jquery.ui.datepicker.js, line 986: uncaught exception: Invalid arguments
