@@ -140,7 +140,7 @@ models_summary$RMSE.base_line_RMSE <- models_summary$RMSE.base_line_RMSE %>% rou
 
 models_summary %>% ggplot(aes(x=reorder(Model, -RMSE.base_line_RMSE), y=(1-RMSE.base_line_RMSE)	)) +
                 geom_bar(stat="identity") +
-                geom_text(aes(label=RMSE.base_line_RMSE), vjust=1.6, color="white", size=3.5)+
+                # geom_text(aes(label=RMSE.base_line_RMSE), vjust=1.6, color="white", size=3.5)+
                 labs(
                     title="Models Comparison",
                     x = "Models",
