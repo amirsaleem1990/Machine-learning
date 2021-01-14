@@ -1,0 +1,24 @@
+Statistical Transformations:
+
+	Log transform as well as the Box-Cox transform. Both of these transform functions belong to the Power Transform family of functions, typically used to create monotonic data transformations. Their main significance is that they help in stabilizing variance, adhering closely to the normal distribution and making the data independent of the mean based on its distribution
+
+	Log Transform:
+		
+		This function has a pre-requisite that the numeric values to be transformed must be positive
+
+		the log transformation have perameter <b>, which indicates as to what power must the base <b> be raised to in order to get <x>.
+
+		The natural logarithm uses b = e (where e = 2.71828, popularly known as Euler’s number).
+
+		Log transforms are useful when applied to skewed distributions as they tend to expand the values which fall in the range of lower magnitudes and tend to compress or reduce the values which fall in the range of higher magnitudes. This tends to make the skewed distribution as normal-like as possible.
+
+	Box-Cox Transform:
+
+		This function has a pre-requisite that the numeric values to be transformed must be positive
+
+		if λ == 0:
+			box_cox_x = log(x)
+		else:
+			box_col = (x ** λ - 1) / λ
+
+		The optimal value of λ is usually determined using a maximum likelihood or log-likelihood estimation.

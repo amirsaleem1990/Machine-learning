@@ -1,0 +1,55 @@
+I suggest beginning with considering a possible default value of missing values in the column. For example, if you have a column that only has 1 and NA, then it is likely that the NA rows correspond to 0. For another example, if you have a column that shows the “customer visit count in last month”, the missing values might be replaced with 0 as long as you think it is a sensible solution.
+Another reason for the missing values is joining tables with different sizes and in this case, imputing 0 might be reasonable as well.
+Except for the case of having a default value for missing values, I think the best imputation way is to use the medians of the columns. As the averages of the columns are sensitive to the outlier values, while medians are more solid in this respect.
+
+Sometimes it is appropriate to exclude outliers from a dataset to make a model trained on that dataset more predictive. Sometimes, however, the presence of outliers is a warning sign that the real-world process generating the data is more complicated than expected.
+
+The goal of taking Z-scores is to remove the effects of the location and scale of the data, allowing different datasets to be compared directly.
+
+modified Z-score method:
+	The Z-score method relies on the mean and standard deviation of a group of data to measure central tendency and dispersion. This is troublesome, because the mean and standard deviation are highly affected by outliers – they are not robust. In fact, the skewing that outliers bring is one of the biggest reasons for finding and removing outliers from a dataset!
+
+	Another drawback of the Z-score method is that it behaves strangely in small datasets – in fact, the Z-score method will never detect an outlier if the dataset has fewer than 12 items in it. This motivated the development of a modified Z-score method, which does not suffer from the same limitation
+
+	import numpy as np
+	def outliers_modified_z_score(col):
+	    threshold = 3.5
+	    median_absolute_deviation_y = ( col - col.median() ).median()
+	    modified_z_scores = 0.6745 * ( col - col.median() ) / median_absolute_deviation_y
+	    return np.where(np.abs(modified_z_scores) > threshold)
+
+	A further benefit of the modified Z-score method is that it uses the median and MAD rather than the mean and standard deviation. The median and MAD are robust measures of central tendency and dispersion, respectively.
+
+IQR:
+	One benefit of using the interquartile range method is that, like the modified Z-score method, it uses a robust measure of dispersion. 
+
+
+
+Most parametric statistics, like means, standard deviations, and correlations, and every statistic based on these, are highly sensitive to outliers. And since the assumptions of common statistical procedures, like linear regression and ANOVA, are also based on these statistics, outliers can really mess up your analysis.
+Despite all this, as much as you’d like to, it is NOT acceptable to drop an observation just because it is an outlier.  They can be legitimate observations and are sometimes the most interesting ones.  It’s important to investigate the nature of the outlier before deciding.If it is obvious that the outlier is due to incorrectly entered or measured data, you should drop the outlier. If the outlier does not change the results but does affect assumptions, you may drop the outlier. More commonly, the outlier affects both results and assumptions.  In this situation, it is not legitimate to simply drop the outlier.  You may run the analysis both with and without it, but you should state in at least a footnote the dropping of any such data points and how the results changed. If the outlier creates a significant association, you should drop the outlier and should not report any significance from your analysis.
+One option is to try a transformation.  Square root and log transformations both pull in high numbers.  This can make assumptions work better if the outlier is a dependent variable and can reduce the impact of a single point if the outlier is an independent variable.
+
+
+#Outlier Detection with Standard Deviation
+If a value has a distance to the average higher than x * standard deviation, it can be assumed as an outlier. Then what x should be?
+There is no trivial solution for x, but usually, a value between 2 and 4 seems practical.
+
+
+# Outlier Detection with Percentiles
+Another mathematical method to detect outliers is to use percentiles. You can assume a certain percent of the value from the top or the bottom as an outlier. The key point is here to set the percentage value once again, and this depends on the distribution of your data as mentioned earlier.
+Additionally, a common mistake is using the percentiles according to the range of the data. In other words, if your data ranges from 0 to 100, your top 5% is not the values between 96 and 100. Top 5% means here the values that are out of the 95th percentile of data.
+
+#An Outlier Dilemma: Drop or Cap
+Another option for handling outliers is to cap them instead of dropping. So you can keep your data size and at the end of the day, it might be better for the final model performance.
+On the other hand, capping can affect the distribution of the data, thus it better not to exaggerate it.
+
+#Outlier removal clustring
+https://haridas.in/outlier-removal-clustering.html
+ORC algorithm effectively trims the outliers from the cluster data vectors. 
+for iteration in n_iternations_in_kemans:
+	make_clusters
+	calculate_euclidean_distance_for_each_data_point_from_its_clester_centroid and normalize these (so 1 >=  output range >= 0)
+	Set a threshold distance, (T, this paremeter need to be tuned), and remove points > T.
+
+
+
