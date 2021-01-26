@@ -42,3 +42,63 @@ df.Income_quantile_label = pd.qcut( df.Income, q=quantile_list, labels=quantile_
 l, opt_lambda = spstats.boxcox(df.column) # df.column must be positive
 # apply box-cox transormation to the column with this lambda:
 df.column = spstats.boxcox(df.column,lmbda=opt_lambda)
+
+
+# calculate IQR
+q25, q75 = np.percentile(data, 25), np.percentile(data, 75)
+iqr = q75 - q25
+cut_off = iqr * 1.5
+lower, upper = q25 - cut_off, q75 + cut_off
+df.column.between(lower,upper)
+
+
+# to generate random Gaussian values with a mean of mean of 50 and a standard deviation of 5
+data = 5 * np.random.randn(10000) + 50
+
+
+# LOF (local outlier factor)
+lof = LocalOutlierFactor()
+yhat = lof.fit_predict(X_train)
+# select all rows that are not outliers
+mask = yhat != -1
+X_train, y_train = X_train[mask, :], y_train[mask]
+model = LinearRegression()
+model.fit(X_train, y_train)
+yhat = model.predict(X_test)
+
+
+# Isolation Forest
+iso = IsolationForest(contamination=0.1)
+yhat = iso.fit_predict(X_train)
+# select all rows that are not outliers
+mask = yhat != -1
+X_train, y_train = X_train[mask, :], y_train[mask]
+model = LinearRegression()
+model.fit(X_train, y_train)
+yhat = model.predict(X_test)
+
+# Minimum Covariance Determinant (MCD) 
+from sklearn.covariance import EllipticEnvelope
+# “contamination” argument that defines the expected ratio of outliers to be observed in practice. In this case, we will set it to a value of 0.01, found with a little trial and error.
+# identify outliers in the training dataset
+ee = EllipticEnvelope(contamination=0.01)
+yhat = ee.fit_predict(X_train)
+mask = yhat != -1
+X_train, y_train = X_train[mask, :], y_train[mask]
+model = LinearRegression()
+model.fit(X_train, y_train)
+yhat = model.predict(X_test)
+
+
+# OneClassSVM
+from sklearn.svm import OneClassSVM
+# identify outliers in the training dataset
+ee = OneClassSVM(nu=0.01)
+yhat = ee.fit_predict(X_train)
+# select all rows that are not outliers
+mask = yhat != -1
+X_train, y_train = X_train[mask, :], y_train[mask]
+model = LinearRegression()
+model.fit(X_train, y_train)
+yhat = model.predict(X_test)
+
